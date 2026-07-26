@@ -46,7 +46,7 @@ const AccivementArea = async () => {
             <div className="group/stat flex justify-center items-center bg-zinc-100/80 dark:bg-gradient-to-br dark:from-[#353535] dark:to-[#181818] rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 hover:border-[var(--theme-color)] dark:hover:border-[var(--theme-color)] py-8 px-4 h-full shadow-sm hover:shadow-lg transition-all duration-500">
               <div className="text-center uppercase">
                 <div className="text-4xl sm:text-5xl font-black mb-2 tracking-tight flex items-center justify-center">
-                  <CountUpWrapper end={experienceMonths} duration={2.4} />+
+                  <CountUpWrapper end={experienceMonths} duration={2.4} />
                 </div>
                 <p className="text-zinc-500 dark:text-[#A0A0A0] text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
                   Months <br /> Experience
@@ -58,7 +58,7 @@ const AccivementArea = async () => {
             <div className="group/stat flex justify-center items-center bg-zinc-100/80 dark:bg-gradient-to-br dark:from-[#353535] dark:to-[#181818] rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 hover:border-[var(--theme-color)] dark:hover:border-[var(--theme-color)] py-8 px-4 h-full shadow-sm hover:shadow-lg transition-all duration-500">
               <div className="text-center uppercase">
                 <div className="text-4xl sm:text-5xl font-black mb-2 tracking-tight flex items-center justify-center">
-                  <CountUpWrapper end={clientsWorldwide} duration={2.4} />+
+                  <CountUpWrapper end={clientsWorldwide} duration={2.4} />
                 </div>
                 <p className="text-zinc-500 dark:text-[#A0A0A0] text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
                   CLIENTS <br /> WORLDWIDE
@@ -70,7 +70,7 @@ const AccivementArea = async () => {
             <div className="group/stat flex justify-center items-center bg-zinc-100/80 dark:bg-gradient-to-br dark:from-[#353535] dark:to-[#181818] rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 hover:border-[var(--theme-color)] dark:hover:border-[var(--theme-color)] py-8 px-4 h-full shadow-sm hover:shadow-lg transition-all duration-500">
               <div className="text-center uppercase">
                 <div className="text-4xl sm:text-5xl font-black mb-2 tracking-tight flex items-center justify-center">
-                  <CountUpWrapper end={projectCount} duration={2.4} />+
+                  <CountUpWrapper end={projectCount} duration={2.4} />
                 </div>
                 <p className="text-zinc-500 dark:text-[#A0A0A0] text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
                   Total <br /> Projects

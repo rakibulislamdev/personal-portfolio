@@ -6,7 +6,7 @@ import TypewriterWrapper from "../ClientWrappers/TypewriterWrapper";
 import MarqueeWrapper from "../ClientWrappers/MarqueeWrapper";
 import { prisma } from "@/lib/prisma";
 
-const defaultProfileSrc = "/assets/Images/rakibulislam.jpg";
+const defaultProfileSrc = "";
 const myWorksSrc = "/assets/Images/my-works.png";
 
 const HeroArea = async () => {
@@ -23,7 +23,7 @@ const HeroArea = async () => {
   const title = settings?.title || "A WEB DEVELOPER";
   const email = settings?.email || "rirakib03@gmail.com";
   const location = settings?.location || "Pabna, Bangladesh";
-  const profileImage = settings?.profileImage || defaultProfileSrc;
+  const profileImage = settings?.profileImage || "";
   const typewriterText = settings?.typewriterText || `Web Developer based in ${location}`;
 
   return (
@@ -31,23 +31,27 @@ const HeroArea = async () => {
       <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 items-stretch">
         {/* Main Profile Card - Server Component */}
         <div
-          data-aos="zoom-in-up"
-          data-aos-delay="50"
-          data-aos-duration="1000"
           className="group bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 hover:border-[var(--theme-color)] transition-all duration-500 shadow-md hover:shadow-2xl h-full flex flex-col justify-center"
         >
           <div className="grid lg:items-center grid-cols-1 lg:grid-cols-2 gap-8 lg:p-12 p-10 relative h-full">
             <div className="flex items-center justify-center">
-              <Image
-                className="rounded-tl-3xl rounded-br-3xl rounded-tr-none rounded-bl-none w-56 object-cover aspect-square bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-transparent group-hover:border-[var(--theme-color)] transition-colors duration-500 shadow-sm"
-                src={profileImage}
-                alt={name}
-                width={1000}
-                height={1000}
-                quality={100}
-                unoptimized
-                priority
-              />
+              {profileImage ? (
+                <Image
+                  className="rounded-tl-3xl rounded-br-3xl rounded-tr-none rounded-bl-none w-56 object-cover aspect-square bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-transparent group-hover:border-[var(--theme-color)] transition-colors duration-500 shadow-sm select-none pointer-events-none"
+                  src={profileImage}
+                  alt={name}
+                  width={1000}
+                  height={1000}
+                  quality={100}
+                  unoptimized
+                  priority
+                  draggable={false}
+                />
+              ) : (
+                <div className="w-56 h-56 rounded-tl-3xl rounded-br-3xl bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center text-zinc-400 font-medium text-xs">
+                  No Image Uploaded
+                </div>
+              )}
             </div>
             <div className="flex flex-col justify-center">
               <h2
@@ -75,9 +79,6 @@ const HeroArea = async () => {
         <div className="flex flex-col justify-between gap-6 h-full">
           {/* Marquee Banner Card */}
           <div
-            data-aos="fade-up"
-            data-aos-delay="50"
-            data-aos-duration="1000"
             className="bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] px-10 py-5 rounded-full border border-zinc-200/90 dark:border-zinc-800/80 hover:border-[var(--theme-color)] transition-all duration-500 shadow-md"
           >
             <MarqueeWrapper>

@@ -63,7 +63,8 @@ export default function DashboardSettingsPage() {
       if (res.ok) {
         toast.success("Settings saved successfully to database!");
       } else {
-        toast.error("Failed to save settings");
+        const errorData = await res.json().catch(() => ({}));
+        toast.error(errorData.error || "Failed to save settings");
       }
     } catch (err) {
       toast.error("Error saving settings");
