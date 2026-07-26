@@ -267,6 +267,47 @@ export default function SocialLinksSection({
           </div>
         </div>
       </div>
+
+      {/* SEO & Analytics Tracking Controls */}
+      <div className="pt-6 border-t border-zinc-200 dark:border-zinc-800 space-y-4">
+        <h3 className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+          SEO, Google Analytics & Meta Pixel Integration
+        </h3>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">
+              Google Analytics Tracking ID (GA4)
+            </label>
+            <input
+              type="text"
+              value={profile.googleAnalyticsId || ""}
+              onChange={(e) => setProfile({ ...profile, googleAnalyticsId: e.target.value })}
+              placeholder="e.g. G-XXXXXXXXXX"
+              className="w-full px-4 py-3 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200/80 dark:border-zinc-800/80 rounded-2xl text-sm font-medium text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition"
+            />
+            <span className="text-[11px] text-zinc-400 block mt-1">
+              Enter your Google Tag Manager or GA4 Measurement ID
+            </span>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">
+              Meta (Facebook) Pixel ID
+            </label>
+            <input
+              type="text"
+              value={profile.metaPixelId || ""}
+              onChange={(e) => setProfile({ ...profile, metaPixelId: e.target.value })}
+              placeholder="e.g. 123456789012345"
+              className="w-full px-4 py-3 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200/80 dark:border-zinc-800/80 rounded-2xl text-sm font-medium text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition"
+            />
+            <span className="text-[11px] text-zinc-400 block mt-1">
+              Enter your Facebook Pixel Pixel ID for ad conversion tracking
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -136,5 +136,7 @@ model ProfileSettings {
   facebookInProfilesCard  Boolean  @default(false)
   twitterInProfilesCard   Boolean  @default(false)
   instagramInProfilesCard Boolean  @default(false)
+  googleAnalyticsId       String?  @default("")
+  metaPixelId             String?  @default("")
   updatedAt               DateTime @updatedAt
 }

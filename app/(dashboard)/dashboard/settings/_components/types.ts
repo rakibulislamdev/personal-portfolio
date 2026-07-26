@@ -20,6 +20,8 @@ export interface ProfileSettingsData {
   facebookInProfilesCard?: boolean;
   twitterInProfilesCard?: boolean;
   instagramInProfilesCard?: boolean;
+  googleAnalyticsId?: string;
+  metaPixelId?: string;
   profileImage: string;
   aboutImage: string;
   typewriterText: string;

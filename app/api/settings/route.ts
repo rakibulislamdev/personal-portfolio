@@ -98,6 +98,8 @@ export async function PUT(req: Request) {
         facebookInProfilesCard: Boolean(body.facebookInProfilesCard ?? false),
         twitterInProfilesCard: Boolean(body.twitterInProfilesCard ?? false),
         instagramInProfilesCard: Boolean(body.instagramInProfilesCard ?? false),
+        googleAnalyticsId: body.googleAnalyticsId ?? "",
+        metaPixelId: body.metaPixelId ?? "",
         profileImage: body.profileImage ?? "",
         aboutImage: body.aboutImage ?? "",
         typewriterText: body.typewriterText || "Web Developer based in Bangladesh",
