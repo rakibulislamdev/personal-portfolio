@@ -1,12 +1,95 @@
 import React from "react";
+import type { Metadata } from "next";
+import ContactInfo from "./_components/ContactInfo";
+import ContactForm from "./_components/ContactForm";
+
+export const metadata: Metadata = {
+  title: "Contact Rakibul Islam | Web & Frontend Developer",
+  description:
+    "Get in touch with Rakibul Islam for custom web application development, React & Next.js projects, freelance inquiries, and technical collaboration.",
+  keywords: [
+    "Contact Rakibul Islam",
+    "Hire Web Developer Bangladesh",
+    "Hire React Developer",
+    "Hire Next.js Developer",
+    "Frontend Developer Contact",
+    "Software Engineer Bangladesh",
+  ],
+  alternates: {
+    canonical: "https://rakibulislam.dev/contact",
+  },
+  openGraph: {
+    title: "Contact Rakibul Islam | Web Developer & Frontend Specialist",
+    description:
+      "Looking for a skilled Web Developer? Contact Rakibul Islam to discuss project ideas, freelance contracts, or technical solutions.",
+    url: "https://rakibulislam.dev/contact",
+    siteName: "Rakibul Islam Portfolio",
+    images: [
+      {
+        url: "/assets/Images/Rakibulislam1.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Contact Rakibul Islam - Web Developer",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Rakibul Islam | Web Developer",
+    description:
+      "Get in touch with Rakibul Islam for web development projects and technical collaboration.",
+    images: ["/assets/Images/Rakibulislam1.jpg"],
+  },
+};
 
 export default function ContactPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ContactPage",
+        "@id": "https://rakibulislam.dev/contact/#webpage",
+        url: "https://rakibulislam.dev/contact",
+        name: "Contact Rakibul Islam | Web & Frontend Developer",
+        description:
+          "Contact page of Rakibul Islam, a web developer based in Pabna, Bangladesh.",
+        isPartOf: {
+          "@id": "https://rakibulislam.dev/#website",
+        },
+      },
+      {
+        "@type": "Person",
+        "@id": "https://rakibulislam.dev/#person",
+        name: "Rakibul Islam",
+        jobTitle: "Web Developer",
+        email: "rirakib03@gmail.com",
+        telephone: "+8801621-574994",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Pabna",
+          addressCountry: "Bangladesh",
+        },
+        url: "https://rakibulislam.dev",
+      },
+    ],
+  };
+
   return (
-    <div className="py-10 px-4 sm:px-8 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">Contact Me</h1>
-      <p className="text-zinc-600 dark:text-zinc-400">
-        Let's talk and work together.
-      </p>
-    </div>
+    <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <h1 className="sr-only">Contact Rakibul Islam - Web & Frontend Developer</h1>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        {/* Contact Info Left Column */}
+        <ContactInfo />
+
+        {/* Contact Form Right 2-Column Span */}
+        <ContactForm />
+      </div>
+    </section>
   );
 }

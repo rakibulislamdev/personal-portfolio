@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Great_Vibes } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import { ThemeProvider } from "@/components/Theme/ThemeContext";
@@ -134,6 +135,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <ThemeSwitcher />
+          <Toaster position="bottom-right" richColors closeButton />
         </ThemeProvider>
       </body>
     </html>
