@@ -1,6 +1,7 @@
 "use server";
 
 import { Resend } from "resend";
+import { prisma } from "@/lib/prisma";
 
 const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy_key_until_env_set");
 
@@ -12,8 +13,8 @@ export interface SendEmailResponse {
 export async function sendEmailAction(formData: FormData): Promise<SendEmailResponse> {
   const name = (formData.get("name") || formData.get("to_name")) as string;
   const email = (formData.get("email") || formData.get("to_email")) as string;
-  const subject = formData.get("subject") as string;
-  const message = formData.get("message") as string;
+  const subject = (formData.get("subject") as string) || "";
+  const message = (formData.get("message") as string) || "";
 
   if (!name || !email || !message) {
     return {
@@ -23,6 +24,15 @@ export async function sendEmailAction(formData: FormData): Promise<SendEmailResp
   }
 
   try {
+    // 1. Save contact message to Database (Message Table)
+    await prisma.message.create({
+      data: {
+        name,
+        email,
+        subject,
+        message,
+      },
+    });
     const data = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
       to: ["rirakib03@gmail.com"], // Your email address where you want to receive messages
