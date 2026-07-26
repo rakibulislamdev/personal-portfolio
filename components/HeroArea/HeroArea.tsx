@@ -95,20 +95,20 @@ const HeroArea = () => {
               data-aos-duration="1000"
               className="group relative bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 hover:border-[var(--theme-color)] transition-all duration-500 shadow-md hover:shadow-2xl flex flex-col justify-between"
             >
-              <div className="py-6 px-10 flex flex-col justify-between h-full">
+              <div className="py-6 px-8 sm:px-10 flex flex-col justify-between h-full">
                 <div>
-                  <div className="flex justify-center py-2 items-center min-h-[96px]">
+                  <div className="flex justify-center items-center py-2 min-h-[100px] mb-4">
                     <span className="font-[family-name:var(--font-signature)] text-5xl sm:text-6xl text-zinc-900 dark:text-white select-none group-hover:scale-105 transition-transform duration-300">
                       Rakib
                     </span>
                   </div>
                   <p
-                    className="font-bold text-xs uppercase tracking-widest my-2 transition-colors duration-300"
+                    className="font-bold text-xs uppercase tracking-widest mb-1.5 transition-colors duration-300"
                     style={{ color: "var(--theme-color)" }}
                   >
                     MORE ABOUT ME
                   </p>
-                  <p className="font-bold text-zinc-900 dark:text-white text-xl">Credentials</p>
+                  <h3 className="font-bold text-zinc-900 dark:text-white text-xl">Credentials</h3>
                 </div>
                 <div className="absolute bottom-7 right-7">
                   <HoverIcon />
@@ -124,22 +124,22 @@ const HeroArea = () => {
               data-aos-duration="1000"
               className="group relative bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 hover:border-[var(--theme-color)] transition-all duration-500 shadow-md hover:shadow-2xl flex flex-col justify-between"
             >
-              <div className="py-6 px-10 flex flex-col justify-between h-full">
+              <div className="py-6 px-8 sm:px-10 flex flex-col justify-between h-full">
                 <div>
-                  <div className="flex flex-col justify-center items-center py-2 min-h-[96px] overflow-hidden">
+                  <div className="flex justify-center items-center py-2 min-h-[100px] mb-4 overflow-hidden">
                     <img
                       src={myWorksSrc}
                       alt="Showcase Projects"
-                      className="max-h-20 object-contain opacity-95 group-hover:opacity-100 transition-all duration-300 scale-110 -mb-4"
+                      className="max-h-20 object-contain opacity-95 group-hover:opacity-100 transition-all duration-300 scale-110"
                     />
                   </div>
                   <p
-                    className="font-bold text-xs uppercase tracking-widest my-2 transition-colors duration-300"
+                    className="font-bold text-xs uppercase tracking-widest mb-1.5 transition-colors duration-300"
                     style={{ color: "var(--theme-color)" }}
                   >
                     SHOWCASE
                   </p>
-                  <p className="font-bold text-zinc-900 dark:text-white text-xl">Projects</p>
+                  <h3 className="font-bold text-zinc-900 dark:text-white text-xl">Projects</h3>
                 </div>
                 <div className="absolute bottom-7 right-7">
                   <HoverIcon />

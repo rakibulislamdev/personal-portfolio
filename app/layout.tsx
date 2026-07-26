@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Great_Vibes } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar/Navbar";
+import Footer from "@/components/Footer/Footer";
 import { ThemeProvider } from "@/components/Theme/ThemeContext";
 import ThemeSwitcher from "@/components/Theme/ThemeSwitcher";
 
@@ -126,9 +128,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="min-h-full flex flex-col bg-[#f0f2f5] dark:bg-[#0f0f0f] text-zinc-900 dark:text-white transition-colors duration-300">
         <ThemeProvider>
-          {children}
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
           <ThemeSwitcher />
         </ThemeProvider>
       </body>
