@@ -22,7 +22,7 @@ const signatureFont = Great_Vibes({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://rakibulislam.dev"), // Change to your actual domain when deployed
+  metadataBase: new URL("https://rakibulislamdev.me"),
   title: {
     default: "Rakibul Islam | Web Developer & Frontend Specialist",
     template: "%s | Rakibul Islam",
@@ -39,12 +39,12 @@ export const metadata: Metadata = {
     "Portfolio",
     "Software Engineer",
   ],
-  authors: [{ name: "Rakibul Islam", url: "https://rakibulislam.dev" }],
+  authors: [{ name: "Rakibul Islam", url: "https://rakibulislamdev.me" }],
   creator: "Rakibul Islam",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://rakibulislam.dev",
+    url: "https://rakibulislamdev.me",
     title: "Rakibul Islam | Web Developer & Frontend Specialist",
     description:
       "Personal portfolio of Rakibul Islam - Web Developer building modern, fast, and responsive web applications.",
