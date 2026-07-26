@@ -160,3 +160,22 @@
 [data-sonner-toaster] [data-sonner-toast][data-type="success"] [data-icon] {
   color: #ffffff !important;
 }
+
+/* Marquee Ticker Animations — start from center */
+@keyframes marquee-left {
+  0%   { transform: translateX(-25%); }
+  100% { transform: translateX(-75%); }
+}
+
+@keyframes marquee-right {
+  0%   { transform: translateX(-75%); }
+  100% { transform: translateX(-25%); }
+}
+
+.animate-marquee-left {
+  animation: marquee-left 18s linear infinite;
+}
+
+.animate-marquee-right {
+  animation: marquee-right 18s linear infinite;
+}
