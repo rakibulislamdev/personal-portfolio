@@ -10,7 +10,7 @@ export const CredentialsCard = () => {
     >
       <div className="py-6 px-8 sm:px-10 flex flex-col justify-between h-full">
         <div>
-          <div className="flex justify-center items-center py-2 min-h-[100px] mb-4">
+          <div className="flex justify-center items-center py-2 min-h-[100px] mb-4 -translate-x-2 translate-y-3">
             <span className="font-[family-name:var(--font-signature)] text-5xl sm:text-6xl text-zinc-900 dark:text-white select-none group-hover:scale-105 transition-transform duration-300">
               Rakib
             </span>
