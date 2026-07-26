@@ -1,10 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
 import HoverIcon from "../HoverIcon/HoverIcon";
 import MarqueeStarIcon from "../Icons/MarqueeStarIcon";
 import TypewriterWrapper from "../ClientWrappers/TypewriterWrapper";
 import MarqueeWrapper from "../ClientWrappers/MarqueeWrapper";
 
-const profileSrc = "/assets/Images/Rakibulislam1.jpg";
+const profileSrc = "/assets/Images/rakibulislam.jpg";
 const myWorksSrc = "/assets/Images/my-works.png";
 
 const HeroArea = () => {
@@ -20,10 +21,14 @@ const HeroArea = () => {
         >
           <div className="grid lg:items-center grid-cols-1 lg:grid-cols-2 gap-8 lg:p-12 p-10 relative h-full">
             <div className="flex items-center justify-center">
-              <img
-                className="rounded-2xl w-56 object-cover aspect-square bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-transparent group-hover:border-[var(--theme-color)] transition-colors duration-500 shadow-sm"
+              <Image
+                className="rounded-tl-3xl rounded-br-3xl rounded-tr-none rounded-bl-none w-56 object-cover aspect-square bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-transparent group-hover:border-[var(--theme-color)] transition-colors duration-500 shadow-sm"
                 src={profileSrc}
                 alt="Rakibul Islam"
+                width={600}
+                height={600}
+                quality={95}
+                priority
               />
             </div>
             <div className="flex flex-col justify-center">
@@ -127,10 +132,12 @@ const HeroArea = () => {
               <div className="py-6 px-8 sm:px-10 flex flex-col justify-between h-full">
                 <div>
                   <div className="flex justify-center items-center py-2 min-h-[100px] mb-4 overflow-hidden">
-                    <img
+                    <Image
                       src={myWorksSrc}
                       alt="Showcase Projects"
-                      className="max-h-20 object-contain opacity-95 group-hover:opacity-100 transition-all duration-300 scale-110"
+                      width={160}
+                      height={80}
+                      className="max-h-20 w-auto object-contain opacity-95 group-hover:opacity-100 transition-all duration-300 scale-110"
                     />
                   </div>
                   <p

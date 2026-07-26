@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import HoverIcon from "../HoverIcon/HoverIcon";
 import TypewriterWrapper from "../ClientWrappers/TypewriterWrapper";
@@ -13,9 +14,11 @@ export const LetsTalkCard = () => {
     >
       {/* Top Hanging Decorative Star Graphic */}
       <div className="absolute top-0 left-8 sm:left-10 z-10 pointer-events-none">
-        <img
+        <Image
           src={iconSrc}
           alt="Star Icon"
+          width={32}
+          height={32}
           className="w-7 sm:w-8 h-auto object-contain transition-transform duration-500 group-hover:scale-105"
         />
       </div>

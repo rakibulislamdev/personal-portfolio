@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import HoverIcon from "@/components/HoverIcon/HoverIcon";
 import { ProjectItem } from "./AllProjectsGrid";
 
@@ -14,10 +15,12 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   return (
     <div className="group relative bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 hover:border-[var(--theme-color)] transition-all duration-500 shadow-md hover:shadow-2xl p-6 flex flex-col justify-between">
       <div className={`${imageHeightClass} w-full overflow-hidden rounded-2xl border border-zinc-200/60 dark:border-zinc-700/60 shadow-sm relative`}>
-        <img
+        <Image
           className="w-full h-full ease-in-out duration-[3s] rounded-2xl object-top object-cover hover:object-bottom transition-all"
           src={project.image}
           alt={project.title}
+          width={600}
+          height={400}
         />
       </div>
       <div className="flex items-center justify-between mt-4">

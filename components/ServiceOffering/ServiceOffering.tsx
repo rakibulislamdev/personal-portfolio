@@ -58,13 +58,13 @@ const ServiceOffering = () => {
           <div className="py-6 px-8 sm:px-10 flex flex-col justify-between h-full">
             <div>
               <div className="text-zinc-900 dark:text-white flex justify-center gap-5 sm:gap-7 flex-wrap items-center py-2 min-h-[110px] mb-4">
-                <img className="w-11 h-11 sm:w-12 sm:h-12 object-contain group-hover:scale-110 transition-transform duration-300" src={html} alt="HTML5" />
-                <img className="w-11 h-11 sm:w-12 sm:h-12 object-contain group-hover:scale-110 transition-transform duration-300" src={css} alt="CSS3" />
-                <img className="w-11 h-11 sm:w-12 sm:h-12 object-contain group-hover:scale-110 transition-transform duration-300" src={tailwind} alt="Tailwind CSS" />
-                <img className="w-11 h-11 sm:w-12 sm:h-12 object-contain group-hover:scale-110 transition-transform duration-300" src={js} alt="JavaScript" />
-                <img className="w-11 h-11 sm:w-12 sm:h-12 object-contain group-hover:scale-110 transition-transform duration-300" src={react} alt="React" />
-                <img className="w-11 h-11 sm:w-12 sm:h-12 object-contain group-hover:scale-110 transition-transform duration-300" src={node} alt="Node.js" />
-                <img className="w-11 h-11 sm:w-12 sm:h-12 object-contain group-hover:scale-110 transition-transform duration-300" src={mongodb} alt="MongoDB" />
+                <Image width={48} height={48} className="w-11 h-11 sm:w-12 sm:h-12 object-contain group-hover:scale-110 transition-transform duration-300" src={html} alt="HTML5" />
+                <Image width={48} height={48} className="w-11 h-11 sm:w-12 sm:h-12 object-contain group-hover:scale-110 transition-transform duration-300" src={css} alt="CSS3" />
+                <Image width={48} height={48} className="w-11 h-11 sm:w-12 sm:h-12 object-contain group-hover:scale-110 transition-transform duration-300" src={tailwind} alt="Tailwind CSS" />
+                <Image width={48} height={48} className="w-11 h-11 sm:w-12 sm:h-12 object-contain group-hover:scale-110 transition-transform duration-300" src={js} alt="JavaScript" />
+                <Image width={48} height={48} className="w-11 h-11 sm:w-12 sm:h-12 object-contain group-hover:scale-110 transition-transform duration-300" src={react} alt="React" />
+                <Image width={48} height={48} className="w-11 h-11 sm:w-12 sm:h-12 object-contain group-hover:scale-110 transition-transform duration-300" src={node} alt="Node.js" />
+                <Image width={48} height={48} className="w-11 h-11 sm:w-12 sm:h-12 object-contain group-hover:scale-110 transition-transform duration-300" src={mongodb} alt="MongoDB" />
               </div>
               <p
                 className="font-bold text-xs uppercase tracking-widest mb-1.5 transition-colors duration-300"

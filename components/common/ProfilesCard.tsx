@@ -5,8 +5,7 @@ import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 
 export const ProfilesCard = () => {
   return (
-    <Link
-      href="/contact"
+    <div
       className="group relative bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 hover:border-[var(--theme-color)] transition-all duration-500 shadow-md hover:shadow-2xl flex flex-col justify-between h-full"
     >
       <div className="py-6 px-8 sm:px-10 flex flex-col justify-between h-full">
@@ -17,7 +16,7 @@ export const ProfilesCard = () => {
               href="https://github.com/Rakibul-Islam-1"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-14 h-14 rounded-full bg-zinc-200 dark:bg-[#252525] border border-zinc-300/60 dark:border-zinc-700/60 flex items-center justify-center shadow-inner hover:scale-110 transition-transform duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"
+              className="w-14 h-14 rounded-full bg-zinc-200 dark:bg-[#252525] border border-zinc-300/60 dark:border-zinc-700/60 flex items-center justify-center shadow-inner hover:scale-110 transition-transform duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)] z-10"
               title="GitHub Profile"
             >
               <FaGithub className="w-7 h-7" />
@@ -26,28 +25,30 @@ export const ProfilesCard = () => {
               href="https://linkedin.com/in/rakibul-islam"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-14 h-14 rounded-full bg-zinc-200 dark:bg-[#252525] border border-zinc-300/60 dark:border-zinc-700/60 flex items-center justify-center shadow-inner hover:scale-110 transition-transform duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"
+              className="w-14 h-14 rounded-full bg-zinc-200 dark:bg-[#252525] border border-zinc-300/60 dark:border-zinc-700/60 flex items-center justify-center shadow-inner hover:scale-110 transition-transform duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)] z-10"
               title="LinkedIn Profile"
             >
               <FaLinkedinIn className="w-7 h-7" />
             </a>
           </div>
 
-          <p
-            className="font-bold text-xs uppercase tracking-widest mb-1.5 transition-colors duration-300"
-            style={{ color: "var(--theme-color)" }}
-          >
-            STAY WITH ME
-          </p>
-          <h3 className="font-bold text-zinc-900 dark:text-white text-xl">
-            Profiles
-          </h3>
+          <Link href="/contact" className="block group/link">
+            <p
+              className="font-bold text-xs uppercase tracking-widest mb-1.5 transition-colors duration-300"
+              style={{ color: "var(--theme-color)" }}
+            >
+              STAY WITH ME
+            </p>
+            <h3 className="font-bold text-zinc-900 dark:text-white text-xl">
+              Profiles
+            </h3>
+          </Link>
         </div>
-        <div className="absolute bottom-7 right-7">
+        <Link href="/contact" className="absolute bottom-7 right-7">
           <HoverIcon />
-        </div>
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 };
 
