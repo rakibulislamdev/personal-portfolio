@@ -1,8 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { IoIosMail } from "react-icons/io";
-import { BiSolidContact } from "react-icons/bg";
-import { BiSolidPhone } from "react-icons/bi";
+import { BiSolidContact, BiSolidPhone } from "react-icons/bi";
 import { MdMyLocation } from "react-icons/md";
 import { FaGithub, FaLinkedinIn, FaInstagram, FaFacebookF, FaTwitter } from "react-icons/fa";
 import { prisma } from "@/lib/prisma";

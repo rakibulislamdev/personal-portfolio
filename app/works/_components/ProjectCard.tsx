@@ -18,7 +18,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         <Image
           className="w-full h-full ease-in-out duration-[3s] rounded-2xl object-top object-cover hover:object-bottom transition-all"
           src={project.image}
-          alt={project.altText || `${project.title} - ${project.category} Portfolio Project`}
+          alt={`${project.title} - ${project.category} Portfolio Project`}
           width={600}
           height={400}
         />
