@@ -4,11 +4,21 @@ import Link from "next/link";
 import HoverIcon from "../HoverIcon/HoverIcon";
 import TypewriterWrapper from "../ClientWrappers/TypewriterWrapper";
 import CountUpWrapper from "../ClientWrappers/CountUpWrapper";
-import HangingStarIcon from "../Icons/HangingStarIcon";
+import { prisma } from "@/lib/prisma";
 
 const iconSrc = "/assets/Icons/icon_2.png";
 
-const AccivementArea = () => {
+const AccivementArea = async () => {
+  let projectCount = 30;
+  try {
+    const count = await prisma.project.count();
+    if (count > 0) {
+      projectCount = count;
+    }
+  } catch (err) {
+    console.error("Error fetching project count in AccivementArea:", err);
+  }
+
   return (
     <div className="my-10 mx-3 lg:mx-0">
       <div className="grid lg:grid-cols-2 gap-6 grid-cols-1">
@@ -48,7 +58,7 @@ const AccivementArea = () => {
             <div className="group/stat flex justify-center items-center bg-zinc-100/80 dark:bg-gradient-to-br dark:from-[#353535] dark:to-[#181818] rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 hover:border-[var(--theme-color)] dark:hover:border-[var(--theme-color)] py-8 px-4 h-full shadow-sm hover:shadow-lg transition-all duration-500">
               <div className="text-center uppercase">
                 <div className="text-4xl sm:text-5xl font-black mb-2 tracking-tight">
-                  <CountUpWrapper end={30} duration={2.4} />
+                  <CountUpWrapper end={projectCount} duration={2.4} />
                 </div>
                 <p className="text-zinc-500 dark:text-[#A0A0A0] text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
                   Total <br /> Projects

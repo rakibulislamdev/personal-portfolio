@@ -1,23 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Mail, Trash2, Reply, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-
-interface Message {
-  id: string;
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-  status: string;
-  createdAt: string;
-}
+import { Message, TabType } from "./_components/types";
+import MessagesHeader from "./_components/MessagesHeader";
+import MessagesSidebar from "./_components/MessagesSidebar";
+import MessageDetailView from "./_components/MessageDetailView";
 
 export default function DashboardMessagesPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState<TabType>("ALL");
 
   const fetchMessages = async () => {
     setIsLoading(true);
@@ -42,7 +37,29 @@ export default function DashboardMessagesPage() {
     fetchMessages();
   }, []);
 
-  const selectedMessage = messages.find((m) => m.id === selectedId);
+  const updateMessageStatus = async (id: string, newStatus: string) => {
+    try {
+      const res = await fetch("/api/messages", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status: newStatus }),
+      });
+      if (res.ok) {
+        setMessages((prev) =>
+          prev.map((m) => (m.id === id ? { ...m, status: newStatus } : m))
+        );
+      }
+    } catch (err) {
+      console.error("Failed to update status:", err);
+    }
+  };
+
+  const handleSelectMessage = (msg: Message) => {
+    setSelectedId(msg.id);
+    if (msg.status === "Unread") {
+      updateMessageStatus(msg.id, "Read");
+    }
+  };
 
   const handleDelete = async (id: string) => {
     try {
@@ -64,6 +81,11 @@ export default function DashboardMessagesPage() {
     }
   };
 
+  const handleMarkReplied = async (id: string) => {
+    await updateMessageStatus(id, "Replied");
+    toast.success("Marked message as Replied");
+  };
+
   const formatTimeAgo = (dateStr: string) => {
     try {
       const date = new Date(dateStr);
@@ -79,99 +101,64 @@ export default function DashboardMessagesPage() {
     }
   };
 
+  const filteredMessages = messages.filter((m) => {
+    const matchesSearch =
+      m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      m.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      m.subject.toLowerCase().includes(searchQuery.toLowerCase());
+
+    if (!matchesSearch) return false;
+
+    if (activeTab === "UNREAD") return m.status === "Unread";
+    if (activeTab === "READ") return m.status === "Read";
+    if (activeTab === "REPLIED") return m.status === "Replied";
+    return true;
+  });
+
+  const selectedMessage = messages.find((m) => m.id === selectedId);
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "Unread":
+        return "bg-rose-500/10 text-rose-500 border-rose-500/20";
+      case "Replied":
+        return "bg-emerald-500/10 text-emerald-500 border-emerald-500/20";
+      default:
+        return "bg-zinc-200/60 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-300 dark:border-zinc-700";
+    }
+  };
+
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-          <Mail className="w-6 h-6 text-[var(--theme-color)]" /> Client Messages
-          {isLoading && <Loader2 className="w-4 h-4 animate-spin text-[var(--theme-color)]" />}
-        </h1>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-          View and reply to inquiries sent via your website contact form.
-        </p>
-      </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <MessagesHeader
+        isLoading={isLoading}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
 
+      {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-        {/* Left Message List */}
-        <div className="bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] p-5 rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 shadow-md space-y-3">
-          {isLoading ? (
-            <div className="space-y-3">
-              {[1, 2, 3].map((n) => (
-                <div key={n} className="h-20 bg-zinc-100 dark:bg-zinc-800/50 rounded-2xl animate-pulse" />
-              ))}
-            </div>
-          ) : messages.length > 0 ? (
-            messages.map((msg) => (
-              <div
-                key={msg.id}
-                onClick={() => setSelectedId(msg.id)}
-                className={`p-4 rounded-2xl border cursor-pointer transition-all ${
-                  selectedId === msg.id
-                    ? "bg-zinc-100 dark:bg-zinc-800 border-[var(--theme-color)]"
-                    : "bg-zinc-50 dark:bg-[#1a1a1a] border-zinc-200/80 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-sm text-zinc-900 dark:text-white">
-                    {msg.name}
-                  </h4>
-                  <span className="text-[10px] text-zinc-400 font-medium">
-                    {formatTimeAgo(msg.createdAt)}
-                  </span>
-                </div>
-                <p className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 truncate mt-1">
-                  {msg.subject}
-                </p>
-                <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate mt-0.5">
-                  {msg.message}
-                </p>
-              </div>
-            ))
-          ) : (
-            <div className="py-8 text-center text-xs text-zinc-500">No client messages found.</div>
-          )}
-        </div>
+        {/* Left Sidebar */}
+        <MessagesSidebar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          filteredMessages={filteredMessages}
+          selectedId={selectedId}
+          isLoading={isLoading}
+          onSelectMessage={handleSelectMessage}
+          formatTimeAgo={formatTimeAgo}
+          getStatusBadge={getStatusBadge}
+        />
 
-        {/* Right Message Preview Detail */}
-        <div className="lg:col-span-2 bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] p-6 sm:p-8 rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 shadow-md space-y-6">
-          {selectedMessage ? (
-            <>
-              <div className="flex items-start justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-6">
-                <div>
-                  <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
-                    {selectedMessage.subject}
-                  </h2>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-                    From: <span className="font-semibold text-zinc-800 dark:text-zinc-200">{selectedMessage.name}</span> ({selectedMessage.email})
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => handleDelete(selectedMessage.id)}
-                    className="p-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-rose-500 hover:bg-rose-500/10 transition"
-                    title="Delete Message"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                  <a
-                    href={`mailto:${selectedMessage.email}`}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-[#252525] text-white text-xs font-bold transition border border-zinc-700/50 hover:border-[var(--theme-color)]"
-                  >
-                    <Reply className="w-4 h-4" /> Reply
-                  </a>
-                </div>
-              </div>
-
-              <div className="bg-zinc-50 dark:bg-[#1a1a1a] p-6 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80">
-                <p className="text-sm text-zinc-800 dark:text-zinc-200 whitespace-pre-line leading-relaxed">
-                  {selectedMessage.message}
-                </p>
-              </div>
-            </>
-          ) : (
-            <div className="py-12 text-center text-zinc-400">Select a message to view details</div>
-          )}
-        </div>
+        {/* Right Detail Panel */}
+        <MessageDetailView
+          selectedMessage={selectedMessage}
+          formatTimeAgo={formatTimeAgo}
+          getStatusBadge={getStatusBadge}
+          onMarkReplied={handleMarkReplied}
+          onDelete={handleDelete}
+        />
       </div>
     </div>
   );

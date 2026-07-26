@@ -94,3 +94,27 @@ model Message {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  category    String
+  views       Int      @default(0)
+  status      String   @default("Published")
+  content     String?  @db.Text
+  coverImage  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ProfileSettings {
+  id        String   @id @default("default")
+  name      String   @default("Rakibul Islam")
+  title     String   @default("Web Developer & Frontend Specialist")
+  email     String   @default("rirakib03@gmail.com")
+  location  String   @default("Pabna, Bangladesh")
+  github    String   @default("https://github.com/Rakibul-Islam-1")
+  linkedin  String   @default("https://linkedin.com/in/rakibul-islam")
+  updatedAt DateTime @updatedAt
+}

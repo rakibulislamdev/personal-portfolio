@@ -1,85 +1,176 @@
 "use client";
 
-import React, { useState } from "react";
-import { FileText, Plus, Edit, Trash2, Eye } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { BlogPost } from "./_components/types";
+import BlogTableHeader from "./_components/BlogTableHeader";
+import BlogTable from "./_components/BlogTable";
+import BlogModal from "./_components/BlogModal";
 
 export default function DashboardBlogsPage() {
-  const [blogs, setBlogs] = useState([
-    { id: 1, title: "Building Modern Web Applications with Next.js 15 App Router", category: "Web Dev", views: "1.2K", status: "Published", date: "2026-07-10" },
-    { id: 2, title: "Mastering Tailwind CSS v4 in Personal Portfolios", category: "CSS & Design", views: "850", status: "Published", date: "2026-06-25" },
-    { id: 3, title: "Optimizing Web Vitals & Image Performance in React", category: "Performance", views: "0", status: "Draft", date: "2026-07-24" },
-  ]);
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null);
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [status, setStatus] = useState("Published");
+  const [content, setContent] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+
+  const fetchBlogs = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/blogs");
+      if (res.ok) {
+        const data = await res.json();
+        setBlogs(data);
+      }
+    } catch (err) {
+      console.error("Failed to load blog posts:", err);
+      toast.error("Failed to load blog posts");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  const handleOpenCreateModal = () => {
+    setEditingBlog(null);
+    setTitle("");
+    setCategory("Web Dev");
+    setStatus("Published");
+    setContent("");
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEditModal = (blog: BlogPost) => {
+    setEditingBlog(blog);
+    setTitle(blog.title);
+    setCategory(blog.category);
+    setStatus(blog.status);
+    setContent(blog.content || "");
+    setIsModalOpen(true);
+  };
+
+  const handleSaveBlog = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!title || !category) {
+      toast.error("Title and category are required");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const payload = { title, category, status, content };
+
+      if (editingBlog) {
+        const res = await fetch("/api/blogs", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: editingBlog.id, ...payload }),
+        });
+
+        if (res.ok) {
+          toast.success("Blog post updated successfully");
+          fetchBlogs();
+          setIsModalOpen(false);
+        } else {
+          toast.error("Failed to update blog post");
+        }
+      } else {
+        const res = await fetch("/api/blogs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.ok) {
+          toast.success("Blog post published successfully");
+          fetchBlogs();
+          setIsModalOpen(false);
+        } else {
+          toast.error("Failed to publish blog post");
+        }
+      }
+    } catch (err) {
+      toast.error("Error saving blog post");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDeleteBlog = async (id: string) => {
+    try {
+      const res = await fetch(`/api/blogs?id=${id}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        setBlogs((prev) => prev.filter((b) => b.id !== id));
+        toast.success("Blog post deleted successfully");
+      } else {
+        toast.error("Failed to delete blog post");
+      }
+    } catch (err) {
+      toast.error("Error deleting blog post");
+    }
+  };
+
+  const formatDate = (dateStr: string) => {
+    try {
+      return new Date(dateStr).toISOString().split("T")[0];
+    } catch {
+      return "2026-07-26";
+    }
+  };
+
+  const filteredBlogs = blogs.filter((post) =>
+    post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    post.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-            <FileText className="w-6 h-6 text-[var(--theme-color)]" /> Blog Posts Management
-          </h1>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-            Write, publish, and manage your articles and technical blogs.
-          </p>
-        </div>
-        <button className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-zinc-900 hover:bg-zinc-800 dark:bg-[#252525] dark:hover:bg-[#303030] text-white font-bold text-xs border border-zinc-700/50 hover:border-[var(--theme-color)] transition shadow-sm">
-          <Plus className="w-4 h-4" /> Create New Post
-        </button>
-      </div>
+      {/* Top Header */}
+      <BlogTableHeader
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        isLoading={isLoading}
+        onOpenCreateModal={handleOpenCreateModal}
+      />
 
-      <div className="bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] p-6 rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 shadow-md">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse text-sm">
-            <thead>
-              <tr className="border-b border-zinc-200 dark:border-zinc-800 text-zinc-400 text-xs uppercase font-semibold">
-                <th className="py-3 px-4">Article Title</th>
-                <th className="py-3 px-4">Category</th>
-                <th className="py-3 px-4">Views</th>
-                <th className="py-3 px-4">Status</th>
-                <th className="py-3 px-4">Published Date</th>
-                <th className="py-3 px-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
-              {blogs.map((post) => (
-                <tr key={post.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition">
-                  <td className="py-4 px-4 font-bold text-zinc-900 dark:text-white max-w-xs truncate">
-                    {post.title}
-                  </td>
-                  <td className="py-4 px-4 text-xs font-semibold text-zinc-600 dark:text-zinc-400">
-                    {post.category}
-                  </td>
-                  <td className="py-4 px-4 text-xs text-zinc-500 dark:text-zinc-400">
-                    {post.views}
-                  </td>
-                  <td className="py-4 px-4">
-                    <span
-                      className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                        post.status === "Published"
-                          ? "bg-emerald-500/10 text-emerald-500"
-                          : "bg-amber-500/10 text-amber-500"
-                      }`}
-                    >
-                      {post.status}
-                    </span>
-                  </td>
-                  <td className="py-4 px-4 text-xs text-zinc-400">
-                    {post.date}
-                  </td>
-                  <td className="py-4 px-4 text-right space-x-2">
-                    <button className="p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:text-[var(--theme-color)] transition">
-                      <Edit className="w-4 h-4" />
-                    </button>
-                    <button className="p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-rose-500 hover:bg-rose-500/10 transition">
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {/* Blog Table */}
+      <BlogTable
+        blogs={filteredBlogs}
+        isLoading={isLoading}
+        onEdit={handleOpenEditModal}
+        onDelete={handleDeleteBlog}
+        formatDate={formatDate}
+      />
+
+      {/* Create / Edit Modal */}
+      <BlogModal
+        isOpen={isModalOpen}
+        editingBlog={editingBlog}
+        title={title}
+        setTitle={setTitle}
+        category={category}
+        setCategory={setCategory}
+        status={status}
+        setStatus={setStatus}
+        content={content}
+        setContent={setContent}
+        isSaving={isSaving}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSaveBlog}
+      />
     </div>
   );
 }

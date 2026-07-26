@@ -4,11 +4,26 @@ import HoverIcon from "../HoverIcon/HoverIcon";
 import MarqueeStarIcon from "../Icons/MarqueeStarIcon";
 import TypewriterWrapper from "../ClientWrappers/TypewriterWrapper";
 import MarqueeWrapper from "../ClientWrappers/MarqueeWrapper";
+import { prisma } from "@/lib/prisma";
 
 const profileSrc = "/assets/Images/rakibulislam.jpg";
 const myWorksSrc = "/assets/Images/my-works.png";
 
-const HeroArea = () => {
+const HeroArea = async () => {
+  let settings = null;
+  try {
+    settings = await prisma.profileSettings.findUnique({
+      where: { id: "default" },
+    });
+  } catch (err) {
+    console.error("Error loading settings in HeroArea:", err);
+  }
+
+  const name = settings?.name || "Rakibul Islam";
+  const title = settings?.title || "A WEB DEVELOPER";
+  const email = settings?.email || "rirakib03@gmail.com";
+  const location = settings?.location || "Pabna, Bangladesh";
+
   return (
     <div className="mx-3 lg:mx-0">
       <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 items-stretch">
@@ -24,7 +39,7 @@ const HeroArea = () => {
               <Image
                 className="rounded-tl-3xl rounded-br-3xl rounded-tr-none rounded-bl-none w-56 object-cover aspect-square bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-transparent group-hover:border-[var(--theme-color)] transition-colors duration-500 shadow-sm"
                 src={profileSrc}
-                alt="Rakibul Islam"
+                alt={name}
                 width={600}
                 height={600}
                 quality={95}
@@ -36,14 +51,14 @@ const HeroArea = () => {
                 className="text-xs font-bold uppercase tracking-widest mb-1.5 transition-colors duration-300"
                 style={{ color: "var(--theme-color)" }}
               >
-                A WEB DEVELOPER
+                {title.toUpperCase()}
               </h2>
               <h1 className="text-zinc-900 dark:text-white font-bold md:text-4xl text-2xl tracking-tight">
-                Rakibul Islam.
+                {name}.
               </h1>
               <div className="text-zinc-600 dark:text-[#9F9F9F] text-sm mt-2 font-medium">
                 <TypewriterWrapper
-                  strings={["I am a Web Developer based in Bangladesh"]}
+                  strings={[`I am a ${title} based in ${location}`]}
                 />
               </div>
               <div className="absolute bottom-7 right-7">
@@ -66,22 +81,22 @@ const HeroArea = () => {
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                   <span className="text-zinc-900 dark:text-white ml-4 font-bold">Email :</span>
-                  <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">rirakib03@gmail.com</span>
+                  <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">{email}</span>
                 </div>
                 <div style={{ color: "var(--theme-color)" }}>
                   <MarqueeStarIcon className="w-3.5 h-3.5" />
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-zinc-900 dark:text-white font-bold">Phone :</span>
-                  <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">+8801621-574994</span>
+                  <span className="text-zinc-900 dark:text-white font-bold">Location :</span>
+                  <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">{location}</span>
                 </div>
                 <div style={{ color: "var(--theme-color)" }}>
                   <MarqueeStarIcon className="w-3.5 h-3.5" />
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-zinc-900 dark:text-white font-bold">Address :</span>
+                  <span className="text-zinc-900 dark:text-white font-bold">Developer :</span>
                   <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">
-                    Pabna, Bangladesh
+                    {name}
                   </span>
                 </div>
                 <div style={{ color: "var(--theme-color)" }}>
@@ -104,7 +119,7 @@ const HeroArea = () => {
                 <div>
                   <div className="flex justify-center items-center py-2 min-h-[100px] mb-4">
                     <span className="font-[family-name:var(--font-signature)] text-5xl sm:text-6xl text-zinc-900 dark:text-white select-none group-hover:scale-105 transition-transform duration-300">
-                      Rakib
+                      {name.split(" ")[0] || "Rakib"}
                     </span>
                   </div>
                   <p
