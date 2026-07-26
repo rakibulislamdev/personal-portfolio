@@ -52,8 +52,8 @@ const row2Skills: Skill[] = [
 const SkillBadge = ({ skill }: { skill: Skill }) => {
   const { label, Icon, color } = skill;
   return (
-    <span className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap select-none bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-700/50 text-zinc-700 dark:text-zinc-300">
-      <Icon style={{ color, flexShrink: 0 }} className="text-sm" />
+    <span className="flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1 sm:px-4 sm:py-2 rounded-full text-[10px] sm:text-xs font-semibold whitespace-nowrap select-none bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-700/50 text-zinc-700 dark:text-zinc-300">
+      <Icon style={{ color, flexShrink: 0 }} className="text-[10px] sm:text-sm" />
       {label}
     </span>
   );
@@ -66,13 +66,12 @@ const MarqueeRow = ({
   skills: Skill[];
   direction: "left" | "right";
 }) => {
-  const doubled = [...skills, ...skills];
   return (
     <div
       className="relative overflow-hidden w-full"
       style={{
-        maskImage: "linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%)",
-        WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%)",
+        maskImage: "linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)",
       }}
     >
       <div
@@ -80,9 +79,16 @@ const MarqueeRow = ({
           direction === "left" ? "animate-marquee-left" : "animate-marquee-right"
         }`}
       >
-        {doubled.map((skill, i) => (
-          <SkillBadge key={i} skill={skill} />
+        {/* Original — visible to Google */}
+        {skills.map((skill, i) => (
+          <SkillBadge key={`a-${i}`} skill={skill} />
         ))}
+        {/* Duplicate for seamless loop — hidden from screen readers & Google */}
+        <span aria-hidden="true" className="contents">
+          {skills.map((skill, i) => (
+            <SkillBadge key={`b-${i}`} skill={skill} />
+          ))}
+        </span>
       </div>
     </div>
   );
@@ -131,7 +137,7 @@ const ServiceOffering = () => {
         >
           <div className="pt-7 pb-6 flex flex-col justify-between h-full">
             {/* Marquee rows */}
-              <div className="flex flex-col gap-3 mb-5 mt-6">
+              <div className="flex flex-col gap-2.5 mb-5 mt-6">
                 <div className="px-14">
                   <MarqueeRow skills={row1Skills} direction="left" />
                 </div>

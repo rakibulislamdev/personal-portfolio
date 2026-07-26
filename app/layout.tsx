@@ -109,6 +109,15 @@ export default async function RootLayout({
           "https://www.linkedin.com/in/rakibulislamdev/",
           "https://www.facebook.com/iamrakib2/",
         ],
+        knowsAbout: [
+          "HTML5", "CSS3", "JavaScript", "TypeScript",
+          "React.js", "Next.js", "Tailwind CSS", "Node.js",
+          "MongoDB", "Prisma", "REST API", "Git", "GitHub",
+          "Figma", "UI/UX Design", "Redux", "PostgreSQL",
+          "Vercel", "Firebase", "Express.js", "Docker",
+          "Responsive Web Design", "SEO", "Web Development",
+          "Frontend Development", "Full Stack Development",
+        ],
       },
       {
         "@type": "WebSite",
