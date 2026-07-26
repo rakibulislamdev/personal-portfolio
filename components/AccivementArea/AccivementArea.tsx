@@ -3,6 +3,7 @@ import Link from "next/link";
 import HoverIcon from "../HoverIcon/HoverIcon";
 import TypewriterWrapper from "../ClientWrappers/TypewriterWrapper";
 import CountUpWrapper from "../ClientWrappers/CountUpWrapper";
+import HangingStarIcon from "../Icons/HangingStarIcon";
 
 const iconSrc = "/assets/Icons/icon_2.png";
 
@@ -68,8 +69,8 @@ const AccivementArea = () => {
           <div className="absolute top-0 left-8 sm:left-10 z-10 pointer-events-none">
             <img
               src={iconSrc}
-              alt="Hanging Star Decor"
-              className="w-8 sm:w-10 h-auto object-contain transition-transform duration-500 group-hover:scale-105"
+              alt="Star Icon"
+              className="w-7 sm:w-8 h-auto object-contain transition-transform duration-500 group-hover:scale-105"
             />
           </div>
 
