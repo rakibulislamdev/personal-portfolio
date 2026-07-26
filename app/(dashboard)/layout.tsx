@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { 
   LogOut,
   Bell,
@@ -46,14 +46,21 @@ export default async function DashboardLayout({
           <SidebarNav />
         </div>
 
-        {/* Sidebar Footer */}
-        <div className="pt-6 border-t border-zinc-200/80 dark:border-zinc-800/80 space-y-4">
-          <Link
-            href="/"
-            className="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold text-rose-500 hover:bg-rose-500/10 transition"
+        {/* Sidebar Footer with SignOut */}
+        <div className="pt-6 border-t border-zinc-200/80 dark:border-zinc-800/80 space-y-2">
+          <form
+            action={async () => {
+              "use server";
+              await signOut({ redirectTo: "/login" });
+            }}
           >
-            <LogOut className="w-5 h-5" /> Exit to Portfolio
-          </Link>
+            <button
+              type="submit"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold text-rose-500 hover:bg-rose-500/10 transition text-left"
+            >
+              <LogOut className="w-5 h-5" /> Sign Out
+            </button>
+          </form>
         </div>
       </aside>
 
