@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AllProjectsGrid from "./_components/AllProjectsGrid";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: "My Works | Rakibul Islam - Web Developer Projects & Portfolio",
@@ -24,56 +25,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function WorksPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: "Projects & Portfolio Showcase | Rakibul Islam",
-    description: "Featured web development projects built by Rakibul Islam.",
-    mainEntity: {
-      "@type": "ItemList",
-      itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Fruit Burst - Online Fruits Shop",
-        },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: "Cafena - Coffee Shop App",
-        },
-        {
-          "@type": "ListItem",
-          position: 3,
-          name: "Event Vibe Hub - Event Management",
-        },
-        {
-          "@type": "ListItem",
-          position: 4,
-          name: "Road Riders Hub - Branded Car Shop",
-        },
-        {
-          "@type": "ListItem",
-          position: 5,
-          name: "Gamer Zone - Gaming Portal",
-        },
-        {
-          "@type": "ListItem",
-          position: 6,
-          name: "Starbucks Web - Web Application",
-        },
-      ],
-    },
-  };
+export default async function WorksPage() {
+  // Fetch real-time projects directly from Neon DB via Prisma
+  let dbProjects = await prisma.project.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+
+  const formattedProjects = dbProjects.map((p) => ({
+    id: p.id,
+    title: p.title,
+    subtitle: p.subtitle || "",
+    category: p.category,
+    image: p.image,
+  }));
 
   return (
     <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <AllProjectsGrid />
+      <AllProjectsGrid projectsList={formattedProjects.length > 0 ? formattedProjects : undefined} />
     </section>
   );
 }

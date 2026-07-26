@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Great_Vibes } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
-import Navbar from "@/components/Navbar/Navbar";
-import Footer from "@/components/Footer/Footer";
 import { ThemeProvider } from "@/components/Theme/ThemeContext";
-import ThemeSwitcher from "@/components/Theme/ThemeSwitcher";
+import LayoutWrapper from "@/components/LayoutWrapper/LayoutWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -131,11 +128,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-[#f0f2f5] dark:bg-[#0f0f0f] text-zinc-900 dark:text-white transition-colors duration-300">
         <ThemeProvider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <ThemeSwitcher />
-          <Toaster position="bottom-right" richColors closeButton />
+          <LayoutWrapper>{children}</LayoutWrapper>
         </ThemeProvider>
       </body>
     </html>
