@@ -3,7 +3,27 @@ export interface ProfileSettingsData {
   name: string;
   title: string;
   email: string;
+  phone: string;
   location: string;
   github: string;
   linkedin: string;
+  facebook?: string;
+  twitter?: string;
+  instagram: string;
+  githubInContact?: boolean;
+  linkedinInContact?: boolean;
+  facebookInContact?: boolean;
+  twitterInContact?: boolean;
+  instagramInContact?: boolean;
+  githubInProfilesCard?: boolean;
+  linkedinInProfilesCard?: boolean;
+  facebookInProfilesCard?: boolean;
+  twitterInProfilesCard?: boolean;
+  instagramInProfilesCard?: boolean;
+  profileImage: string;
+  aboutImage: string;
+  typewriterText: string;
+  aboutBio: string;
+  experienceMonths: number;
+  clientsWorldwide: number;
 }

@@ -1,11 +1,57 @@
 import React from "react";
 import Link from "next/link";
 import { IoIosMail } from "react-icons/io";
-import { BiSolidContact } from "react-icons/bi";
+import { BiSolidContact } from "react-icons/bg";
+import { BiSolidPhone } from "react-icons/bi";
 import { MdMyLocation } from "react-icons/md";
-import { FaGithub, FaLinkedinIn, FaInstagram } from "react-icons/fa";
+import { FaGithub, FaLinkedinIn, FaInstagram, FaFacebookF, FaTwitter } from "react-icons/fa";
+import { prisma } from "@/lib/prisma";
 
-export const ContactInfo = () => {
+export const ContactInfo = async () => {
+  let email = "rirakib03@gmail.com";
+  let phone = "+8801621-574994";
+  let location = "Pabna, Bangladesh";
+  let github = "";
+  let linkedin = "";
+  let instagram = "";
+  let facebook = "";
+  let twitter = "";
+  let showGithub = true;
+  let showLinkedin = true;
+  let showFacebook = true;
+  let showTwitter = true;
+  let showInstagram = true;
+
+  try {
+    const settings = await prisma.profileSettings.findUnique({
+      where: { id: "default" },
+    });
+    if (settings) {
+      email = settings.email || email;
+      phone = settings.phone || phone;
+      location = settings.location || location;
+      github = settings.github || "";
+      linkedin = settings.linkedin || "";
+      instagram = settings.instagram || "";
+      facebook = (settings as unknown as { facebook?: string }).facebook || "";
+      twitter = (settings as unknown as { twitter?: string }).twitter || "";
+      showGithub = (settings as unknown as { githubInContact?: boolean }).githubInContact ?? true;
+      showLinkedin = (settings as unknown as { linkedinInContact?: boolean }).linkedinInContact ?? true;
+      showFacebook = (settings as unknown as { facebookInContact?: boolean }).facebookInContact ?? true;
+      showTwitter = (settings as unknown as { twitterInContact?: boolean }).twitterInContact ?? true;
+      showInstagram = (settings as unknown as { instagramInContact?: boolean }).instagramInContact ?? true;
+    } else {
+      github = "https://github.com/Rakibul-Islam-1";
+      linkedin = "https://linkedin.com/in/rakibul-islam";
+    }
+  } catch (err) {
+    console.error("Error loading contact settings in ContactInfo:", err);
+    github = "https://github.com/Rakibul-Islam-1";
+    linkedin = "https://linkedin.com/in/rakibul-islam";
+  }
+
+  const cleanPhone = phone.replace(/[^0-9+]/g, "");
+
   return (
     <div className="col-span-1 space-y-8">
       {/* Contact Info Group */}
@@ -25,10 +71,10 @@ export const ContactInfo = () => {
                 MAIL US
               </span>
               <a
-                href="mailto:rirakib03@gmail.com"
+                href={`mailto:${email}`}
                 className="text-sm font-semibold text-zinc-900 dark:text-white hover:text-[var(--theme-color)] transition-colors"
               >
-                rirakib03@gmail.com
+                {email}
               </a>
             </div>
           </div>
@@ -36,17 +82,17 @@ export const ContactInfo = () => {
           {/* Phone Item */}
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-2xl bg-white dark:bg-[#1f1e1e] border border-zinc-200/90 dark:border-zinc-800/80 flex items-center justify-center shadow-sm flex-shrink-0 text-zinc-800 dark:text-white">
-              <BiSolidContact className="text-2xl" />
+              <BiSolidPhone className="text-2xl" />
             </div>
             <div>
               <span className="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-[#999999]">
                 CONTACT US
               </span>
               <a
-                href="tel:+8801621574994"
+                href={`tel:${cleanPhone}`}
                 className="text-sm font-semibold text-zinc-900 dark:text-white hover:text-[var(--theme-color)] transition-colors"
               >
-                +8801621-574994
+                {phone}
               </a>
             </div>
           </div>
@@ -61,7 +107,7 @@ export const ContactInfo = () => {
                 LOCATION
               </span>
               <p className="text-sm font-semibold text-zinc-900 dark:text-white">
-                Pabna, Bangladesh
+                {location}
               </p>
             </div>
           </div>
@@ -75,33 +121,61 @@ export const ContactInfo = () => {
         </h3>
 
         <div className="flex items-center gap-4">
-          <Link
-            href="https://github.com/Rakibul-Islam-1"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-14 h-14 rounded-full bg-white dark:bg-[#1f1e1e] border border-zinc-200/90 dark:border-zinc-800/80 flex items-center justify-center shadow-sm hover:scale-110 transition-all duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"
-            title="GitHub"
-          >
-            <FaGithub className="text-2xl" />
-          </Link>
-          <Link
-            href="https://linkedin.com/in/rakibul-islam"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-14 h-14 rounded-full bg-white dark:bg-[#1f1e1e] border border-zinc-200/90 dark:border-zinc-800/80 flex items-center justify-center shadow-sm hover:scale-110 transition-all duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"
-            title="LinkedIn"
-          >
-            <FaLinkedinIn className="text-2xl" />
-          </Link>
-          <Link
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-14 h-14 rounded-full bg-white dark:bg-[#1f1e1e] border border-zinc-200/90 dark:border-zinc-800/80 flex items-center justify-center shadow-sm hover:scale-110 transition-all duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"
-            title="Instagram"
-          >
-            <FaInstagram className="text-2xl" />
-          </Link>
+          {facebook && showFacebook && (
+            <Link
+              href={facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-14 h-14 rounded-full bg-white dark:bg-[#1f1e1e] border border-zinc-200/90 dark:border-zinc-800/80 flex items-center justify-center shadow-sm hover:scale-110 transition-all duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"
+              title="Facebook"
+            >
+              <FaFacebookF className="text-2xl" />
+            </Link>
+          )}
+          {github && showGithub && (
+            <Link
+              href={github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-14 h-14 rounded-full bg-white dark:bg-[#1f1e1e] border border-zinc-200/90 dark:border-zinc-800/80 flex items-center justify-center shadow-sm hover:scale-110 transition-all duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"
+              title="GitHub"
+            >
+              <FaGithub className="text-2xl" />
+            </Link>
+          )}
+          {linkedin && showLinkedin && (
+            <Link
+              href={linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-14 h-14 rounded-full bg-white dark:bg-[#1f1e1e] border border-zinc-200/90 dark:border-zinc-800/80 flex items-center justify-center shadow-sm hover:scale-110 transition-all duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"
+              title="LinkedIn"
+            >
+              <FaLinkedinIn className="text-2xl" />
+            </Link>
+          )}
+          {twitter && showTwitter && (
+            <Link
+              href={twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-14 h-14 rounded-full bg-white dark:bg-[#1f1e1e] border border-zinc-200/90 dark:border-zinc-800/80 flex items-center justify-center shadow-sm hover:scale-110 transition-all duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"
+              title="Twitter"
+            >
+              <FaTwitter className="text-2xl" />
+            </Link>
+          )}
+          {instagram && showInstagram && (
+            <Link
+              href={instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-14 h-14 rounded-full bg-white dark:bg-[#1f1e1e] border border-zinc-200/90 dark:border-zinc-800/80 flex items-center justify-center shadow-sm hover:scale-110 transition-all duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"
+              title="Instagram"
+            >
+              <FaInstagram className="text-2xl" />
+            </Link>
+          )}
         </div>
       </div>
     </div>

@@ -1,19 +1,35 @@
 import React from "react";
 import Image from "next/image";
+import { prisma } from "@/lib/prisma";
 
-const profileSrc = "/assets/Images/rakibulislam.jpg";
+const defaultProfileSrc = "/assets/Images/rakibulislam.jpg";
 
-export const ProfileImageBox = () => {
+export const ProfileImageBox = async () => {
+  let aboutImage = defaultProfileSrc;
+  let name = "Rakibul Islam";
+
+  try {
+    const settings = await prisma.profileSettings.findUnique({
+      where: { id: "default" },
+    });
+    if (settings) {
+      aboutImage = settings.aboutImage || settings.profileImage || defaultProfileSrc;
+      name = settings.name || "Rakibul Islam";
+    }
+  } catch (err) {
+    console.error("Error fetching aboutImage in ProfileImageBox:", err);
+  }
+
   return (
     <div className="col-span-1 bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 p-5 flex justify-center items-center shadow-md">
       <div className="flex justify-center items-center w-full h-full">
         <Image
           className="rounded-2xl w-full h-auto aspect-square object-cover border border-zinc-200/80 dark:border-zinc-700/80 shadow-sm"
-          src={profileSrc}
-          alt="Rakibul Islam Profile Image"
-          width={800}
-          height={800}
-          quality={95}
+          src={aboutImage}
+          alt={`${name} About Profile Image`}
+          width={1200}
+          height={1200}
+          quality={100}
           priority
         />
       </div>

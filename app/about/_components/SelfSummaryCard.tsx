@@ -1,9 +1,26 @@
 import React from "react";
 import Image from "next/image";
+import { prisma } from "@/lib/prisma";
 
 const iconSrc = "/assets/Icons/icon_2.png";
 
-export const SelfSummaryCard = () => {
+export const SelfSummaryCard = async () => {
+  let name = "Rakibul Islam";
+  let bio =
+    "I am a Pabna, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.";
+
+  try {
+    const settings = await prisma.profileSettings.findUnique({
+      where: { id: "default" },
+    });
+    if (settings) {
+      name = settings.name || "Rakibul Islam";
+      bio = settings.aboutBio || bio;
+    }
+  } catch (err) {
+    console.error("Error loading bio in SelfSummaryCard:", err);
+  }
+
   return (
     <div className="group relative bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 p-8 sm:p-10 shadow-md flex-1 flex flex-col justify-center overflow-hidden">
       {/* Top Hanging Decorative Star Graphic */}
@@ -19,12 +36,10 @@ export const SelfSummaryCard = () => {
 
       <div className="pt-6">
         <h2 className="text-zinc-900 dark:text-white text-3xl sm:text-4xl font-bold">
-          Rakibul Islam
+          {name}
         </h2>
-        <p className="text-zinc-600 dark:text-[#BCBCBC] text-sm sm:text-base font-normal mt-3 leading-7">
-          I am a Pabna, Bangladesh-based web developer with a focus on web
-          development. I have a diverse range of experience having worked on
-          various web applications.
+        <p className="text-zinc-600 dark:text-[#BCBCBC] text-sm sm:text-base font-normal mt-3 leading-7 whitespace-pre-line">
+          {bio}
         </p>
       </div>
     </div>

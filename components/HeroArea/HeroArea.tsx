@@ -6,7 +6,7 @@ import TypewriterWrapper from "../ClientWrappers/TypewriterWrapper";
 import MarqueeWrapper from "../ClientWrappers/MarqueeWrapper";
 import { prisma } from "@/lib/prisma";
 
-const profileSrc = "/assets/Images/rakibulislam.jpg";
+const defaultProfileSrc = "/assets/Images/rakibulislam.jpg";
 const myWorksSrc = "/assets/Images/my-works.png";
 
 const HeroArea = async () => {
@@ -23,6 +23,8 @@ const HeroArea = async () => {
   const title = settings?.title || "A WEB DEVELOPER";
   const email = settings?.email || "rirakib03@gmail.com";
   const location = settings?.location || "Pabna, Bangladesh";
+  const profileImage = settings?.profileImage || defaultProfileSrc;
+  const typewriterText = settings?.typewriterText || `Web Developer based in ${location}`;
 
   return (
     <div className="mx-3 lg:mx-0">
@@ -38,11 +40,12 @@ const HeroArea = async () => {
             <div className="flex items-center justify-center">
               <Image
                 className="rounded-tl-3xl rounded-br-3xl rounded-tr-none rounded-bl-none w-56 object-cover aspect-square bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-transparent group-hover:border-[var(--theme-color)] transition-colors duration-500 shadow-sm"
-                src={profileSrc}
+                src={profileImage}
                 alt={name}
-                width={600}
-                height={600}
-                quality={95}
+                width={1000}
+                height={1000}
+                quality={100}
+                unoptimized
                 priority
               />
             </div>
@@ -58,7 +61,7 @@ const HeroArea = async () => {
               </h1>
               <div className="text-zinc-600 dark:text-[#9F9F9F] text-sm mt-2 font-medium">
                 <TypewriterWrapper
-                  strings={[`I am a ${title} based in ${location}`]}
+                  strings={[`I am a ${typewriterText}`]}
                 />
               </div>
               <div className="absolute bottom-7 right-7">

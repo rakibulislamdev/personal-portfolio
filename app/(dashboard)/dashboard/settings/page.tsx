@@ -13,9 +13,18 @@ export default function DashboardSettingsPage() {
     name: "Rakibul Islam",
     title: "Web Developer & Frontend Specialist",
     email: "rirakib03@gmail.com",
+    phone: "+8801621-574994",
     location: "Pabna, Bangladesh",
     github: "https://github.com/Rakibul-Islam-1",
     linkedin: "https://linkedin.com/in/rakibul-islam",
+    instagram: "https://instagram.com",
+    profileImage: "/assets/Images/rakibulislam.jpg",
+    aboutImage: "/assets/Images/rakibulislam.jpg",
+    typewriterText: "Web Developer based in Bangladesh",
+    aboutBio:
+      "I am a Pabna, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.",
+    experienceMonths: 6,
+    clientsWorldwide: 25,
   });
 
   const [isLoading, setIsLoading] = useState(true);

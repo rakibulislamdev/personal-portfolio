@@ -30,7 +30,7 @@ export async function GET() {
 
     // Calculate Top Country dynamically
     const countryCounts: Record<string, { count: number; flag: string }> = {};
-    logs.forEach((log) => {
+    logs.forEach((log: { country?: string | null; flag?: string | null }) => {
       if (log.country && log.country !== "Unknown") {
         if (!countryCounts[log.country]) {
           countryCounts[log.country] = { count: 0, flag: log.flag || "🌐" };
@@ -61,7 +61,7 @@ export async function GET() {
       }
     }
 
-    const formattedLogs = logs.map((log) => ({
+    const formattedLogs = logs.map((log: { id: string; ip: string; country: string; city: string; flag: string; page: string; device: string; createdAt: Date | string }) => ({
       id: log.id,
       ip: log.ip,
       country: log.country,
