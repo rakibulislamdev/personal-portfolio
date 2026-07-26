@@ -9,7 +9,7 @@ import { prisma } from "@/lib/prisma";
 export const ContactInfo = async () => {
   let email = "rirakib03@gmail.com";
   let phone = "+8801621-574994";
-  let location = "Pabna, Bangladesh";
+  let location = "Dhaka, Bangladesh";
   let github = "";
   let linkedin = "";
   let instagram = "";
@@ -40,13 +40,15 @@ export const ContactInfo = async () => {
       showTwitter = (settings as unknown as { twitterInContact?: boolean }).twitterInContact ?? true;
       showInstagram = (settings as unknown as { instagramInContact?: boolean }).instagramInContact ?? true;
     } else {
-      github = "https://github.com/Rakibul-Islam-1";
-      linkedin = "https://linkedin.com/in/rakibul-islam";
+      github = "https://github.com/rakibulislamdev";
+      linkedin = "https://www.linkedin.com/in/rakibulislamdev/";
+      facebook = "https://www.facebook.com/iamrakib2/";
     }
   } catch (err) {
     console.error("Error loading contact settings in ContactInfo:", err);
-    github = "https://github.com/Rakibul-Islam-1";
-    linkedin = "https://linkedin.com/in/rakibul-islam";
+    github = "https://github.com/rakibulislamdev";
+    linkedin = "https://www.linkedin.com/in/rakibulislamdev/";
+    facebook = "https://www.facebook.com/iamrakib2/";
   }
 
   const cleanPhone = phone.replace(/[^0-9+]/g, "");

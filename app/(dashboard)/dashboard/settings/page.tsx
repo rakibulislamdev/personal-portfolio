@@ -14,7 +14,7 @@ export default function DashboardSettingsPage() {
     title: "Web Developer & Frontend Specialist",
     email: "rirakib03@gmail.com",
     phone: "+8801621-574994",
-    location: "Pabna, Bangladesh",
+    location: "Dhaka, Bangladesh",
     github: "https://github.com/Rakibul-Islam-1",
     linkedin: "https://linkedin.com/in/rakibul-islam",
     instagram: "https://instagram.com",
@@ -22,7 +22,7 @@ export default function DashboardSettingsPage() {
     aboutImage: "/assets/Images/rakibulislam.jpg",
     typewriterText: "Web Developer based in Bangladesh",
     aboutBio:
-      "I am a Pabna, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.",
+      "I am a Dhaka, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.",
     experienceMonths: 6,
     clientsWorldwide: 25,
   });

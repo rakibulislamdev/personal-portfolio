@@ -22,7 +22,7 @@ const HeroArea = async () => {
   const name = settings?.name || "Rakibul Islam";
   const title = settings?.title || "A WEB DEVELOPER";
   const email = settings?.email || "rirakib03@gmail.com";
-  const location = settings?.location || "Pabna, Bangladesh";
+  const location = settings?.location || "Dhaka, Bangladesh";
   const profileImage = settings?.profileImage || "";
   const typewriterText = settings?.typewriterText || `Web Developer based in ${location}`;
 

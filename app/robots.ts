@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://rakibulislam.dev/sitemap.xml",
+    sitemap: "https://rakibulislamdev.me/sitemap.xml",
   };
 }

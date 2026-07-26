@@ -16,13 +16,13 @@ export const metadata: Metadata = {
     "Software Engineer Bangladesh",
   ],
   alternates: {
-    canonical: "https://rakibulislam.dev/contact",
+    canonical: "https://rakibulislamdev.me/contact",
   },
   openGraph: {
     title: "Contact Rakibul Islam | Web Developer & Frontend Specialist",
     description:
       "Looking for a skilled Web Developer? Contact Rakibul Islam to discuss project ideas, freelance contracts, or technical solutions.",
-    url: "https://rakibulislam.dev/contact",
+    url: "https://rakibulislamdev.me/contact",
     siteName: "Rakibul Islam Portfolio",
     images: [
       {
@@ -50,28 +50,33 @@ export default function ContactPage() {
     "@graph": [
       {
         "@type": "ContactPage",
-        "@id": "https://rakibulislam.dev/contact/#webpage",
-        url: "https://rakibulislam.dev/contact",
+        "@id": "https://rakibulislamdev.me/contact/#webpage",
+        url: "https://rakibulislamdev.me/contact",
         name: "Contact Rakibul Islam | Web & Frontend Developer",
         description:
-          "Contact page of Rakibul Islam, a web developer based in Pabna, Bangladesh.",
+          "Contact page of Rakibul Islam, a web developer based in Dhaka, Bangladesh.",
         isPartOf: {
-          "@id": "https://rakibulislam.dev/#website",
+          "@id": "https://rakibulislamdev.me/#website",
         },
       },
       {
         "@type": "Person",
-        "@id": "https://rakibulislam.dev/#person",
+        "@id": "https://rakibulislamdev.me/#person",
         name: "Rakibul Islam",
         jobTitle: "Web Developer",
         email: "rirakib03@gmail.com",
         telephone: "+8801621-574994",
         address: {
           "@type": "PostalAddress",
-          addressLocality: "Pabna",
+          addressLocality: "Dhaka",
           addressCountry: "Bangladesh",
         },
-        url: "https://rakibulislam.dev",
+        url: "https://rakibulislamdev.me",
+        sameAs: [
+          "https://github.com/rakibulislamdev",
+          "https://www.linkedin.com/in/rakibulislamdev/",
+          "https://www.facebook.com/iamrakib2/",
+        ],
       },
     ],
   };

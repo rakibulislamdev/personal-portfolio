@@ -11,11 +11,11 @@ import SelfSummaryCard from "@/app/about/_components/SelfSummaryCard";
 export const metadata: Metadata = {
   title: "About Rakibul Islam | Professional Web Developer & Credentials",
   description:
-    "Learn more about Rakibul Islam - Pabna, Bangladesh based Web Developer. Explore my professional credentials, web development experience, CST diploma education, and technical skills.",
+    "Learn more about Rakibul Islam - Dhaka, Bangladesh based Web Developer. Explore my professional credentials, web development experience, CST diploma education, and technical skills.",
   keywords: [
     "About Rakibul Islam",
     "Rakibul Islam Credentials",
-    "Web Developer Pabna Bangladesh",
+    "Web Developer Dhaka Bangladesh",
     "Frontend Engineer Portfolio",
     "Fiverr Junior Web Developer",
     "Pabna Polytechnic Institute CST",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: "About Rakibul Islam | Professional Web Developer",
     description:
       "Explore credentials, experience, and educational background of Rakibul Islam, a web developer based in Bangladesh.",
-    url: "https://rakibulislam.dev/about",
+    url: "https://rakibulislamdev.me/about",
   },
 };
 
@@ -37,12 +37,18 @@ export default function AboutPage() {
       "@type": "Person",
       name: "Rakibul Islam",
       jobTitle: "Web Developer",
+      url: "https://rakibulislamdev.me",
       description:
-        "Pabna, Bangladesh-based web developer focused on React, Next.js, and modern web application development.",
+        "Dhaka, Bangladesh-based web developer focused on React, Next.js, and modern web application development.",
       alumniOf: {
         "@type": "EducationalOrganization",
         name: "Pabna Polytechnic Institute",
       },
+      sameAs: [
+        "https://github.com/rakibulislamdev",
+        "https://www.linkedin.com/in/rakibulislamdev/",
+        "https://www.facebook.com/iamrakib2/",
+      ],
     },
   };
 

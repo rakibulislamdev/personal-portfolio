@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: "My Works & Portfolio Showcase | Rakibul Islam",
     description:
       "Explore modern web applications, e-commerce platforms, and interactive user interfaces developed by Rakibul Islam.",
-    url: "https://rakibulislam.dev/works",
+    url: "https://rakibulislamdev.me/works",
     type: "website",
   },
 };

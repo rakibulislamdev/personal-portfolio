@@ -93,29 +93,30 @@ export default async function RootLayout({
     "@graph": [
       {
         "@type": "Person",
-        "@id": "https://rakibulislam.dev/#person",
+        "@id": "https://rakibulislamdev.me/#person",
         name: "Rakibul Islam",
         jobTitle: "Web Developer",
-        url: "https://rakibulislam.dev",
+        url: "https://rakibulislamdev.me",
         email: "rirakib03@gmail.com",
         telephone: "+8801621-574994",
         address: {
           "@type": "PostalAddress",
-          addressLocality: "Pabna",
+          addressLocality: "Dhaka",
           addressCountry: "Bangladesh",
         },
         sameAs: [
-          "https://github.com/",
-          "https://linkedin.com/",
+          "https://github.com/rakibulislamdev",
+          "https://www.linkedin.com/in/rakibulislamdev/",
+          "https://www.facebook.com/iamrakib2/",
         ],
       },
       {
         "@type": "WebSite",
-        "@id": "https://rakibulislam.dev/#website",
-        url: "https://rakibulislam.dev",
+        "@id": "https://rakibulislamdev.me/#website",
+        url: "https://rakibulislamdev.me",
         name: "Rakibul Islam Portfolio",
         publisher: {
-          "@id": "https://rakibulislam.dev/#person",
+          "@id": "https://rakibulislamdev.me/#person",
         },
       },
     ],

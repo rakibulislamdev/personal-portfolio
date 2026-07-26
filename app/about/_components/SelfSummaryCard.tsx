@@ -7,7 +7,7 @@ const iconSrc = "/assets/Icons/icon_2.png";
 export const SelfSummaryCard = async () => {
   let name = "Rakibul Islam";
   let bio =
-    "I am a Pabna, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.";
+    "I am a Dhaka, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.";
 
   try {
     const settings = await prisma.profileSettings.findUnique({
