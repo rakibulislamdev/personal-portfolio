@@ -44,38 +44,27 @@ export const getProfileSettings = cache(
   )
 );
 
-// Cached projects list getter
-export const getProjects = cache(
-  unstable_cache(
-    async () => {
-      try {
-        return await prisma.project.findMany({
-          orderBy: { createdAt: "desc" },
-        });
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-        return [];
-      }
-    },
-    ["projects-list"],
-    { tags: ["projects"] }
-  )
-);
+// Cached projects list getter (React cache for request-deduplication without 2MB Next cache overflow)
+export const getProjects = cache(async () => {
+  try {
+    return await prisma.project.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    return [];
+  }
+});
 
 // Cached single project getter by ID
-export const getProjectById = (id: string) =>
-  unstable_cache(
-    async () => {
-      try {
-        return await prisma.project.findUnique({ where: { id } });
-      } catch (error) {
-        console.error(`Error fetching project ${id}:`, error);
-        return null;
-      }
-    },
-    [`project-${id}`],
-    { tags: ["projects", `project-${id}`] }
-  )();
+export const getProjectById = cache(async (id: string) => {
+  try {
+    return await prisma.project.findUnique({ where: { id } });
+  } catch (error) {
+    console.error(`Error fetching project ${id}:`, error);
+    return null;
+  }
+});
 
 // Cached project count getter
 export const getProjectCount = cache(
