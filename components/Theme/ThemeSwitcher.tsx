@@ -23,14 +23,7 @@ export const ThemeSwitcher = () => {
       {isOpen && (
         <div className="absolute bottom-16 right-0 w-72 bg-zinc-900/95 backdrop-blur-md border border-zinc-800 rounded-2xl p-4 shadow-2xl space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-200">
           <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
-            <span className="text-sm font-semibold text-zinc-200">Theme Customizer</span>
-            <button
-              onClick={() => setIsDark(!isDark)}
-              className="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition"
-              title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            >
-              {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-blue-400" />}
-            </button>
+            <span className="text-sm font-semibold text-zinc-200">Accent Color</span>
           </div>
 
           <div>

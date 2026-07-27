@@ -145,7 +145,7 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {/* Dynamic Google Analytics Integration */}
+        {/* Google Tag Manager / Analytics */}
         {googleAnalyticsId && (
           <>
             <script
@@ -158,9 +158,7 @@ export default async function RootLayout({
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
-                  gtag('config', '${googleAnalyticsId}', {
-                    page_path: window.location.pathname,
-                  });
+                  gtag('config', '${googleAnalyticsId}');
                 `,
               }}
             />
@@ -187,7 +185,7 @@ export default async function RootLayout({
           />
         )}
       </head>
-      <body className="min-h-full flex flex-col bg-[#f0f2f5] dark:bg-[#0f0f0f] text-zinc-900 dark:text-white transition-colors duration-300">
+      <body className="min-h-full flex flex-col bg-[#0f0f0f] text-white transition-colors duration-300">
         <ThemeProvider>
           <LayoutWrapper>{children}</LayoutWrapper>
         </ThemeProvider>

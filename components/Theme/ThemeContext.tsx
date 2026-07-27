@@ -70,10 +70,6 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     if (savedColor && themePalettes[savedColor]) {
       setThemeColorState(savedColor);
     }
-    const savedDark = localStorage.getItem("app_theme_dark");
-    if (savedDark !== null) {
-      setIsDarkState(savedDark === "true");
-    }
   }, []);
 
   const setThemeColor = (color: ThemeColor) => {
@@ -82,8 +78,8 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const setIsDark = (dark: boolean) => {
-    setIsDarkState(dark);
-    localStorage.setItem("app_theme_dark", String(dark));
+    setIsDarkState(true);
+    localStorage.setItem("app_theme_dark", "true");
   };
 
   useEffect(() => {
@@ -93,12 +89,8 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       root.style.setProperty("--theme-color", palette.themeColor);
       root.style.setProperty("--theme-hover-color", palette.themeHover);
     }
-    if (isDark) {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-  }, [themeColor, isDark]);
+    root.classList.add("dark");
+  }, [themeColor]);
 
   return (
     <ThemeContext.Provider
