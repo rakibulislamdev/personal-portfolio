@@ -1,22 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
-import crypto from "crypto";
-
-// Secure Password Hashing Helpers using Node.js native crypto
-function hashPassword(password: string): string {
-  const salt = crypto.randomBytes(16).toString("hex");
-  const hash = crypto.scryptSync(password, salt, 64).toString("hex");
-  return `${salt}:${hash}`;
-}
-
-function verifyPassword(password: string, storedHash: string): boolean {
-  const [salt, originalHash] = storedHash.split(":");
-  if (!salt || !originalHash) return false;
-  const hash = crypto.scryptSync(password, salt, 64).toString("hex");
-  return hash === originalHash;
-}
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
@@ -40,22 +24,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             where: { email: adminEmail },
           });
 
-          const hashedPassword = hashPassword(adminPassword);
-
           if (!user) {
             user = await prisma.user.create({
               data: {
                 name: "Rakibul Islam",
                 email: adminEmail,
-                password: hashedPassword,
+                password: adminPassword,
                 role: "ADMIN",
               },
-            });
-          } else if (!user.password) {
-            // Update user with hashed password if not exists
-            user = await prisma.user.update({
-              where: { id: user.id },
-              data: { password: hashedPassword },
             });
           }
 
@@ -67,12 +43,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           };
         }
 
-        // If credentials don't match ENV, check DB user with hashed password
+        // If credentials don't match ENV, check DB user directly
         const user = await prisma.user.findUnique({
           where: { email: inputEmail },
         });
 
-        if (user && user.password && verifyPassword(inputPassword, user.password)) {
+        if (user && user.password === inputPassword) {
           return {
             id: user.id,
             name: user.name,

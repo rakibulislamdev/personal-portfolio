@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
 const defaultSeedBlogs = [
@@ -85,6 +86,9 @@ export async function POST(req: Request) {
       },
     });
 
+    revalidatePath("/", "layout");
+    revalidatePath("/blogs");
+
     return NextResponse.json(newBlog, { status: 201 });
   } catch (error) {
     return NextResponse.json(
@@ -118,6 +122,9 @@ export async function PUT(req: Request) {
       },
     });
 
+    revalidatePath("/", "layout");
+    revalidatePath("/blogs");
+
     return NextResponse.json(updatedBlog);
   } catch (error) {
     return NextResponse.json(
@@ -143,6 +150,9 @@ export async function DELETE(req: Request) {
     await prisma.blogPost.delete({
       where: { id },
     });
+
+    revalidatePath("/", "layout");
+    revalidatePath("/blogs");
 
     return NextResponse.json({ success: true, message: "Blog post deleted" });
   } catch (error) {

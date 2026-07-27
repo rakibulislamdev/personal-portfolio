@@ -1,15 +1,13 @@
 import React from "react";
 import Image from "next/image";
-import { prisma } from "@/lib/prisma";
+import { getProfileSettings } from "@/lib/data";
 
 export const ProfileImageBox = async () => {
   let aboutImage = "";
   let name = "Rakibul Islam";
 
   try {
-    const settings = await prisma.profileSettings.findUnique({
-      where: { id: "default" },
-    });
+    const settings = await getProfileSettings();
     if (settings) {
       aboutImage = settings.aboutImage || "";
       name = settings.name || "Rakibul Islam";

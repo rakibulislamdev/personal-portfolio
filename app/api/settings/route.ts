@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
 // GET: Fetch current profile settings
@@ -110,6 +111,7 @@ export async function PUT(req: Request) {
         experienceMonths: Number(body.experienceMonths) || 6,
       },
     });
+    revalidatePath("/", "layout");
 
     return NextResponse.json(updatedSettings);
   } catch (error) {

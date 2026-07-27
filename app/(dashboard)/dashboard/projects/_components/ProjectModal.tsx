@@ -24,6 +24,20 @@ interface ProjectModalProps {
   setImage: (val: string) => void;
   altText: string;
   setAltText: (val: string) => void;
+  description: string;
+  setDescription: (val: string) => void;
+  year: string;
+  setYear: (val: string) => void;
+  client: string;
+  setClient: (val: string) => void;
+  liveUrl: string;
+  setLiveUrl: (val: string) => void;
+  githubUrl: string;
+  setGithubUrl: (val: string) => void;
+  technologies: string;
+  setTechnologies: (val: string) => void;
+  keyFeatures: string;
+  setKeyFeatures: (val: string) => void;
   isSaving: boolean;
   onClose: () => void;
   onSave: (e: React.FormEvent) => void;
@@ -43,6 +57,20 @@ export default function ProjectModal({
   setImage,
   altText,
   setAltText,
+  description,
+  setDescription,
+  year,
+  setYear,
+  client,
+  setClient,
+  liveUrl,
+  setLiveUrl,
+  githubUrl,
+  setGithubUrl,
+  technologies,
+  setTechnologies,
+  keyFeatures,
+  setKeyFeatures,
   isSaving,
   onClose,
   onSave,
@@ -73,10 +101,10 @@ export default function ProjectModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-3xl border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 space-y-4 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+      <div className="bg-white dark:bg-zinc-900 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 space-y-4 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
         <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
           <h2 className="text-base font-bold text-zinc-900 dark:text-white">
-            {editingProject ? "Edit Project" : "Add New Project"}
+            {editingProject ? "Edit Project Details" : "Add New Project"}
           </h2>
           <button
             onClick={onClose}
@@ -87,6 +115,7 @@ export default function ProjectModal({
         </div>
 
         <form onSubmit={onSave} className="space-y-4">
+          {/* Main Info */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div>
               <label className="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
@@ -98,7 +127,7 @@ export default function ProjectModal({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Fruit Burst"
-                className="w-full h-12 px-4 py-3 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs font-medium text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition"
+                className="w-full h-11 px-4 py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs font-medium text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition"
               />
             </div>
 
@@ -107,7 +136,7 @@ export default function ProjectModal({
                 Category *
               </label>
               <Select value={category} onValueChange={(val) => setCategory(val ?? "")}>
-                <SelectTrigger className="w-full !h-12 px-4 py-3 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs font-medium text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition flex items-center justify-between [&>svg]:ml-auto shrink-0">
+                <SelectTrigger className="w-full !h-11 px-4 py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs font-medium text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition flex items-center justify-between [&>svg]:ml-auto shrink-0">
                   <SelectValue placeholder="Select Category" />
                 </SelectTrigger>
                 <SelectContent className="w-[var(--anchor-width)] bg-white dark:bg-[#1f1f1f] border border-zinc-200 dark:border-zinc-700 rounded-xl shadow-2xl z-[70] p-1">
@@ -121,17 +150,112 @@ export default function ProjectModal({
             </div>
           </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label className="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                Subtitle
+              </label>
+              <input
+                type="text"
+                value={subtitle}
+                onChange={(e) => setSubtitle(e.target.value)}
+                placeholder="e.g. Online Fruits Shop"
+                className="w-full h-11 px-4 py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs font-medium text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                Year & Client/Type
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                <input
+                  type="text"
+                  value={year}
+                  onChange={(e) => setYear(e.target.value)}
+                  placeholder="Year (e.g. 2025)"
+                  className="w-full h-11 px-3 py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)]"
+                />
+                <input
+                  type="text"
+                  value={client}
+                  onChange={(e) => setClient(e.target.value)}
+                  placeholder="Client / Type"
+                  className="w-full h-11 px-3 py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)]"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Links Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label className="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                Live Preview URL
+              </label>
+              <input
+                type="url"
+                value={liveUrl}
+                onChange={(e) => setLiveUrl(e.target.value)}
+                placeholder="https://example.com"
+                className="w-full h-11 px-4 py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition"
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                GitHub Repository URL
+              </label>
+              <input
+                type="url"
+                value={githubUrl}
+                onChange={(e) => setGithubUrl(e.target.value)}
+                placeholder="https://github.com/user/repo"
+                className="w-full h-11 px-4 py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition"
+              />
+            </div>
+          </div>
+
+          {/* Detailed Overview Description */}
           <div>
             <label className="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
-              Subtitle / Description
+              Project Overview / Description
             </label>
-            <input
-              type="text"
-              value={subtitle}
-              onChange={(e) => setSubtitle(e.target.value)}
-              placeholder="e.g. Online Fruits Shop"
-              className="w-full h-12 px-4 py-3 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs font-medium text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition"
+            <textarea
+              rows={3}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Detailed description of the project..."
+              className="w-full px-4 py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition"
             />
+          </div>
+
+          {/* Tech Stack & Key Features */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label className="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                Technologies (comma-separated)
+              </label>
+              <input
+                type="text"
+                value={technologies}
+                onChange={(e) => setTechnologies(e.target.value)}
+                placeholder="React.js, Next.js, TypeScript, Tailwind"
+                className="w-full h-11 px-4 py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                Key Features (one per line)
+              </label>
+              <textarea
+                rows={2}
+                value={keyFeatures}
+                onChange={(e) => setKeyFeatures(e.target.value)}
+                placeholder="Feature 1&#10;Feature 2"
+                className="w-full px-4 py-2 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition"
+              />
+            </div>
           </div>
 
           {/* Drag and Drop Image Upload Zone */}
@@ -145,7 +269,7 @@ export default function ProjectModal({
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition flex flex-col items-center justify-center gap-1.5 ${
+              className={`border-2 border-dashed rounded-xl p-3 text-center cursor-pointer transition flex flex-col items-center justify-center gap-1 ${
                 isDragging
                   ? "border-[var(--theme-color)] bg-[var(--theme-color)]/10"
                   : "border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-[#1a1a1a] hover:border-[var(--theme-color)]"
@@ -164,7 +288,7 @@ export default function ProjectModal({
               />
 
               {image ? (
-                <div className="relative w-full h-24 rounded-lg overflow-hidden group">
+                <div className="relative w-full h-20 rounded-lg overflow-hidden group">
                   <img src={image} alt="Preview" className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-[11px] font-bold gap-1.5">
                     <UploadCloud className="w-3.5 h-3.5" /> Click or Drop to Replace
@@ -172,7 +296,7 @@ export default function ProjectModal({
                 </div>
               ) : (
                 <>
-                  <div className="w-9 h-9 rounded-xl bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center text-zinc-500 dark:text-zinc-400">
+                  <div className="w-8 h-8 rounded-xl bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center text-zinc-500 dark:text-zinc-400">
                     <UploadCloud className="w-4 h-4 text-[var(--theme-color)]" />
                   </div>
                   <p className="text-[11px] font-semibold text-zinc-700 dark:text-zinc-300">
@@ -189,14 +313,14 @@ export default function ProjectModal({
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
                 placeholder="Image URL / Path"
-                className="w-full h-11 px-3.5 py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-[11px] text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[var(--theme-color)] transition"
+                className="w-full h-10 px-3.5 py-2 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-[11px] text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[var(--theme-color)] transition"
               />
               <input
                 type="text"
                 value={altText}
                 onChange={(e) => setAltText(e.target.value)}
                 placeholder="Image Alt Tag (SEO)"
-                className="w-full h-11 px-3.5 py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-[11px] text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[var(--theme-color)] transition"
+                className="w-full h-10 px-3.5 py-2 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-[11px] text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[var(--theme-color)] transition"
               />
             </div>
           </div>

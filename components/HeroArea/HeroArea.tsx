@@ -4,7 +4,7 @@ import HoverIcon from "../HoverIcon/HoverIcon";
 import MarqueeStarIcon from "../Icons/MarqueeStarIcon";
 import TypewriterWrapper from "../ClientWrappers/TypewriterWrapper";
 import MarqueeWrapper from "../ClientWrappers/MarqueeWrapper";
-import { prisma } from "@/lib/prisma";
+import { getProfileSettings } from "@/lib/data";
 
 const defaultProfileSrc = "";
 const myWorksSrc = "/assets/Images/my-works.png";
@@ -12,9 +12,7 @@ const myWorksSrc = "/assets/Images/my-works.png";
 const HeroArea = async () => {
   let settings = null;
   try {
-    settings = await prisma.profileSettings.findUnique({
-      where: { id: "default" },
-    });
+    settings = await getProfileSettings();
   } catch (err) {
     console.error("Error loading settings in HeroArea:", err);
   }

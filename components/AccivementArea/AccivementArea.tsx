@@ -4,7 +4,7 @@ import Link from "next/link";
 import HoverIcon from "../HoverIcon/HoverIcon";
 import TypewriterWrapper from "../ClientWrappers/TypewriterWrapper";
 import CountUpWrapper from "../ClientWrappers/CountUpWrapper";
-import { prisma } from "@/lib/prisma";
+import { getProfileSettings, getProjectCount } from "@/lib/data";
 
 const iconSrc = "/assets/Icons/icon_2.png";
 
@@ -14,14 +14,12 @@ const AccivementArea = async () => {
   let clientsWorldwide = 25;
 
   try {
-    const count = await prisma.project.count();
+    const count = await getProjectCount();
     if (count > 0) {
       projectCount = count;
     }
 
-    const settings = await prisma.profileSettings.findUnique({
-      where: { id: "default" },
-    });
+    const settings = await getProfileSettings();
 
     if (settings) {
       experienceMonths = settings.experienceMonths ?? 6;

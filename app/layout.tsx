@@ -3,7 +3,7 @@ import { Ephesis } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/Theme/ThemeContext";
 import LayoutWrapper from "@/components/LayoutWrapper/LayoutWrapper";
-import { prisma } from "@/lib/prisma";
+import { getProfileSettings } from "@/lib/data";
 
 const signatureFont = Ephesis({
   weight: "400",
@@ -77,9 +77,7 @@ export default async function RootLayout({
   let metaPixelId = "";
 
   try {
-    const settings = await prisma.profileSettings.findUnique({
-      where: { id: "default" },
-    });
+    const settings = await getProfileSettings();
     if (settings) {
       googleAnalyticsId = (settings as unknown as { googleAnalyticsId?: string }).googleAnalyticsId || "";
       metaPixelId = (settings as unknown as { metaPixelId?: string }).metaPixelId || "";

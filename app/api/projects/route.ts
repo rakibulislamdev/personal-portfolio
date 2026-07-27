@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
 const defaultSeedProjects = [
@@ -60,7 +61,20 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { title, subtitle, category, image, altText } = body;
+    const {
+      title,
+      subtitle,
+      category,
+      image,
+      altText,
+      description,
+      year,
+      client,
+      liveUrl,
+      githubUrl,
+      technologies,
+      keyFeatures,
+    } = body;
 
     if (!title || !category || !image) {
       return NextResponse.json(
@@ -76,8 +90,18 @@ export async function POST(req: Request) {
         category,
         image,
         altText: altText || `${title} preview image`,
+        description: description || "",
+        year: year || "2025 - Present",
+        client: client || "Featured Project",
+        liveUrl: liveUrl || "https://rakibulislamdev.me",
+        githubUrl: githubUrl || "https://github.com/rakibulislamdev",
+        technologies: technologies || "",
+        keyFeatures: keyFeatures || "",
       },
     });
+
+    revalidatePath("/", "layout");
+    revalidatePath("/works");
 
     return NextResponse.json(newProject, { status: 201 });
   } catch (error) {
@@ -92,7 +116,21 @@ export async function POST(req: Request) {
 export async function PUT(req: Request) {
   try {
     const body = await req.json();
-    const { id, title, subtitle, category, image, altText } = body;
+    const {
+      id,
+      title,
+      subtitle,
+      category,
+      image,
+      altText,
+      description,
+      year,
+      client,
+      liveUrl,
+      githubUrl,
+      technologies,
+      keyFeatures,
+    } = body;
 
     if (!id || !title || !category || !image) {
       return NextResponse.json(
@@ -109,8 +147,19 @@ export async function PUT(req: Request) {
         category,
         image,
         altText: altText || `${title} preview image`,
+        description: description || "",
+        year: year || "2025 - Present",
+        client: client || "Featured Project",
+        liveUrl: liveUrl || "https://rakibulislamdev.me",
+        githubUrl: githubUrl || "https://github.com/rakibulislamdev",
+        technologies: technologies || "",
+        keyFeatures: keyFeatures || "",
       },
     });
+
+    revalidatePath("/", "layout");
+    revalidatePath("/works");
+    revalidatePath(`/works/${id}`);
 
     return NextResponse.json(updatedProject);
   } catch (error) {
@@ -137,6 +186,9 @@ export async function DELETE(req: Request) {
     await prisma.project.delete({
       where: { id },
     });
+
+    revalidatePath("/", "layout");
+    revalidatePath("/works");
 
     return NextResponse.json({ success: true, message: "Project deleted" });
   } catch (error) {

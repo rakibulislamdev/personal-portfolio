@@ -19,6 +19,13 @@ export default function DashboardProjectsPage() {
   const [category, setCategory] = useState("WEB DESIGNING");
   const [image, setImage] = useState("");
   const [altText, setAltText] = useState("");
+  const [description, setDescription] = useState("");
+  const [year, setYear] = useState("2025 - Present");
+  const [client, setClient] = useState("Featured Project");
+  const [liveUrl, setLiveUrl] = useState("https://rakibulislamdev.me");
+  const [githubUrl, setGithubUrl] = useState("https://github.com/rakibulislamdev");
+  const [technologies, setTechnologies] = useState("React.js, Next.js, TypeScript, Tailwind CSS");
+  const [keyFeatures, setKeyFeatures] = useState("Fully responsive & mobile-first UI design\nOptimized Lighthouse & Core Web Vitals score\nServer-side rendering & Fast API integrations");
   const [isSaving, setIsSaving] = useState(false);
 
   const [page, setPage] = useState(1);
@@ -75,6 +82,13 @@ export default function DashboardProjectsPage() {
     setCategory("WEB DESIGNING");
     setImage("");
     setAltText("");
+    setDescription("");
+    setYear("2025 - Present");
+    setClient("Featured Project");
+    setLiveUrl("https://rakibulislamdev.me");
+    setGithubUrl("https://github.com/rakibulislamdev");
+    setTechnologies("React.js, Next.js, TypeScript, Tailwind CSS");
+    setKeyFeatures("Fully responsive & mobile-first UI design\nOptimized Lighthouse & Core Web Vitals score\nServer-side rendering & Fast API integrations");
     setModalOpen(true);
   };
 
@@ -85,6 +99,13 @@ export default function DashboardProjectsPage() {
     setCategory(project.category);
     setImage(project.image);
     setAltText(project.altText || `${project.title} preview image`);
+    setDescription(project.description || "");
+    setYear(project.year || "2025 - Present");
+    setClient(project.client || "Featured Project");
+    setLiveUrl(project.liveUrl || "https://rakibulislamdev.me");
+    setGithubUrl(project.githubUrl || "https://github.com/rakibulislamdev");
+    setTechnologies(project.technologies || "React.js, Next.js, TypeScript, Tailwind CSS");
+    setKeyFeatures(project.keyFeatures || "Fully responsive & mobile-first UI design\nOptimized Lighthouse & Core Web Vitals score\nServer-side rendering & Fast API integrations");
     setModalOpen(true);
   };
 
@@ -97,6 +118,21 @@ export default function DashboardProjectsPage() {
     setIsSaving(true);
 
     try {
+      const payload = {
+        title,
+        subtitle,
+        category,
+        image,
+        altText: altText || `${title} preview image`,
+        description,
+        year,
+        client,
+        liveUrl,
+        githubUrl,
+        technologies,
+        keyFeatures,
+      };
+
       if (editingProject) {
         // UPDATE Existing Project
         const res = await fetch("/api/projects", {
@@ -104,11 +140,7 @@ export default function DashboardProjectsPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             id: editingProject.id,
-            title,
-            subtitle,
-            category,
-            image,
-            altText: altText || `${title} preview image`,
+            ...payload,
           }),
         });
 
@@ -124,13 +156,7 @@ export default function DashboardProjectsPage() {
         const res = await fetch("/api/projects", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title,
-            subtitle,
-            category,
-            image,
-            altText: altText || `${title} preview image`,
-          }),
+          body: JSON.stringify(payload),
         });
 
         if (res.ok) {
@@ -193,6 +219,20 @@ export default function DashboardProjectsPage() {
         setImage={setImage}
         altText={altText}
         setAltText={setAltText}
+        description={description}
+        setDescription={setDescription}
+        year={year}
+        setYear={setYear}
+        client={client}
+        setClient={setClient}
+        liveUrl={liveUrl}
+        setLiveUrl={setLiveUrl}
+        githubUrl={githubUrl}
+        setGithubUrl={setGithubUrl}
+        technologies={technologies}
+        setTechnologies={setTechnologies}
+        keyFeatures={keyFeatures}
+        setKeyFeatures={setKeyFeatures}
         isSaving={isSaving}
         onClose={() => setModalOpen(false)}
         onSave={handleSave}

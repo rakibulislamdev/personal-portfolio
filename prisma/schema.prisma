@@ -62,15 +62,22 @@ model VerificationToken {
 }
 
 model Project {
-  id          String   @id @default(cuid())
-  title       String
-  subtitle    String?
-  category    String
-  image       String
-  altText     String?
-  featured    Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(cuid())
+  title        String
+  subtitle     String?
+  category     String
+  image        String
+  altText      String?
+  description  String?  @db.Text
+  year         String?  @default("2025 - Present")
+  client       String?  @default("Featured Project")
+  liveUrl      String?  @default("https://rakibulislamdev.me")
+  githubUrl    String?  @default("https://github.com/rakibulislamdev")
+  technologies String?  @db.Text
+  keyFeatures  String?  @db.Text
+  featured     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model VisitorLog {

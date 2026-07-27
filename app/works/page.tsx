@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import AllProjectsGrid from "./_components/AllProjectsGrid";
-import { prisma } from "@/lib/prisma";
+import { getProjects } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "My Works | Rakibul Islam - Web Developer Projects & Portfolio",
@@ -26,10 +26,8 @@ export const metadata: Metadata = {
 };
 
 export default async function WorksPage() {
-  // Fetch real-time projects directly from Neon DB via Prisma
-  let dbProjects = await prisma.project.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  // Fetch real-time projects from server cache / Neon DB
+  let dbProjects = await getProjects();
 
   const formattedProjects = dbProjects.map((p) => ({
     id: p.id,

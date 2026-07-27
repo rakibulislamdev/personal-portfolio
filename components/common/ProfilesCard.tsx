@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import HoverIcon from "../HoverIcon/HoverIcon";
 import { FaGithub, FaLinkedinIn, FaInstagram, FaFacebookF, FaTwitter } from "react-icons/fa";
-import { prisma } from "@/lib/prisma";
+import { getProfileSettings } from "@/lib/data";
 
 export const ProfilesCard = async () => {
   let github = "";
@@ -17,9 +17,7 @@ export const ProfilesCard = async () => {
   let showInstagram = false;
 
   try {
-    const settings = await prisma.profileSettings.findUnique({
-      where: { id: "default" },
-    });
+    const settings = await getProfileSettings();
     if (settings) {
       github = settings.github || "";
       linkedin = settings.linkedin || "";

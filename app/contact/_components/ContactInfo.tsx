@@ -4,12 +4,12 @@ import { IoIosMail } from "react-icons/io";
 import { BiSolidContact, BiSolidPhone } from "react-icons/bi";
 import { MdMyLocation } from "react-icons/md";
 import { FaGithub, FaLinkedinIn, FaInstagram, FaFacebookF, FaTwitter } from "react-icons/fa";
-import { prisma } from "@/lib/prisma";
+import { getProfileSettings } from "@/lib/data";
 
 export const ContactInfo = async () => {
   let email = "rirakib03@gmail.com";
   let phone = "+8801621-574994";
-  let location = "Dhaka, Bangladesh";
+  let location = "Pabna, Bangladesh";
   let github = "";
   let linkedin = "";
   let instagram = "";
@@ -22,9 +22,7 @@ export const ContactInfo = async () => {
   let showInstagram = true;
 
   try {
-    const settings = await prisma.profileSettings.findUnique({
-      where: { id: "default" },
-    });
+    const settings = await getProfileSettings();
     if (settings) {
       email = settings.email || email;
       phone = settings.phone || phone;
