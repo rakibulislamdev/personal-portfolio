@@ -3,6 +3,7 @@ import { Ephesis } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/Theme/ThemeContext";
 import LayoutWrapper from "@/components/LayoutWrapper/LayoutWrapper";
+import ChatbotWidget from "@/components/Chatbot/ChatbotWidget";
 import { getProfileSettings } from "@/lib/data";
 
 const signatureFont = Ephesis({
@@ -188,6 +189,7 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col bg-[#0f0f0f] text-white transition-colors duration-300">
         <ThemeProvider>
           <LayoutWrapper>{children}</LayoutWrapper>
+          <ChatbotWidget />
         </ThemeProvider>
       </body>
     </html>
