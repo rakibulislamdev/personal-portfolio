@@ -146,5 +146,6 @@ model ProfileSettings {
   googleAnalyticsId       String?  @default("")
   metaPixelId             String?  @default("")
   resumeUrl               String?  @default("")
+  enabledSkills           String?  @default("")
   updatedAt               DateTime @updatedAt
 }

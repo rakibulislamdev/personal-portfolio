@@ -14,7 +14,7 @@ export default function SocialLinksSection({
   setProfile,
 }: SocialLinksSectionProps) {
   return (
-    <div className="space-y-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
+    <div className="space-y-4">
       <div>
         <h2 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-3">
           <Globe className="w-4 h-4 text-[var(--theme-color)]" /> Social Links & Portfolio Metadata

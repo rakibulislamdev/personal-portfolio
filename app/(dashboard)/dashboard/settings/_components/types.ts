@@ -25,6 +25,7 @@ export interface ProfileSettingsData {
   profileImage: string;
   aboutImage: string;
   resumeUrl?: string;
+  enabledSkills?: string;
   typewriterText: string;
   aboutBio: string;
   experienceMonths: number;

@@ -2,9 +2,25 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
+// Ensure schema columns exist in DB (safeguard for dynamic Prisma schema updates)
+async function ensureDbColumns() {
+  try {
+    await prisma.$executeRawUnsafe(
+      `ALTER TABLE "ProfileSettings" ADD COLUMN IF NOT EXISTS "resumeUrl" TEXT DEFAULT '';`
+    );
+    await prisma.$executeRawUnsafe(
+      `ALTER TABLE "ProfileSettings" ADD COLUMN IF NOT EXISTS "enabledSkills" TEXT DEFAULT '';`
+    );
+  } catch (err) {
+    // Table or column already exists / migration handled
+  }
+}
+
 // GET: Fetch current profile settings
 export async function GET() {
   try {
+    await ensureDbColumns();
+
     let settings = await prisma.profileSettings.findUnique({
       where: { id: "default" },
     });
@@ -44,101 +60,83 @@ export async function GET() {
 // PUT: Update profile settings
 export async function PUT(req: Request) {
   try {
+    await ensureDbColumns();
     const body = await req.json();
 
-    let updatedSettings;
-    try {
-      updatedSettings = await (prisma.profileSettings as any).upsert({
-        where: { id: "default" },
-        update: {
-          name: body.name || "Rakibul Islam",
-          title: body.title || "Web Developer & Frontend Specialist",
-          email: body.email || "rirakib03@gmail.com",
-          phone: body.phone || "+8801621-574994",
-          location: body.location || "Dhaka, Bangladesh",
-          github: body.github ?? "",
-          linkedin: body.linkedin ?? "",
-          facebook: body.facebook ?? "",
-          twitter: body.twitter ?? "",
-          instagram: body.instagram ?? "",
-          githubInContact: Boolean(body.githubInContact ?? true),
-          linkedinInContact: Boolean(body.linkedinInContact ?? true),
-          facebookInContact: Boolean(body.facebookInContact ?? true),
-          twitterInContact: Boolean(body.twitterInContact ?? true),
-          instagramInContact: Boolean(body.instagramInContact ?? true),
-          githubInProfilesCard: Boolean(body.githubInProfilesCard ?? true),
-          linkedinInProfilesCard: Boolean(body.linkedinInProfilesCard ?? true),
-          facebookInProfilesCard: Boolean(body.facebookInProfilesCard ?? false),
-          twitterInProfilesCard: Boolean(body.twitterInProfilesCard ?? false),
-          googleAnalyticsId: body.googleAnalyticsId ?? "",
-          metaPixelId: body.metaPixelId ?? "",
-          resumeUrl: body.resumeUrl ?? "",
-          profileImage: body.profileImage ?? "",
-          aboutImage: body.aboutImage ?? "",
-          typewriterText: body.typewriterText || "Web Developer based in Bangladesh",
-          aboutBio:
-            body.aboutBio ||
-            "I am a Dhaka, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.",
-          experienceMonths: Number(body.experienceMonths) || 6,
-        },
-        create: {
-          id: "default",
-          name: body.name || "Rakibul Islam",
-          title: body.title || "Web Developer & Frontend Specialist",
-          email: body.email || "rirakib03@gmail.com",
-          phone: body.phone || "+8801621-574994",
-          location: body.location || "Dhaka, Bangladesh",
-          github: body.github ?? "",
-          linkedin: body.linkedin ?? "",
-          facebook: body.facebook ?? "",
-          twitter: body.twitter ?? "",
-          instagram: body.instagram ?? "",
-          githubInContact: Boolean(body.githubInContact ?? true),
-          linkedinInContact: Boolean(body.linkedinInContact ?? true),
-          facebookInContact: Boolean(body.facebookInContact ?? true),
-          twitterInContact: Boolean(body.twitterInContact ?? true),
-          instagramInContact: Boolean(body.instagramInContact ?? true),
-          githubInProfilesCard: Boolean(body.githubInProfilesCard ?? true),
-          linkedinInProfilesCard: Boolean(body.linkedinInProfilesCard ?? true),
-          facebookInProfilesCard: Boolean(body.facebookInProfilesCard ?? false),
-          twitterInProfilesCard: Boolean(body.twitterInProfilesCard ?? false),
-          instagramInProfilesCard: Boolean(body.instagramInProfilesCard ?? false),
-          googleAnalyticsId: body.googleAnalyticsId ?? "",
-          metaPixelId: body.metaPixelId ?? "",
-          resumeUrl: body.resumeUrl ?? "",
-          profileImage: body.profileImage ?? "",
-          aboutImage: body.aboutImage ?? "",
-          typewriterText: body.typewriterText || "Web Developer based in Bangladesh",
-          aboutBio:
-            body.aboutBio ||
-            "I am a Dhaka, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.",
-          experienceMonths: Number(body.experienceMonths) || 6,
-        },
-      });
-    } catch (upsertError: any) {
-      if (upsertError?.message?.includes("resumeUrl")) {
-        // Direct PostgreSQL update fallback to bypass Turbopack cached Prisma DMMF check
-        await prisma.$executeRawUnsafe(
-          `UPDATE "ProfileSettings" SET "resumeUrl" = $1, "updatedAt" = NOW() WHERE "id" = 'default'`,
-          body.resumeUrl ?? ""
-        );
-
-        const bodyWithoutResume = { ...body };
-        delete bodyWithoutResume.resumeUrl;
-
-        updatedSettings = await (prisma.profileSettings as any).upsert({
-          where: { id: "default" },
-          update: bodyWithoutResume,
-          create: bodyWithoutResume,
-        });
-      } else {
-        throw upsertError;
-      }
-    }
+    // Direct SQL update to ensure reliability across Turbopack / Prisma DMMF caching
+    await prisma.$executeRawUnsafe(
+      `UPDATE "ProfileSettings" SET 
+        "name" = $1,
+        "title" = $2,
+        "email" = $3,
+        "phone" = $4,
+        "location" = $5,
+        "github" = $6,
+        "linkedin" = $7,
+        "facebook" = $8,
+        "twitter" = $9,
+        "instagram" = $10,
+        "githubInContact" = $11,
+        "linkedinInContact" = $12,
+        "facebookInContact" = $13,
+        "twitterInContact" = $14,
+        "instagramInContact" = $15,
+        "githubInProfilesCard" = $16,
+        "linkedinInProfilesCard" = $17,
+        "facebookInProfilesCard" = $18,
+        "twitterInProfilesCard" = $19,
+        "googleAnalyticsId" = $20,
+        "metaPixelId" = $21,
+        "resumeUrl" = $22,
+        "enabledSkills" = $23,
+        "profileImage" = $24,
+        "aboutImage" = $25,
+        "typewriterText" = $26,
+        "aboutBio" = $27,
+        "experienceMonths" = $28,
+        "updatedAt" = NOW()
+      WHERE "id" = 'default'`,
+      body.name || "Rakibul Islam",
+      body.title || "Web Developer & Frontend Specialist",
+      body.email || "rirakib03@gmail.com",
+      body.phone || "+8801621-574994",
+      body.location || "Dhaka, Bangladesh",
+      body.github ?? "",
+      body.linkedin ?? "",
+      body.facebook ?? "",
+      body.twitter ?? "",
+      body.instagram ?? "",
+      Boolean(body.githubInContact ?? true),
+      Boolean(body.linkedinInContact ?? true),
+      Boolean(body.facebookInContact ?? true),
+      Boolean(body.twitterInContact ?? true),
+      Boolean(body.instagramInContact ?? true),
+      Boolean(body.githubInProfilesCard ?? true),
+      Boolean(body.linkedinInProfilesCard ?? true),
+      Boolean(body.facebookInProfilesCard ?? false),
+      Boolean(body.twitterInProfilesCard ?? false),
+      body.googleAnalyticsId ?? "",
+      body.metaPixelId ?? "",
+      body.resumeUrl ?? "",
+      body.enabledSkills ?? "",
+      body.profileImage ?? "",
+      body.aboutImage ?? "",
+      body.typewriterText || "Web Developer based in Bangladesh",
+      body.aboutBio || "I am a Dhaka, Bangladesh-based web developer.",
+      Number(body.experienceMonths) || 6
+    );
 
     revalidatePath("/", "layout");
+    try {
+      const { revalidateTag } = await import("next/cache");
+      (revalidateTag as (tag: string) => void)("profile-settings");
+    } catch {}
 
-    return NextResponse.json(updatedSettings);
+    const settings = await prisma.profileSettings.findUnique({
+      where: { id: "default" },
+    });
+
+    return NextResponse.json(settings || body);
   } catch (error) {
     console.error("PUT /api/settings error:", error);
     return NextResponse.json(
