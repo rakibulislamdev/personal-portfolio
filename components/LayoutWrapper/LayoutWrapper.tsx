@@ -7,6 +7,8 @@ import Footer from "@/components/Footer/Footer";
 import ThemeSwitcher from "@/components/Theme/ThemeSwitcher";
 import { Toaster } from "@/components/ui/sonner";
 
+import VisitorTracker from "@/components/Analytics/VisitorTracker";
+
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
@@ -24,6 +26,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
 
   return (
     <>
+      <VisitorTracker />
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />

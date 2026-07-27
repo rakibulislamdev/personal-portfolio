@@ -10,22 +10,42 @@ const defaultSeedProjects = [
   { title: "Starbucks Web", category: "WEB DESIGNING", subtitle: "Coffee House App", image: "/assets/Images/Starbucks.png" },
 ];
 
-// GET: Fetch all projects
-export async function GET() {
+// GET: Fetch all projects with pagination support
+export async function GET(req: Request) {
   try {
-    let projects = await prisma.project.findMany({
-      orderBy: { createdAt: "desc" },
-    });
+    const { searchParams } = new URL(req.url);
+    const pageParam = parseInt(searchParams.get("page") || "", 10);
+    const limitParam = parseInt(searchParams.get("limit") || "", 10);
 
-    // Seed default projects if DB is empty
-    if (projects.length === 0) {
-      await prisma.project.createMany({
-        data: defaultSeedProjects,
-      });
-      projects = await prisma.project.findMany({
+    // If page is provided, return paginated data
+    if (!isNaN(pageParam) && pageParam > 0) {
+      const page = pageParam;
+      const limit = isNaN(limitParam) || limitParam < 1 ? 6 : limitParam;
+      const skip = (page - 1) * limit;
+
+      const totalCount = await prisma.project.count();
+      const projects = await prisma.project.findMany({
+        skip,
+        take: limit,
         orderBy: { createdAt: "desc" },
       });
+      const totalPages = Math.ceil(totalCount / limit) || 1;
+
+      return NextResponse.json({
+        projects,
+        pagination: {
+          totalCount,
+          totalPages,
+          currentPage: page,
+          limit,
+        },
+      });
     }
+
+    // Default: Return all projects if no page param specified
+    const projects = await prisma.project.findMany({
+      orderBy: { createdAt: "desc" },
+    });
 
     return NextResponse.json(projects);
   } catch (error) {

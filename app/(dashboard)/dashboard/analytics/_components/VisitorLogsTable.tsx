@@ -6,17 +6,38 @@ import { VisitorLog } from "./types";
 interface VisitorLogsTableProps {
   logs: VisitorLog[];
   loading: boolean;
+  pagination?: {
+    totalCount: number;
+    totalPages: number;
+    currentPage: number;
+    limit: number;
+  };
+  onPageChange?: (page: number) => void;
 }
 
 export default function VisitorLogsTable({
   logs,
   loading,
+  pagination,
+  onPageChange,
 }: VisitorLogsTableProps) {
+  const currentPage = pagination?.currentPage || 1;
+  const totalPages = pagination?.totalPages || 1;
+  const totalCount = pagination?.totalCount || 0;
+
   return (
-    <div className="bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] p-6 rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 shadow-md">
-      <h2 className="text-lg font-bold text-zinc-900 dark:text-white mb-4">
-        Real-time Visitor Logs
-      </h2>
+    <div className="bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] p-6 rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 shadow-md space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-bold text-zinc-900 dark:text-white">
+          Real-time Visitor Logs
+        </h2>
+        {totalCount > 0 && (
+          <span className="text-xs text-zinc-500 dark:text-zinc-400">
+            Total {totalCount} logs recorded
+          </span>
+        )}
+      </div>
+
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse text-sm">
           <thead>
@@ -69,6 +90,31 @@ export default function VisitorLogsTable({
           </tbody>
         </table>
       </div>
+
+      {/* Server-Side Pagination Bar */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800/60 text-xs">
+          <span className="text-zinc-500 dark:text-zinc-400">
+            Page {currentPage} of {totalPages}
+          </span>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => onPageChange && onPageChange(currentPage - 1)}
+              disabled={currentPage <= 1 || loading}
+              className="px-3.5 py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium hover:bg-zinc-200 dark:hover:bg-zinc-700 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => onPageChange && onPageChange(currentPage + 1)}
+              disabled={currentPage >= totalPages || loading}
+              className="px-3.5 py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium hover:bg-zinc-200 dark:hover:bg-zinc-700 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

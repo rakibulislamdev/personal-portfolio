@@ -11,15 +11,25 @@ export default function DashboardAnalyticsPage() {
   const [activeLive, setActiveLive] = useState<number>(1);
   const [topCountry, setTopCountry] = useState<TopCountry | null>(null);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState({
+    totalCount: 0,
+    totalPages: 1,
+    currentPage: 1,
+    limit: 10,
+  });
 
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = async (pageNumber: number = 1) => {
     setLoading(true);
     try {
-      const res = await fetch("/api/analytics");
+      const res = await fetch(`/api/analytics?page=${pageNumber}&limit=10`);
       const data = await res.json();
       setLogs(data.logs || []);
       setActiveLive(data.activeLive || (data.logs ? data.logs.length : 1));
       setTopCountry(data.topCountry || null);
+      if (data.pagination) {
+        setPagination(data.pagination);
+      }
     } catch (e) {
       console.error("Failed to fetch analytics data:", e);
     } finally {
@@ -28,15 +38,19 @@ export default function DashboardAnalyticsPage() {
   };
 
   useEffect(() => {
-    fetchAnalytics();
-  }, []);
+    fetchAnalytics(page);
+  }, [page]);
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
 
   return (
     <div className="space-y-8">
       {/* Page Header */}
       <AnalyticsHeader
         loading={loading}
-        onRefresh={fetchAnalytics}
+        onRefresh={() => fetchAnalytics(page)}
       />
 
       {/* Analytics Overview Cards */}
@@ -46,10 +60,12 @@ export default function DashboardAnalyticsPage() {
         loading={loading}
       />
 
-      {/* Real-time Visitor Logs Table */}
+      {/* Real-time Visitor Logs Table with Server-Side Pagination */}
       <VisitorLogsTable
         logs={logs}
         loading={loading}
+        pagination={pagination}
+        onPageChange={handlePageChange}
       />
     </div>
   );

@@ -28,21 +28,40 @@ const defaultSeedMessages = [
   },
 ];
 
-// GET: Fetch all messages (with auto-seed)
-export async function GET() {
+// GET: Fetch messages with pagination support
+export async function GET(req: Request) {
   try {
-    let messages = await prisma.message.findMany({
-      orderBy: { createdAt: "desc" },
-    });
+    const { searchParams } = new URL(req.url);
+    const pageParam = parseInt(searchParams.get("page") || "", 10);
+    const limitParam = parseInt(searchParams.get("limit") || "", 10);
 
-    if (messages.length === 0) {
-      await prisma.message.createMany({
-        data: defaultSeedMessages,
-      });
-      messages = await prisma.message.findMany({
+    if (!isNaN(pageParam) && pageParam > 0) {
+      const page = pageParam;
+      const limit = isNaN(limitParam) || limitParam < 1 ? 8 : limitParam;
+      const skip = (page - 1) * limit;
+
+      const totalCount = await prisma.message.count();
+      const messages = await prisma.message.findMany({
+        skip,
+        take: limit,
         orderBy: { createdAt: "desc" },
       });
+      const totalPages = Math.ceil(totalCount / limit) || 1;
+
+      return NextResponse.json({
+        messages,
+        pagination: {
+          totalCount,
+          totalPages,
+          currentPage: page,
+          limit,
+        },
+      });
     }
+
+    const messages = await prisma.message.findMany({
+      orderBy: { createdAt: "desc" },
+    });
 
     return NextResponse.json(messages);
   } catch (error) {

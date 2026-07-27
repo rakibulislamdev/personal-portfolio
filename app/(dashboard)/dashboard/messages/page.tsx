@@ -14,15 +14,28 @@ export default function DashboardMessagesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<TabType>("ALL");
 
-  const fetchMessages = async () => {
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState({
+    totalCount: 0,
+    totalPages: 1,
+    currentPage: 1,
+    limit: 8,
+  });
+
+  const fetchMessages = async (pageNumber: number = 1) => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/messages");
+      const res = await fetch(`/api/messages?page=${pageNumber}&limit=8`);
       if (res.ok) {
-        const data: Message[] = await res.json();
-        setMessages(data);
-        if (data.length > 0 && !selectedId) {
-          setSelectedId(data[0].id);
+        const data = await res.json();
+        if (data.messages) {
+          setMessages(data.messages);
+          if (data.pagination) setPagination(data.pagination);
+          if (data.messages.length > 0 && !selectedId) {
+            setSelectedId(data.messages[0].id);
+          }
+        } else {
+          setMessages(Array.isArray(data) ? data : []);
         }
       }
     } catch (err) {
@@ -34,8 +47,8 @@ export default function DashboardMessagesPage() {
   };
 
   useEffect(() => {
-    fetchMessages();
-  }, []);
+    fetchMessages(page);
+  }, [page]);
 
   const updateMessageStatus = async (id: string, newStatus: string) => {
     try {
@@ -149,6 +162,8 @@ export default function DashboardMessagesPage() {
           onSelectMessage={handleSelectMessage}
           formatTimeAgo={formatTimeAgo}
           getStatusBadge={getStatusBadge}
+          pagination={pagination}
+          onPageChange={(newPage) => setPage(newPage)}
         />
 
         {/* Right Detail Panel */}

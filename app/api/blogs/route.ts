@@ -41,18 +41,9 @@ function slugify(text: string) {
 // GET: Fetch all blog posts
 export async function GET() {
   try {
-    let blogs = await prisma.blogPost.findMany({
+    const blogs = await prisma.blogPost.findMany({
       orderBy: { createdAt: "desc" },
     });
-
-    if (blogs.length === 0) {
-      await prisma.blogPost.createMany({
-        data: defaultSeedBlogs,
-      });
-      blogs = await prisma.blogPost.findMany({
-        orderBy: { createdAt: "desc" },
-      });
-    }
 
     return NextResponse.json(blogs);
   } catch (error) {

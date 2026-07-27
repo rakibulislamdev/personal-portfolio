@@ -21,13 +21,26 @@ export default function DashboardProjectsPage() {
   const [altText, setAltText] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
-  // Fetch projects from Neon DB via API
-  const fetchProjects = async () => {
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState({
+    totalCount: 0,
+    totalPages: 1,
+    currentPage: 1,
+    limit: 6,
+  });
+
+  // Fetch projects from Neon DB via API (with pagination)
+  const fetchProjects = async (pageNumber: number = 1) => {
     setLoading(true);
     try {
-      const res = await fetch("/api/projects");
+      const res = await fetch(`/api/projects?page=${pageNumber}&limit=6`);
       const data = await res.json();
-      setProjects(data || []);
+      if (data.projects) {
+        setProjects(data.projects);
+        if (data.pagination) setPagination(data.pagination);
+      } else {
+        setProjects(Array.isArray(data) ? data : []);
+      }
     } catch (e) {
       toast.error("Failed to load projects");
     } finally {
@@ -36,8 +49,8 @@ export default function DashboardProjectsPage() {
   };
 
   useEffect(() => {
-    fetchProjects();
-  }, []);
+    fetchProjects(page);
+  }, [page]);
 
   // Handle Drag & Drop file upload preview (converts file to DataURL)
   const handleFile = (file: File) => {
@@ -163,6 +176,8 @@ export default function DashboardProjectsPage() {
         loading={loading}
         onEdit={openModalForEdit}
         onDelete={handleDelete}
+        pagination={pagination}
+        onPageChange={(newPage) => setPage(newPage)}
       />
 
       <ProjectModal

@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/auth";
+import { prisma } from "@/lib/prisma";
 import { 
   LogOut,
   Bell,
@@ -21,6 +22,11 @@ export default async function DashboardLayout({
   if (!session?.user) {
     redirect("/login");
   }
+
+  // Count unread messages for notification indicator
+  const unreadCount = await prisma.message.count({
+    where: { status: "Unread" },
+  });
 
   return (
     <div className="min-h-screen bg-[#f0f2f5] dark:bg-[#0f0f0f] text-zinc-900 dark:text-white flex flex-col md:flex-row transition-colors duration-300">
@@ -80,13 +86,16 @@ export default async function DashboardLayout({
           </div>
 
           <div className="flex items-center gap-4">
-            <button
-              className="p-2.5 rounded-xl bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200/80 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 hover:scale-105 transition relative"
-              title="Notifications"
+            <Link
+              href="/dashboard/messages"
+              className="p-2.5 rounded-xl bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200/80 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 hover:scale-105 transition relative block"
+              title={unreadCount > 0 ? `${unreadCount} Unread Message(s)` : "Notifications"}
             >
               <Bell className="w-4 h-4" />
-              <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-2 right-2" />
-            </button>
+              {unreadCount > 0 && (
+                <span className="w-2.5 h-2.5 rounded-full bg-rose-500 absolute top-2 right-2 animate-pulse" />
+              )}
+            </Link>
             <div className="w-9 h-9 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-xs font-bold text-white">
               RI
             </div>

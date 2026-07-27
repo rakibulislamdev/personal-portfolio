@@ -9,28 +9,34 @@ const seedVisitorLogs = [
   { ip: "103.145.72.19", flag: "🇧🇩", country: "Bangladesh", city: "Chittagong", page: "/dashboard", device: "Edge / Windows" },
 ];
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    let logs = await prisma.visitorLog.findMany({
-      take: 20,
+    const { searchParams } = new URL(req.url);
+    const pageParam = parseInt(searchParams.get("page") || "1", 10);
+    const limitParam = parseInt(searchParams.get("limit") || "10", 10);
+
+    const page = isNaN(pageParam) || pageParam < 1 ? 1 : pageParam;
+    const limit = isNaN(limitParam) || limitParam < 1 ? 10 : limitParam;
+    const skip = (page - 1) * limit;
+
+    const totalCount = await prisma.visitorLog.count();
+
+    const logs = await prisma.visitorLog.findMany({
+      skip,
+      take: limit,
       orderBy: { createdAt: "desc" },
     });
 
-    if (logs.length === 0) {
-      await prisma.visitorLog.createMany({
-        data: seedVisitorLogs,
-      });
-      logs = await prisma.visitorLog.findMany({
-        take: 20,
-        orderBy: { createdAt: "desc" },
-      });
-    }
-
-    const totalVisitors = await prisma.visitorLog.count();
+    const totalPages = Math.ceil(totalCount / limit) || 1;
 
     // Calculate Top Country dynamically
+    const allLogsForCountry = await prisma.visitorLog.findMany({
+      take: 100,
+      orderBy: { createdAt: "desc" },
+    });
+
     const countryCounts: Record<string, { count: number; flag: string }> = {};
-    logs.forEach((log: { country?: string | null; flag?: string | null }) => {
+    allLogsForCountry.forEach((log: { country?: string | null; flag?: string | null }) => {
       if (log.country && log.country !== "Unknown") {
         if (!countryCounts[log.country]) {
           countryCounts[log.country] = { count: 0, flag: log.flag || "🌐" };
@@ -76,10 +82,16 @@ export async function GET() {
     }));
 
     return NextResponse.json({
-      totalVisitors,
-      activeLive: logs.length > 0 ? logs.length : 1,
+      totalVisitors: totalCount,
+      activeLive: totalCount > 0 ? totalCount : 1,
       topCountry,
       logs: formattedLogs,
+      pagination: {
+        totalCount,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
     });
   } catch (error) {
     return NextResponse.json(

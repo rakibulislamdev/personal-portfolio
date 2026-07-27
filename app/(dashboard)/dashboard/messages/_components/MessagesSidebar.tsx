@@ -13,6 +13,13 @@ interface MessagesSidebarProps {
   onSelectMessage: (msg: Message) => void;
   formatTimeAgo: (dateStr: string) => string;
   getStatusBadge: (status: string) => string;
+  pagination?: {
+    totalCount: number;
+    totalPages: number;
+    currentPage: number;
+    limit: number;
+  };
+  onPageChange?: (page: number) => void;
 }
 
 export default function MessagesSidebar({
@@ -24,7 +31,13 @@ export default function MessagesSidebar({
   onSelectMessage,
   formatTimeAgo,
   getStatusBadge,
+  pagination,
+  onPageChange,
 }: MessagesSidebarProps) {
+  const currentPage = pagination?.currentPage || 1;
+  const totalPages = pagination?.totalPages || 1;
+  const totalCount = pagination?.totalCount || 0;
+
   return (
     <div className="bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] p-5 rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 shadow-md space-y-4">
       {/* Search Bar */}
@@ -40,7 +53,7 @@ export default function MessagesSidebar({
       </div>
 
       {/* Messages List */}
-      <div className="space-y-2.5 max-h-[600px] overflow-y-auto pr-1">
+      <div className="space-y-2.5 max-h-[520px] overflow-y-auto pr-1">
         {isLoading ? (
           <div className="space-y-3">
             {[1, 2, 3, 4].map((n) => (
@@ -92,6 +105,31 @@ export default function MessagesSidebar({
           </div>
         )}
       </div>
+
+      {/* Server-Side Pagination Bar */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between pt-3 border-t border-zinc-100 dark:border-zinc-800/60 text-xs">
+          <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
+            Page {currentPage} of {totalPages}
+          </span>
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => onPageChange && onPageChange(currentPage - 1)}
+              disabled={currentPage <= 1 || isLoading}
+              className="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium hover:bg-zinc-200 dark:hover:bg-zinc-700 transition text-[11px] disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Prev
+            </button>
+            <button
+              onClick={() => onPageChange && onPageChange(currentPage + 1)}
+              disabled={currentPage >= totalPages || isLoading}
+              className="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium hover:bg-zinc-200 dark:hover:bg-zinc-700 transition text-[11px] disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
