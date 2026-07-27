@@ -21,12 +21,13 @@ export const ProfileImageBox = async () => {
       <div className="flex justify-center items-center w-full h-full">
         {aboutImage ? (
           <Image
-            className="rounded-2xl w-full h-auto aspect-square object-cover border border-zinc-200/80 dark:border-zinc-700/80 shadow-sm select-none pointer-events-none"
+            className="rounded-2xl w-full max-w-[280px] sm:max-w-none h-auto aspect-square object-cover border border-zinc-200/80 dark:border-zinc-700/80 shadow-sm select-none pointer-events-none"
             src={aboutImage}
             alt={`${name} About Profile Image`}
             width={1200}
             height={1200}
             quality={100}
+            unoptimized
             priority
             draggable={false}
           />

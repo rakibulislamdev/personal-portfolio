@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme, themePalettes, ThemeColor } from "@/components/Theme/ThemeContext";
 import { Sun, Moon, Palette } from "lucide-react";
 
@@ -10,7 +10,19 @@ const Navbar = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [resumeUrl, setResumeUrl] = useState<string>("");
   const { themeColor, setThemeColor, isDark, setIsDark } = useTheme();
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.resumeUrl) {
+          setResumeUrl(data.resumeUrl);
+        }
+      })
+      .catch(() => { });
+  }, []);
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -110,9 +122,8 @@ const Navbar = () => {
                           setThemeColor(key);
                           setShowColorPicker(false);
                         }}
-                        className={`w-full aspect-square rounded-full flex items-center justify-center transition ${
-                          isSelected ? "ring-2 ring-zinc-900 dark:ring-white ring-offset-2 ring-offset-white dark:ring-offset-[#1f1e1e]" : "hover:scale-110"
-                        }`}
+                        className={`w-full aspect-square rounded-full flex items-center justify-center transition ${isSelected ? "ring-2 ring-zinc-900 dark:ring-white ring-offset-2 ring-offset-white dark:ring-offset-[#1f1e1e]" : "hover:scale-110"
+                          }`}
                         style={{ backgroundColor: palette.hex }}
                         title={palette.name}
                       />
@@ -136,7 +147,8 @@ const Navbar = () => {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href="https://drive.google.com/uc?export=download&id=1G9ZeSIrAol1ZW1VqCFbrt4SpNG4rPXCj"
+            href="/api/resume/download"
+            download="Rakibul Islam.pdf"
             className="relative inline-flex items-center justify-start px-6 py-2 overflow-hidden font-medium transition-all bg-zinc-900 dark:bg-[#323232] rounded-full hover:bg-zinc-800 dark:hover:bg-white group"
           >
             <span
@@ -190,7 +202,8 @@ const Navbar = () => {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="https://drive.google.com/uc?export=download&id=1G9ZeSIrAol1ZW1VqCFbrt4SpNG4rPXCj"
+              href="/api/resume/download"
+              download="Rakibul Islam.pdf"
               className="relative inline-flex items-center justify-start px-6 py-2 overflow-hidden font-medium transition-all bg-zinc-900 dark:bg-[#323232] rounded-full hover:bg-zinc-800 dark:hover:bg-white group"
             >
               <span

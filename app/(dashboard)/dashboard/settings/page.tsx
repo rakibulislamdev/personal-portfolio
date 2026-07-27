@@ -20,6 +20,7 @@ export default function DashboardSettingsPage() {
     instagram: "https://instagram.com",
     profileImage: "/assets/Images/rakibulislam.jpg",
     aboutImage: "/assets/Images/rakibulislam.jpg",
+    resumeUrl: "",
     typewriterText: "Web Developer based in Bangladesh",
     aboutBio:
       "I am a Dhaka, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.",

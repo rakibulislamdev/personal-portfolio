@@ -31,11 +31,11 @@ const HeroArea = async () => {
         <div
           className="group bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 hover:border-[var(--theme-color)] transition-all duration-500 shadow-md hover:shadow-2xl h-full flex flex-col justify-center"
         >
-          <div className="grid lg:items-center grid-cols-1 lg:grid-cols-2 gap-8 lg:p-12 p-10 relative h-full">
+          <div className="grid lg:items-center grid-cols-1 lg:grid-cols-2 gap-8 lg:p-12 p-6 sm:p-10 relative h-full">
             <div className="flex items-center justify-center">
               {profileImage ? (
                 <Image
-                  className="rounded-tl-3xl rounded-br-3xl rounded-tr-none rounded-bl-none w-56 object-cover aspect-square bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-transparent group-hover:border-[var(--theme-color)] transition-colors duration-500 shadow-sm select-none pointer-events-none"
+                  className="rounded-tl-3xl rounded-br-3xl rounded-tr-none rounded-bl-none w-48 sm:w-56 h-auto aspect-square object-cover bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-transparent group-hover:border-[var(--theme-color)] transition-colors duration-500 shadow-sm select-none pointer-events-none"
                   src={profileImage}
                   alt={name}
                   width={1000}

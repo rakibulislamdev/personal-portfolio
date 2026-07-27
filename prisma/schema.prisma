@@ -145,5 +145,6 @@ model ProfileSettings {
   instagramInProfilesCard Boolean  @default(false)
   googleAnalyticsId       String?  @default("")
   metaPixelId             String?  @default("")
+  resumeUrl               String?  @default("")
   updatedAt               DateTime @updatedAt
 }

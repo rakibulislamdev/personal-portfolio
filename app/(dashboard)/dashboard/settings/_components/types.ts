@@ -24,6 +24,7 @@ export interface ProfileSettingsData {
   metaPixelId?: string;
   profileImage: string;
   aboutImage: string;
+  resumeUrl?: string;
   typewriterText: string;
   aboutBio: string;
   experienceMonths: number;

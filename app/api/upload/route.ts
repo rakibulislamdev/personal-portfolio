@@ -29,22 +29,55 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
+    const uploadType = formData.get("type") as string | null;
+    const fileNameLower = file.name.toLowerCase();
+    const isPdfExtension = fileNameLower.endsWith(".pdf");
+    const isPdfMime = file.type === "application/pdf";
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
+
+    // PDF Magic Bytes Check: First 4 bytes must be '%PDF' (0x25, 0x50, 0x44, 0x46)
+    const isPdfMagicBytes =
+      buffer.length >= 4 &&
+      buffer[0] === 0x25 &&
+      buffer[1] === 0x50 &&
+      buffer[2] === 0x44 &&
+      buffer[3] === 0x46;
+
+    // Strict validation if upload is marked for resume or is a PDF
+    if (uploadType === "resume") {
+      if (!isPdfMime && !isPdfExtension && !isPdfMagicBytes) {
+        return NextResponse.json(
+          { error: "Invalid file format. Only valid PDF files (.pdf) are allowed for Resume upload!" },
+          { status: 400 }
+        );
+      }
+      if (!isPdfMagicBytes) {
+        return NextResponse.json(
+          { error: "Corrupted or invalid PDF file header detected!" },
+          { status: 400 }
+        );
+      }
+    }
 
     // Check if Cloudinary is configured
     const isCloudinaryConfigured =
       Boolean(process.env.CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_URL);
 
     if (isCloudinaryConfigured) {
-      // Upload to Cloudinary Permanent CDN
+      // PDF files in Cloudinary MUST be uploaded with resource_type: 'raw' to be viewable as documents
+      const isPdfFile =
+        fileNameLower.endsWith(".pdf") ||
+        file.type === "application/pdf" ||
+        uploadType === "resume";
+
       const cloudinaryResult = await new Promise<{ secure_url: string }>(
         (resolve, reject) => {
           const uploadStream = cloudinary.uploader.upload_stream(
             {
               folder: "portfolio_uploads",
-              resource_type: "auto",
-              quality: "auto:best",
+              resource_type: isPdfFile ? "raw" : "auto",
             },
             (error, result) => {
               if (error || !result) {

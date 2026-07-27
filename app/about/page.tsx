@@ -64,7 +64,7 @@ export default function AboutPage() {
         <ProfileImageBox />
 
         {/* Self-Summary Header & Card Container */}
-        <div className="col-span-2 flex flex-col justify-between gap-6">
+        <div className="col-span-1 lg:col-span-2 flex flex-col justify-between gap-6">
           <div className="flex items-center justify-center gap-3 sm:gap-4 py-2">
             <SparkleStarIcon className="w-6 h-6 sm:w-8 sm:h-8 text-[#BCBCBC]" />
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-zinc-900 dark:text-white uppercase tracking-wider text-center">

@@ -4,6 +4,7 @@ import React from "react";
 import { User } from "lucide-react";
 import { ProfileSettingsData } from "./types";
 import ImageDropzone from "./ImageDropzone";
+import ResumeDropzone from "./ResumeDropzone";
 
 interface ProfileDetailsSectionProps {
   profile: ProfileSettingsData;
@@ -36,6 +37,14 @@ export default function ProfileDetailsSection({
           placeholder="/assets/Images/rakibulislam.jpg"
         />
       </div>
+
+      {/* Direct Resume PDF Upload Section */}
+      <ResumeDropzone
+        label="Resume / CV File Upload (Direct PDF / DOC Upload)"
+        value={profile.resumeUrl || ""}
+        onChange={(url) => setProfile({ ...profile, resumeUrl: url })}
+        placeholder="Upload PDF/DOC file or paste Drive/CDN link..."
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>

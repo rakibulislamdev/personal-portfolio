@@ -46,71 +46,96 @@ export async function PUT(req: Request) {
   try {
     const body = await req.json();
 
-    const updatedSettings = await prisma.profileSettings.upsert({
-      where: { id: "default" },
-      update: {
-        name: body.name || "Rakibul Islam",
-        title: body.title || "Web Developer & Frontend Specialist",
-        email: body.email || "rirakib03@gmail.com",
-        phone: body.phone || "+8801621-574994",
-        location: body.location || "Dhaka, Bangladesh",
-        github: body.github ?? "",
-        linkedin: body.linkedin ?? "",
-        facebook: body.facebook ?? "",
-        twitter: body.twitter ?? "",
-        instagram: body.instagram ?? "",
-        githubInContact: Boolean(body.githubInContact ?? true),
-        linkedinInContact: Boolean(body.linkedinInContact ?? true),
-        facebookInContact: Boolean(body.facebookInContact ?? true),
-        twitterInContact: Boolean(body.twitterInContact ?? true),
-        instagramInContact: Boolean(body.instagramInContact ?? true),
-        githubInProfilesCard: Boolean(body.githubInProfilesCard ?? true),
-        linkedinInProfilesCard: Boolean(body.linkedinInProfilesCard ?? true),
-        facebookInProfilesCard: Boolean(body.facebookInProfilesCard ?? false),
-        twitterInProfilesCard: Boolean(body.twitterInProfilesCard ?? false),
-        googleAnalyticsId: body.googleAnalyticsId ?? "",
-        metaPixelId: body.metaPixelId ?? "",
-        profileImage: body.profileImage ?? "",
-        aboutImage: body.aboutImage ?? "",
-        typewriterText: body.typewriterText || "Web Developer based in Bangladesh",
-        aboutBio:
-          body.aboutBio ||
-          "I am a Dhaka, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.",
-        experienceMonths: Number(body.experienceMonths) || 6,
-      },
-      create: {
-        id: "default",
-        name: body.name || "Rakibul Islam",
-        title: body.title || "Web Developer & Frontend Specialist",
-        email: body.email || "rirakib03@gmail.com",
-        phone: body.phone || "+8801621-574994",
-        location: body.location || "Dhaka, Bangladesh",
-        github: body.github ?? "",
-        linkedin: body.linkedin ?? "",
-        facebook: body.facebook ?? "",
-        twitter: body.twitter ?? "",
-        instagram: body.instagram ?? "",
-        githubInContact: Boolean(body.githubInContact ?? true),
-        linkedinInContact: Boolean(body.linkedinInContact ?? true),
-        facebookInContact: Boolean(body.facebookInContact ?? true),
-        twitterInContact: Boolean(body.twitterInContact ?? true),
-        instagramInContact: Boolean(body.instagramInContact ?? true),
-        githubInProfilesCard: Boolean(body.githubInProfilesCard ?? true),
-        linkedinInProfilesCard: Boolean(body.linkedinInProfilesCard ?? true),
-        facebookInProfilesCard: Boolean(body.facebookInProfilesCard ?? false),
-        twitterInProfilesCard: Boolean(body.twitterInProfilesCard ?? false),
-        instagramInProfilesCard: Boolean(body.instagramInProfilesCard ?? false),
-        googleAnalyticsId: body.googleAnalyticsId ?? "",
-        metaPixelId: body.metaPixelId ?? "",
-        profileImage: body.profileImage ?? "",
-        aboutImage: body.aboutImage ?? "",
-        typewriterText: body.typewriterText || "Web Developer based in Bangladesh",
-        aboutBio:
-          body.aboutBio ||
-          "I am a Dhaka, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.",
-        experienceMonths: Number(body.experienceMonths) || 6,
-      },
-    });
+    let updatedSettings;
+    try {
+      updatedSettings = await (prisma.profileSettings as any).upsert({
+        where: { id: "default" },
+        update: {
+          name: body.name || "Rakibul Islam",
+          title: body.title || "Web Developer & Frontend Specialist",
+          email: body.email || "rirakib03@gmail.com",
+          phone: body.phone || "+8801621-574994",
+          location: body.location || "Dhaka, Bangladesh",
+          github: body.github ?? "",
+          linkedin: body.linkedin ?? "",
+          facebook: body.facebook ?? "",
+          twitter: body.twitter ?? "",
+          instagram: body.instagram ?? "",
+          githubInContact: Boolean(body.githubInContact ?? true),
+          linkedinInContact: Boolean(body.linkedinInContact ?? true),
+          facebookInContact: Boolean(body.facebookInContact ?? true),
+          twitterInContact: Boolean(body.twitterInContact ?? true),
+          instagramInContact: Boolean(body.instagramInContact ?? true),
+          githubInProfilesCard: Boolean(body.githubInProfilesCard ?? true),
+          linkedinInProfilesCard: Boolean(body.linkedinInProfilesCard ?? true),
+          facebookInProfilesCard: Boolean(body.facebookInProfilesCard ?? false),
+          twitterInProfilesCard: Boolean(body.twitterInProfilesCard ?? false),
+          googleAnalyticsId: body.googleAnalyticsId ?? "",
+          metaPixelId: body.metaPixelId ?? "",
+          resumeUrl: body.resumeUrl ?? "",
+          profileImage: body.profileImage ?? "",
+          aboutImage: body.aboutImage ?? "",
+          typewriterText: body.typewriterText || "Web Developer based in Bangladesh",
+          aboutBio:
+            body.aboutBio ||
+            "I am a Dhaka, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.",
+          experienceMonths: Number(body.experienceMonths) || 6,
+        },
+        create: {
+          id: "default",
+          name: body.name || "Rakibul Islam",
+          title: body.title || "Web Developer & Frontend Specialist",
+          email: body.email || "rirakib03@gmail.com",
+          phone: body.phone || "+8801621-574994",
+          location: body.location || "Dhaka, Bangladesh",
+          github: body.github ?? "",
+          linkedin: body.linkedin ?? "",
+          facebook: body.facebook ?? "",
+          twitter: body.twitter ?? "",
+          instagram: body.instagram ?? "",
+          githubInContact: Boolean(body.githubInContact ?? true),
+          linkedinInContact: Boolean(body.linkedinInContact ?? true),
+          facebookInContact: Boolean(body.facebookInContact ?? true),
+          twitterInContact: Boolean(body.twitterInContact ?? true),
+          instagramInContact: Boolean(body.instagramInContact ?? true),
+          githubInProfilesCard: Boolean(body.githubInProfilesCard ?? true),
+          linkedinInProfilesCard: Boolean(body.linkedinInProfilesCard ?? true),
+          facebookInProfilesCard: Boolean(body.facebookInProfilesCard ?? false),
+          twitterInProfilesCard: Boolean(body.twitterInProfilesCard ?? false),
+          instagramInProfilesCard: Boolean(body.instagramInProfilesCard ?? false),
+          googleAnalyticsId: body.googleAnalyticsId ?? "",
+          metaPixelId: body.metaPixelId ?? "",
+          resumeUrl: body.resumeUrl ?? "",
+          profileImage: body.profileImage ?? "",
+          aboutImage: body.aboutImage ?? "",
+          typewriterText: body.typewriterText || "Web Developer based in Bangladesh",
+          aboutBio:
+            body.aboutBio ||
+            "I am a Dhaka, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.",
+          experienceMonths: Number(body.experienceMonths) || 6,
+        },
+      });
+    } catch (upsertError: any) {
+      if (upsertError?.message?.includes("resumeUrl")) {
+        // Direct PostgreSQL update fallback to bypass Turbopack cached Prisma DMMF check
+        await prisma.$executeRawUnsafe(
+          `UPDATE "ProfileSettings" SET "resumeUrl" = $1, "updatedAt" = NOW() WHERE "id" = 'default'`,
+          body.resumeUrl ?? ""
+        );
+
+        const bodyWithoutResume = { ...body };
+        delete bodyWithoutResume.resumeUrl;
+
+        updatedSettings = await (prisma.profileSettings as any).upsert({
+          where: { id: "default" },
+          update: bodyWithoutResume,
+          create: bodyWithoutResume,
+        });
+      } else {
+        throw upsertError;
+      }
+    }
+
     revalidatePath("/", "layout");
 
     return NextResponse.json(updatedSettings);
