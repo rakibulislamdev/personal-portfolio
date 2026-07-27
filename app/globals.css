@@ -130,7 +130,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Satoshi', system-ui, sans-serif;
+    font-family: var(--font-sans), system-ui, sans-serif;
     font-weight: 400;
     letter-spacing: -0.01em;
   }
@@ -138,7 +138,7 @@
     @apply font-sans;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Clash Display', system-ui, sans-serif;
+    font-family: var(--font-heading), system-ui, sans-serif;
     font-weight: 600;
     letter-spacing: -0.035em;
   }

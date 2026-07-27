@@ -4,8 +4,48 @@ import { getProfileSettings, getProjects, getBlogs } from "@/lib/data";
 
 export const maxDuration = 30;
 
+// Simple in-memory rate limiting (10 requests per minute per IP)
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_MAX = 10; // Maximum requests allowed per window
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute window
+
+// Periodic cleanup to prevent memory leaks from old IPs (runs every 5 minutes)
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, data] of rateLimitMap.entries()) {
+    if (now > data.resetTime) {
+      rateLimitMap.delete(ip);
+    }
+  }
+}, 5 * 60 * 1000);
+
 export async function POST(req: Request) {
   try {
+    // Determine Client IP address
+    const clientIp =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      "unknown-ip";
+
+    const now = Date.now();
+    const rateData = rateLimitMap.get(clientIp);
+
+    // 🛡️ DDoS Protection Check BEFORE running DB queries or processing request body
+    if (rateData && now < rateData.resetTime) {
+      if (rateData.count >= RATE_LIMIT_MAX) {
+        return new Response(
+          `⏱️ Rate limit exceeded!\n\nYou have sent too many messages in a short time. Please wait a minute before asking another question!`,
+          { status: 429, headers: { "Content-Type": "text/plain; charset=utf-8" } }
+        );
+      }
+      rateData.count += 1;
+    } else {
+      rateLimitMap.set(clientIp, {
+        count: 1,
+        resetTime: now + RATE_LIMIT_WINDOW_MS,
+      });
+    }
+
     const { messages } = await req.json();
 
     // Fetch live database context

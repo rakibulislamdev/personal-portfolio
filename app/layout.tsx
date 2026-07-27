@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Ephesis } from "next/font/google";
+import { Ephesis, Plus_Jakarta_Sans, Syne } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/Theme/ThemeContext";
 import LayoutWrapper from "@/components/LayoutWrapper/LayoutWrapper";
@@ -10,6 +10,18 @@ const signatureFont = Ephesis({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-signature",
+});
+
+const sansFont = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const headingFont = Syne({
+  subsets: ["latin"],
+  variable: "--font-heading",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -133,15 +145,9 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${signatureFont.variable} h-full antialiased dark`}
+      className={`${sansFont.variable} ${headingFont.variable} ${signatureFont.variable} h-full antialiased dark`}
     >
       <head>
-        {/* Fontshare CDN — Clash Display + Satoshi */}
-        <link rel="preconnect" href="https://api.fontshare.com" />
-        <link
-          href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@300,400,500,700&display=swap"
-          rel="stylesheet"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

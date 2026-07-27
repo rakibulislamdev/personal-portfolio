@@ -72,9 +72,47 @@ export async function GET(req: Request) {
   }
 }
 
+// Simple in-memory rate limiting for Contact Form POST submissions (5 messages per 15 minutes per IP)
+const messageRateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const MSG_RATE_LIMIT_MAX = 5;
+const MSG_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, data] of messageRateLimitMap.entries()) {
+    if (now > data.resetTime) {
+      messageRateLimitMap.delete(ip);
+    }
+  }
+}, 10 * 60 * 1000);
+
 // POST: Create a new contact inquiry message
 export async function POST(req: Request) {
   try {
+    // Determine Client IP for spam protection
+    const clientIp =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      "unknown-ip";
+
+    const now = Date.now();
+    const rateData = messageRateLimitMap.get(clientIp);
+
+    if (rateData && now < rateData.resetTime) {
+      if (rateData.count >= MSG_RATE_LIMIT_MAX) {
+        return NextResponse.json(
+          { error: "Too many messages sent. Please wait 15 minutes before sending another inquiry." },
+          { status: 429 }
+        );
+      }
+      rateData.count += 1;
+    } else {
+      messageRateLimitMap.set(clientIp, {
+        count: 1,
+        resetTime: now + MSG_RATE_LIMIT_WINDOW_MS,
+      });
+    }
+
     const body = await req.json();
     const { name, email, subject, message } = body;
 

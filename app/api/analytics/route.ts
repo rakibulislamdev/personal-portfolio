@@ -101,8 +101,42 @@ export async function GET(req: Request) {
   }
 }
 
+// Simple in-memory rate limiting for Analytics Logging (max 20 visitor logs per minute per IP)
+const analyticsRateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const ANALYTICS_LIMIT_MAX = 20;
+const ANALYTICS_WINDOW_MS = 60 * 1000;
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, data] of analyticsRateLimitMap.entries()) {
+    if (now > data.resetTime) {
+      analyticsRateLimitMap.delete(ip);
+    }
+  }
+}, 5 * 60 * 1000);
+
 export async function POST(req: Request) {
   try {
+    const clientIp =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      "unknown-ip";
+
+    const now = Date.now();
+    const rateData = analyticsRateLimitMap.get(clientIp);
+
+    if (rateData && now < rateData.resetTime) {
+      if (rateData.count >= ANALYTICS_LIMIT_MAX) {
+        return NextResponse.json({ success: true, ignored: true });
+      }
+      rateData.count += 1;
+    } else {
+      analyticsRateLimitMap.set(clientIp, {
+        count: 1,
+        resetTime: now + ANALYTICS_WINDOW_MS,
+      });
+    }
+
     const body = await req.json();
     const { ip, country, city, flag, page, device } = body;
 
