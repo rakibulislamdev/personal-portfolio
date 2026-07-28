@@ -1,26 +1,20 @@
 import type { Metadata } from "next";
-import { Ephesis, Plus_Jakarta_Sans, Syne } from "next/font/google";
+import { Mr_De_Haviland, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/Theme/ThemeContext";
 import LayoutWrapper from "@/components/LayoutWrapper/LayoutWrapper";
 import ChatbotWidget from "@/components/Chatbot/ChatbotWidget";
 import { getProfileSettings } from "@/lib/data";
 
-const signatureFont = Ephesis({
+const signatureFont = Mr_De_Haviland({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-signature",
 });
 
-const sansFont = Plus_Jakarta_Sans({
+const sansFont = Bricolage_Grotesque({
   subsets: ["latin"],
   variable: "--font-sans",
-  display: "swap",
-});
-
-const headingFont = Syne({
-  subsets: ["latin"],
-  variable: "--font-heading",
   display: "swap",
 });
 
@@ -145,7 +139,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${sansFont.variable} ${headingFont.variable} ${signatureFont.variable} h-full antialiased dark`}
+      className={`${sansFont.variable} ${signatureFont.variable} h-full antialiased dark`}
     >
       <head>
         <script

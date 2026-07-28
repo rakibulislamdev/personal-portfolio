@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import { useTheme, themePalettes, ThemeColor } from "./ThemeContext";
-import { Palette, Moon, Sun, X } from "lucide-react";
+import { Palette, X } from "lucide-react";
 
 export const ThemeSwitcher = () => {
-  const { themeColor, setThemeColor, isDark, setIsDark } = useTheme();
+  const { themeColor, setThemeColor } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -13,8 +13,8 @@ export const ThemeSwitcher = () => {
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-12 h-12 rounded-full bg-zinc-800/90 border border-zinc-700 text-white flex items-center justify-center shadow-lg hover:scale-105 transition-all duration-300"
-        title="Theme Settings"
+        className="w-12 h-12 rounded-full bg-zinc-800/90 border border-zinc-700 text-white flex items-center justify-center shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer"
+        title="Theme Accent Color"
       >
         {isOpen ? <X className="w-5 h-5" /> : <Palette className="w-5 h-5" />}
       </button>
@@ -27,7 +27,6 @@ export const ThemeSwitcher = () => {
           </div>
 
           <div>
-            <span className="text-xs text-zinc-400 font-medium block mb-2">Accent Color</span>
             <div className="grid grid-cols-3 gap-2">
               {(Object.keys(themePalettes) as ThemeColor[]).map((key) => {
                 const colorObj = themePalettes[key];
@@ -36,7 +35,7 @@ export const ThemeSwitcher = () => {
                   <button
                     key={key}
                     onClick={() => setThemeColor(key)}
-                    className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                    className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-all cursor-pointer ${
                       isSelected
                         ? "border-white bg-zinc-800 text-white"
                         : "border-zinc-800 bg-zinc-950/50 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50"

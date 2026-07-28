@@ -7,8 +7,6 @@ export type ThemeColor = "default" | "blue" | "emerald" | "violet" | "amber" | "
 interface ThemeContextType {
   themeColor: ThemeColor;
   setThemeColor: (color: ThemeColor) => void;
-  isDark: boolean;
-  setIsDark: (dark: boolean) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -63,7 +61,6 @@ export const themePalettes: Record<
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [themeColor, setThemeColorState] = useState<ThemeColor>("default");
-  const [isDark, setIsDarkState] = useState<boolean>(true);
 
   useEffect(() => {
     const savedColor = localStorage.getItem("app_theme_color") as ThemeColor;
@@ -75,11 +72,6 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const setThemeColor = (color: ThemeColor) => {
     setThemeColorState(color);
     localStorage.setItem("app_theme_color", color);
-  };
-
-  const setIsDark = (dark: boolean) => {
-    setIsDarkState(true);
-    localStorage.setItem("app_theme_dark", "true");
   };
 
   useEffect(() => {
@@ -94,7 +86,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <ThemeContext.Provider
-      value={{ themeColor, setThemeColor, isDark, setIsDark }}
+      value={{ themeColor, setThemeColor }}
     >
       {children}
     </ThemeContext.Provider>

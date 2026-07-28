@@ -16,9 +16,6 @@ const ServiceOffering = async () => {
         {/* Blog Card */}
         <Link
           href="/blog"
-          data-aos="fade-down-right"
-          data-aos-delay="50"
-          data-aos-duration="1000"
           className="group relative bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 hover:border-[var(--theme-color)] transition-all duration-500 shadow-md hover:shadow-2xl flex flex-col justify-between"
         >
           <div className="py-6 px-8 sm:px-10 flex flex-col justify-between h-full">
@@ -43,8 +40,7 @@ const ServiceOffering = async () => {
         </Link>
 
         {/* Specialization / Tech Stack Card */}
-        <Link
-          href="/services"
+        <div
           className="col-span-1 lg:col-span-2 group relative bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 hover:border-[var(--theme-color)] transition-all duration-500 shadow-md hover:shadow-2xl flex flex-col justify-between overflow-hidden"
         >
           <div className="pt-7 pb-6 flex flex-col justify-between h-full min-h-[220px]">
@@ -62,12 +58,8 @@ const ServiceOffering = async () => {
                 Services Offering
               </h3>
             </div>
-
-            <div className="absolute bottom-7 right-7">
-              <HoverIcon />
-            </div>
           </div>
-        </Link>
+        </div>
 
         {/* Profiles Card */}
         <div data-aos="fade-up-left" data-aos-delay="50" data-aos-duration="1000">

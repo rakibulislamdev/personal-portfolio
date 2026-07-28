@@ -20,6 +20,7 @@ const HeroArea = async () => {
   const name = settings?.name || "Rakibul Islam";
   const title = settings?.title || "A WEB DEVELOPER";
   const email = settings?.email || "rirakib03@gmail.com";
+  const phone = settings?.phone || "+8801621-574994";
   const location = settings?.location || "Dhaka, Bangladesh";
   const profileImage = settings?.profileImage || "";
   const typewriterText = settings?.typewriterText || `Web Developer based in ${location}`;
@@ -77,35 +78,52 @@ const HeroArea = async () => {
         <div className="flex flex-col justify-between gap-6 h-full">
           {/* Marquee Banner Card */}
           <div
-            className="bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] px-10 py-5 rounded-full border border-zinc-200/90 dark:border-zinc-800/80 hover:border-[var(--theme-color)] transition-all duration-500 shadow-md"
+            className="relative bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] px-8 py-5 rounded-full border border-zinc-200/90 dark:border-zinc-800/80 hover:border-[var(--theme-color)] transition-all duration-500 shadow-md overflow-hidden"
           >
-            <MarqueeWrapper>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-zinc-900 dark:text-white ml-4 font-bold">Email :</span>
-                  <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">{email}</span>
+            <div
+              className="w-full overflow-hidden"
+              style={{
+                maskImage:
+                  "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
+              }}
+            >
+              <MarqueeWrapper>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-zinc-900 dark:text-white ml-4 font-bold">Email :</span>
+                    <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">{email}</span>
+                  </div>
+                  <div style={{ color: "var(--theme-color)" }}>
+                    <MarqueeStarIcon className="w-3.5 h-3.5" />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-zinc-900 dark:text-white font-bold">Phone :</span>
+                    <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">{phone}</span>
+                  </div>
+                  <div style={{ color: "var(--theme-color)" }}>
+                    <MarqueeStarIcon className="w-3.5 h-3.5" />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-zinc-900 dark:text-white font-bold">Location :</span>
+                    <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">{location}</span>
+                  </div>
+                  <div style={{ color: "var(--theme-color)" }}>
+                    <MarqueeStarIcon className="w-3.5 h-3.5" />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-zinc-900 dark:text-white font-bold">Developer :</span>
+                    <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">
+                      {name}
+                    </span>
+                  </div>
+                  <div style={{ color: "var(--theme-color)" }}>
+                    <MarqueeStarIcon className="w-3.5 h-3.5" />
+                  </div>
                 </div>
-                <div style={{ color: "var(--theme-color)" }}>
-                  <MarqueeStarIcon className="w-3.5 h-3.5" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-zinc-900 dark:text-white font-bold">Location :</span>
-                  <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">{location}</span>
-                </div>
-                <div style={{ color: "var(--theme-color)" }}>
-                  <MarqueeStarIcon className="w-3.5 h-3.5" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-zinc-900 dark:text-white font-bold">Developer :</span>
-                  <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">
-                    {name}
-                  </span>
-                </div>
-                <div style={{ color: "var(--theme-color)" }}>
-                  <MarqueeStarIcon className="w-3.5 h-3.5" />
-                </div>
-              </div>
-            </MarqueeWrapper>
+              </MarqueeWrapper>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 grid-cols-1 gap-6 flex-1">
