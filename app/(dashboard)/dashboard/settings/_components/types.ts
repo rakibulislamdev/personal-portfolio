@@ -32,4 +32,20 @@ export interface ProfileSettingsData {
   aboutBio: string;
   experienceMonths: number;
   clientsWorldwide: number;
+  experiences?: string;
+  educations?: string;
+}
+
+export interface ExperienceItem {
+  id: string;
+  year: string;
+  title: string;
+  role: string;
+}
+
+export interface EducationItem {
+  id: string;
+  year: string;
+  title: string;
+  institution: string;
 }

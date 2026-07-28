@@ -20,6 +20,12 @@ async function ensureDbColumns() {
     await prisma.$executeRawUnsafe(
       `ALTER TABLE "ProfileSettings" ADD COLUMN IF NOT EXISTS "aboutImageAlt" TEXT DEFAULT 'Rakibul Islam - About Profile Photo';`
     );
+    await prisma.$executeRawUnsafe(
+      `ALTER TABLE "ProfileSettings" ADD COLUMN IF NOT EXISTS "experiences" TEXT DEFAULT '[]';`
+    );
+    await prisma.$executeRawUnsafe(
+      `ALTER TABLE "ProfileSettings" ADD COLUMN IF NOT EXISTS "educations" TEXT DEFAULT '[]';`
+    );
   } catch (err) {
     // Table or column already exists / migration handled
   }
@@ -55,6 +61,13 @@ export async function GET() {
             "I am a Dhaka, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.",
           experienceMonths: 6,
           clientsWorldwide: 25,
+          experiences: JSON.stringify([
+            { id: "1", year: "2023 - 2024", title: "Fiverr (Marketplace)", role: "Junior Web Developer" },
+            { id: "2", year: "2023 - Present", title: "Programming Hero", role: "Web Development Learner" },
+          ]),
+          educations: JSON.stringify([
+            { id: "1", year: "2021 - 2025", title: "Diploma in Computer Science & Technology", institution: "Pabna Polytechnic Institute, Pabna" },
+          ]),
         },
       });
     }
@@ -107,6 +120,8 @@ export async function PUT(req: Request) {
         "typewriterText" = $28,
         "aboutBio" = $29,
         "experienceMonths" = $30,
+        "experiences" = $31,
+        "educations" = $32,
         "updatedAt" = NOW()
       WHERE "id" = 'default'`,
       body.name || "Rakibul Islam",
@@ -138,7 +153,9 @@ export async function PUT(req: Request) {
       body.aboutImageAlt ?? "Rakibul Islam - About Profile Photo",
       body.typewriterText || "Web Developer based in Bangladesh",
       body.aboutBio || "I am a Dhaka, Bangladesh-based web developer.",
-      Number(body.experienceMonths) || 6
+      Number(body.experienceMonths) || 6,
+      body.experiences ?? "[]",
+      body.educations ?? "[]"
     );
 
     revalidatePath("/", "layout");

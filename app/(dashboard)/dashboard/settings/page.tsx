@@ -1,15 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Save, Loader2, User, Cpu, Globe } from "lucide-react";
+import { Save, Loader2, User, Cpu, Globe, Briefcase } from "lucide-react";
 import { toast } from "sonner";
 import { ProfileSettingsData } from "./_components/types";
 import SettingsHeader from "./_components/SettingsHeader";
 import ProfileDetailsSection from "./_components/ProfileDetailsSection";
 import SocialLinksSection from "./_components/SocialLinksSection";
 import ServicesSkillsSection from "./_components/ServicesSkillsSection";
+import ExperienceEducationSection from "./_components/ExperienceEducationSection";
 
-type SettingsTab = "profile" | "skills" | "social";
+type SettingsTab = "profile" | "experience" | "skills" | "social";
 
 export default function DashboardSettingsPage() {
   const [activeTab, setActiveTab] = useState<SettingsTab>("profile");
@@ -99,6 +100,18 @@ export default function DashboardSettingsPage() {
 
         <button
           type="button"
+          onClick={() => setActiveTab("experience")}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+            activeTab === "experience"
+              ? "bg-zinc-900 text-white dark:bg-[#2a2a2a] dark:text-white shadow border border-zinc-800 dark:border-zinc-700"
+              : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/50"
+          }`}
+        >
+          <Briefcase className="w-4 h-4 text-[var(--theme-color)]" /> Experience & Education
+        </button>
+
+        <button
+          type="button"
           onClick={() => setActiveTab("skills")}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
             activeTab === "skills"
@@ -130,6 +143,10 @@ export default function DashboardSettingsPage() {
         {/* Tab Content */}
         {activeTab === "profile" && (
           <ProfileDetailsSection profile={profile} setProfile={setProfile} />
+        )}
+
+        {activeTab === "experience" && (
+          <ExperienceEducationSection profile={profile} setProfile={setProfile} />
         )}
 
         {activeTab === "skills" && (

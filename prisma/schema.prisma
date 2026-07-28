@@ -149,5 +149,7 @@ model ProfileSettings {
   metaPixelId             String?  @default("")
   resumeUrl               String?  @default("")
   enabledSkills           String?  @default("")
+  experiences             String?  @db.Text @default("[{\"id\":\"1\",\"year\":\"2023 - 2024\",\"title\":\"Fiverr (Marketplace)\",\"role\":\"Junior Web Developer\"},{\"id\":\"2\",\"year\":\"2023 - Present\",\"title\":\"Programming Hero\",\"role\":\"Web Development Learner\"}]")
+  educations              String?  @db.Text @default("[{\"id\":\"1\",\"year\":\"2021 - 2025\",\"title\":\"Diploma in Computer Science & Technology\",\"institution\":\"Pabna Polytechnic Institute, Pabna\"}]")
   updatedAt               DateTime @updatedAt
 }
