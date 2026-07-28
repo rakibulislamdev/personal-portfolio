@@ -14,8 +14,12 @@ export default function DashboardStatsGrid({
   isLoading,
 }: DashboardStatsGridProps) {
   const topCountryText = data?.topCountry
-    ? `${data.topCountry.flag} ${data.topCountry.name} (${data.topCountry.percentage}%)`
-    : "Bangladesh 🇧🇩";
+    ? `${
+        data.topCountry.flag && data.topCountry.flag.length === 2 && /^[A-Za-z]{2}$/.test(data.topCountry.flag)
+          ? String.fromCodePoint(...data.topCountry.flag.toUpperCase().split("").map((c) => 127397 + c.charCodeAt(0)))
+          : data.topCountry.flag || "🇧🇩"
+      } ${data.topCountry.name} (${data.topCountry.percentage}%)`
+    : "🇧🇩 Bangladesh (100%)";
 
   const stats = [
     {

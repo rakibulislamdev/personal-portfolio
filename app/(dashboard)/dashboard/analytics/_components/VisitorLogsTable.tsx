@@ -65,7 +65,26 @@ export default function VisitorLogsTable({
                     {log.ip}
                   </td>
                   <td className="py-4 px-4 font-semibold text-zinc-900 dark:text-white flex items-center gap-2">
-                    <span className="text-base">{log.flag}</span>
+                    <span className="text-[11px] font-bold tracking-wider px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700/60">
+                      {log.flag && log.flag.length === 2 && /^[A-Za-z]{2}$/.test(log.flag)
+                        ? log.flag.toUpperCase()
+                        : "BD"}
+                    </span>
+                    <img
+                      src={`https://flagcdn.com/24x18/${
+                        log.flag && log.flag.length === 2 && /^[A-Za-z]{2}$/.test(log.flag)
+                          ? log.flag.toLowerCase()
+                          : log.country?.toLowerCase().includes("bangladesh")
+                          ? "bd"
+                          : log.country?.toLowerCase().includes("united states")
+                          ? "us"
+                          : log.country?.toLowerCase().includes("united kingdom")
+                          ? "gb"
+                          : "bd"
+                      }.png`}
+                      alt={log.country || "Flag"}
+                      className="w-5 h-3.5 object-cover rounded-xs shadow-xs"
+                    />
                     <span>{log.country}</span>
                     <span className="text-xs text-zinc-400 font-normal">({log.city})</span>
                   </td>

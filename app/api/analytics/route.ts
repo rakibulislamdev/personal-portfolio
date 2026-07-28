@@ -106,9 +106,17 @@ export async function GET(req: Request) {
       }),
     }));
 
+    // Calculate unique active IPs in the last 5 minutes
+    const fiveMinsAgo = new Date(Date.now() - 5 * 60 * 1000);
+    const recentLogsForLive = await prisma.visitorLog.findMany({
+      where: { createdAt: { gte: fiveMinsAgo } },
+      select: { ip: true },
+    });
+    const activeLive = new Set(recentLogsForLive.map((l) => l.ip)).size || 1;
+
     return NextResponse.json({
       totalVisitors: totalCount,
-      activeLive: totalCount > 0 ? totalCount : 1,
+      activeLive,
       topCountry,
       logs: formattedLogs,
       pagination: {

@@ -35,12 +35,14 @@ export async function GET() {
       orderBy: { createdAt: "desc" },
     });
 
-    // Calculate Active Live Visitors (visitors in the last 15 minutes)
-    const fifteenMinsAgo = new Date(Date.now() - 15 * 60 * 1000);
-    const recentLiveCount = await prisma.visitorLog.count({
-      where: { createdAt: { gte: fifteenMinsAgo } },
+    // Calculate Active Live Visitors (unique IPs in the last 5 minutes)
+    const fiveMinsAgo = new Date(Date.now() - 5 * 60 * 1000);
+    const recentLogsForLive = await prisma.visitorLog.findMany({
+      where: { createdAt: { gte: fiveMinsAgo } },
+      select: { ip: true },
     });
-    const activeLiveVisitors = recentLiveCount > 0 ? recentLiveCount : (totalVisitors > 0 ? 1 : 0);
+    const uniqueLiveIps = new Set(recentLogsForLive.map((l) => l.ip)).size;
+    const activeLiveVisitors = uniqueLiveIps > 0 ? uniqueLiveIps : 1;
 
     // Calculate Top Visitor Country dynamically
     const allLogsForCountry = await prisma.visitorLog.findMany({

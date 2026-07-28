@@ -66,7 +66,22 @@ export default function LiveVisitorWidget({
                 <span className="text-[10px] text-zinc-400 font-medium">{formatTimeAgo(v.createdAt)}</span>
               </div>
               <div className="flex items-center gap-2 text-xs font-semibold text-zinc-900 dark:text-white">
-                <span>{v.flag}</span>
+                <span className="text-[10px] font-bold tracking-wider px-1 py-0.2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700/60">
+                  {v.flag && v.flag.length === 2 && /^[A-Za-z]{2}$/.test(v.flag)
+                    ? v.flag.toUpperCase()
+                    : "BD"}
+                </span>
+                <img
+                  src={`https://flagcdn.com/24x18/${
+                    v.flag && v.flag.length === 2 && /^[A-Za-z]{2}$/.test(v.flag)
+                      ? v.flag.toLowerCase()
+                      : v.country?.toLowerCase().includes("bangladesh")
+                      ? "bd"
+                      : "bd"
+                  }.png`}
+                  alt={v.country || "Flag"}
+                  className="w-4 h-3 object-cover rounded-xs"
+                />
                 <span>{v.country}</span>
                 <span className="text-zinc-400 text-[11px] font-normal">({v.city})</span>
               </div>
