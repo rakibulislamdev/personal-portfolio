@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 // Ensure schema columns exist in DB (safeguard for dynamic Prisma schema updates)
 async function ensureDbColumns() {
   try {
@@ -130,7 +133,7 @@ export async function PUT(req: Request) {
     try {
       const { revalidateTag } = await import("next/cache");
       (revalidateTag as (tag: string) => void)("profile-settings");
-    } catch {}
+    } catch { }
 
     const settings = await prisma.profileSettings.findUnique({
       where: { id: "default" },
