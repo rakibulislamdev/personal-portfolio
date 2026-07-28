@@ -21,6 +21,16 @@ const STARTER_QUESTIONS = [
   "💼 Is Rakibul available for hire?",
 ];
 
+const FUNNY_FALLBACK_MESSAGE = `Oops! AI Service is on a Coffee Break! ☕
+
+Developer **Rakib** hasn't paid the AI service bill yet! 😅
+
+**How you can help wake me up:**
+Hire Rakibul for a web development project! Your project contract will help him pay for the AI service so I can get back to assisting you!
+
+- 📧 **Email Rakibul:** [rirakib03@gmail.com](mailto:rirakib03@gmail.com)
+- 💼 **Hire Rakibul:** [Contact Rakibul](/contact)`;
+
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -40,11 +50,11 @@ export default function ChatbotWidget() {
         {
           id: Date.now().toString(),
           role: "assistant",
-          content: `Oops! AI Service is on a Coffee Break!\n\nDeveloper **Rakibul** hasn't paid the AI service bill yet! 😅\n\nHow you can help wake me up:\nHire Rakibul for a web development project! Your project contract will help him pay for the AI service so I can get back to assisting you!\n\nEmail Rakibul: [rirakib03@gmail.com](mailto:rirakib03@gmail.com)`,
+          content: FUNNY_FALLBACK_MESSAGE,
           parts: [
             {
               type: "text",
-              text: `Oops! AI Service is on a Coffee Break!\n\nDeveloper **Rakibul** hasn't paid the AI service bill yet! 😅\n\nHow you can help wake me up:\nHire Rakibul for a web development project! Your project contract will help him pay for the AI service so I can get back to assisting you!\n\nEmail Rakibul: [rirakib03@gmail.com](mailto:rirakib03@gmail.com)`,
+              text: FUNNY_FALLBACK_MESSAGE,
             },
           ],
         },
@@ -59,8 +69,27 @@ export default function ChatbotWidget() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input.trim()) return;
-    sendMessage({ text: input });
+    const userText = input.trim();
     setInput("");
+
+    const userMsgId = Date.now().toString();
+    const assistantMsgId = (Date.now() + 1).toString();
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: userMsgId,
+        role: "user",
+        content: userText,
+        parts: [{ type: "text", text: userText }],
+      },
+      {
+        id: assistantMsgId,
+        role: "assistant",
+        content: FUNNY_FALLBACK_MESSAGE,
+        parts: [{ type: "text", text: FUNNY_FALLBACK_MESSAGE }],
+      },
+    ]);
   };
 
   const scrollToBottom = () => {
@@ -74,9 +103,24 @@ export default function ChatbotWidget() {
   }, [messages, isOpen]);
 
   const handleSuggestionClick = (question: string) => {
-    sendMessage({
-      text: question,
-    });
+    const userMsgId = Date.now().toString();
+    const assistantMsgId = (Date.now() + 1).toString();
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: userMsgId,
+        role: "user",
+        content: question,
+        parts: [{ type: "text", text: question }],
+      },
+      {
+        id: assistantMsgId,
+        role: "assistant",
+        content: FUNNY_FALLBACK_MESSAGE,
+        parts: [{ type: "text", text: FUNNY_FALLBACK_MESSAGE }],
+      },
+    ]);
   };
 
   const handleClearChat = () => {
@@ -204,7 +248,7 @@ export default function ChatbotWidget() {
                       }`}
                   >
                     {m.role === "assistant" ? (
-                      <div className="prose prose-invert prose-xs max-w-none prose-p:leading-relaxed prose-a:text-amber-400 prose-a:underline hover:prose-a:text-amber-300">
+                      <div className="prose prose-invert prose-xs max-w-none prose-p:my-1.5 prose-p:leading-relaxed prose-a:text-amber-400 prose-a:underline hover:prose-a:text-amber-300">
                         <ReactMarkdown
                           components={{
                             a: ({ node, ...props }) => (
@@ -212,17 +256,27 @@ export default function ChatbotWidget() {
                                 {...props}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-amber-400 hover:underline font-medium"
+                                className="text-amber-400 hover:text-amber-300 underline font-semibold decoration-amber-400/60 underline-offset-2"
                               />
                             ),
                           }}
                         >
-                          {m.parts ? m.parts.map((p) => (p.type === "text" ? p.text : "")).join("") : ""}
+                          {m.parts && m.parts.length > 0
+                            ? m.parts
+                              .filter((p): p is { type: "text"; text: string } => p.type === "text")
+                              .map((p) => p.text)
+                              .join("")
+                            : ((m as any).content || "")}
                         </ReactMarkdown>
                       </div>
                     ) : (
                       <p className="whitespace-pre-wrap">
-                        {m.parts ? m.parts.map((p) => (p.type === "text" ? p.text : "")).join("") : ""}
+                        {m.parts && m.parts.length > 0
+                          ? m.parts
+                            .filter((p): p is { type: "text"; text: string } => p.type === "text")
+                            .map((p) => p.text)
+                            .join("")
+                          : ((m as any).content || "")}
                       </p>
                     )}
                   </div>

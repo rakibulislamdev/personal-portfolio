@@ -19,6 +19,16 @@ setInterval(() => {
   }
 }, 5 * 60 * 1000);
 
+const funnyFallbackMessage = `Oops! AI Service is on a Coffee Break! ☕
+
+Developer **Rakib** hasn't paid the AI service bill yet! 😅
+
+**How you can help wake me up:**
+Hire Rakibul for a web development project! Your project contract will help him pay for the AI service so I can get back to assisting you!
+
+- 📧 **Email Rakibul:** [rirakib03@gmail.com](mailto:rirakib03@gmail.com)
+- 💼 **Hire Rakibul:** [Contact Rakibul](/contact)`;
+
 export async function POST(req: Request) {
   try {
     // Determine Client IP address
@@ -101,22 +111,15 @@ ${blogsContext || "No public blogs listed yet."}
 ### GUIDELINES:
 1. Speak as Rakibul's knowledgeable AI assistant.
 2. If asked about a specific project or topic, provide clear, concise details using the data above.
-3. Always format project links, GitHub links, and live URLs as clean Markdown links e.g. [Live Demo](URL) or [GitHub](URL).
+3. Always format emails, project links, GitHub links, LinkedIn links, and contact links as active Markdown links!
+   - Example Email: [rirakib03@gmail.com](mailto:rirakib03@gmail.com)
+   - Example Contact: [Contact Rakibul](/contact)
+   - Example Live Demo: [Live Demo](URL)
 4. Match the user's language (if the user asks in Bengali / Banglish, reply in helpful Bengali / Banglish. If in English, reply in English).
-5. If the user asks for something not in the portfolio data, politely state that you don't have that specific detail and offer to connect them via Rakibul's email (${settings?.email}).
+5. If the user asks for something not in the portfolio data, politely state that you don't have that specific detail and offer to connect them via Rakibul's email ([${settings?.email || "rirakib03@gmail.com"}](mailto:${settings?.email || "rirakib03@gmail.com"})).
 `;
 
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
-
-    const funnyFallbackMessage = `Oops! AI Service is on a Coffee Break!
-
-Developer **Rakibul** hasn't paid the AI service bill yet! 😅
-
-How you can help wake me up:
-Hire Rakibul for a web development project! Your project contract will help him pay for the AI service so I can get back to assisting you!
-
-Email Rakibul: [${settings?.email || "rirakib03@gmail.com"}](mailto:${settings?.email || "rirakib03@gmail.com"})
-Explore Projects & Hire: [Contact Rakibul](/#contact)`;
 
     if (!apiKey) {
       console.error("Gemini API Key missing in environment variables!");
@@ -151,14 +154,15 @@ Explore Projects & Hire: [Contact Rakibul](/#contact)`;
     } catch (streamErr: any) {
       console.error("StreamText execution failed:", streamErr?.message || streamErr);
       return new Response(funnyFallbackMessage, {
+        status: 200,
         headers: { "Content-Type": "text/plain; charset=utf-8" },
       });
     }
   } catch (error: any) {
     console.error("Chat API error:", error?.message || error);
-    return new Response(
-      `Oops! AI Service is on a Coffee Break!\n\nDeveloper **Rakibul** hasn't paid for the AI service quota yet! 😅\n\nHow you can help:\nHire Rakibul for a project so he can afford to renew the AI subscription and get me back online!`,
-      { status: 200, headers: { "Content-Type": "text/plain; charset=utf-8" } }
-    );
+    return new Response(funnyFallbackMessage, {
+      status: 200,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
   }
 }

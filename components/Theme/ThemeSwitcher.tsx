@@ -1,15 +1,32 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useTheme, themePalettes, ThemeColor } from "./ThemeContext";
 import { Palette, X } from "lucide-react";
 
 export const ThemeSwitcher = () => {
   const { themeColor, setThemeColor } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div ref={dropdownRef} className="fixed bottom-6 right-6 z-50">
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useTheme, themePalettes, ThemeColor } from "@/components/Theme/ThemeContext";
 import { Palette, Menu, Download } from "lucide-react";
 import {
@@ -20,6 +20,23 @@ const Navbar = () => {
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [resumeUrl, setResumeUrl] = useState<string>("");
   const { themeColor, setThemeColor } = useTheme();
+  const colorPickerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (colorPickerRef.current && !colorPickerRef.current.contains(event.target as Node)) {
+        setShowColorPicker(false);
+      }
+    };
+
+    if (showColorPicker) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showColorPicker]);
 
   useEffect(() => {
     fetch("/api/settings")
@@ -170,7 +187,7 @@ const Navbar = () => {
         {/* Action Buttons: Accent Theme Picker + Download Resume */}
         <div className="hidden lg:flex items-center gap-3">
           {/* Theme Color Picker Dropdown */}
-          <div className="relative">
+          <div ref={colorPickerRef} className="relative">
             <button
               onClick={() => setShowColorPicker(!showColorPicker)}
               className="p-2.5 rounded-full bg-[#323232] hover:bg-[#444] text-white transition flex items-center justify-center shadow-sm cursor-pointer"
