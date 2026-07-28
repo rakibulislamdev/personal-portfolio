@@ -23,19 +23,47 @@ export default function ProfileDetailsSection({
 
       {/* Drag and Drop Image Upload Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 bg-zinc-50/70 dark:bg-[#181818]/70 rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80">
-        <ImageDropzone
-          label="Homepage Profile Picture"
-          value={profile.profileImage}
-          onChange={(url) => setProfile({ ...profile, profileImage: url })}
-          placeholder="/assets/Images/rakibulislam.jpg"
-        />
+        <div className="space-y-3">
+          <ImageDropzone
+            label="Homepage Profile Picture"
+            value={profile.profileImage}
+            onChange={(url) => setProfile({ ...profile, profileImage: url })}
+            placeholder="/assets/Images/rakibulislam.jpg"
+          />
+          <div>
+            <label className="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1">
+              Homepage Picture SEO Alt Tag
+            </label>
+            <input
+              type="text"
+              value={profile.profileImageAlt || ""}
+              onChange={(e) => setProfile({ ...profile, profileImageAlt: e.target.value })}
+              placeholder="e.g. Rakibul Islam - Full Stack & MERN Web Developer"
+              className="w-full px-3 py-2 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200/80 dark:border-zinc-800/80 rounded-xl text-xs font-medium text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition"
+            />
+          </div>
+        </div>
 
-        <ImageDropzone
-          label="About Page Picture (Separate Image)"
-          value={profile.aboutImage}
-          onChange={(url) => setProfile({ ...profile, aboutImage: url })}
-          placeholder="/assets/Images/rakibulislam.jpg"
-        />
+        <div className="space-y-3">
+          <ImageDropzone
+            label="About Page Picture (Separate Image)"
+            value={profile.aboutImage}
+            onChange={(url) => setProfile({ ...profile, aboutImage: url })}
+            placeholder="/assets/Images/rakibulislam.jpg"
+          />
+          <div>
+            <label className="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1">
+              About Page Picture SEO Alt Tag
+            </label>
+            <input
+              type="text"
+              value={profile.aboutImageAlt || ""}
+              onChange={(e) => setProfile({ ...profile, aboutImageAlt: e.target.value })}
+              placeholder="e.g. Rakibul Islam - About Profile Photo"
+              className="w-full px-3 py-2 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200/80 dark:border-zinc-800/80 rounded-xl text-xs font-medium text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Direct Resume PDF Upload Section */}

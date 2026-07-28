@@ -14,6 +14,12 @@ async function ensureDbColumns() {
     await prisma.$executeRawUnsafe(
       `ALTER TABLE "ProfileSettings" ADD COLUMN IF NOT EXISTS "enabledSkills" TEXT DEFAULT '';`
     );
+    await prisma.$executeRawUnsafe(
+      `ALTER TABLE "ProfileSettings" ADD COLUMN IF NOT EXISTS "profileImageAlt" TEXT DEFAULT 'Rakibul Islam - Full Stack & MERN Web Developer';`
+    );
+    await prisma.$executeRawUnsafe(
+      `ALTER TABLE "ProfileSettings" ADD COLUMN IF NOT EXISTS "aboutImageAlt" TEXT DEFAULT 'Rakibul Islam - About Profile Photo';`
+    );
   } catch (err) {
     // Table or column already exists / migration handled
   }
@@ -41,7 +47,9 @@ export async function GET() {
           linkedin: "https://linkedin.com/in/rakibul-islam",
           instagram: "https://instagram.com",
           profileImage: "/assets/Images/rakibulislam.jpg",
+          profileImageAlt: "Rakibul Islam - Full Stack & MERN Web Developer",
           aboutImage: "/assets/Images/rakibulislam.jpg",
+          aboutImageAlt: "Rakibul Islam - About Profile Photo",
           typewriterText: "Web Developer based in Bangladesh",
           aboutBio:
             "I am a Dhaka, Bangladesh-based web developer with a focus on web development. I have a diverse range of experience having worked on various web applications.",
@@ -93,10 +101,12 @@ export async function PUT(req: Request) {
         "resumeUrl" = $22,
         "enabledSkills" = $23,
         "profileImage" = $24,
-        "aboutImage" = $25,
-        "typewriterText" = $26,
-        "aboutBio" = $27,
-        "experienceMonths" = $28,
+        "profileImageAlt" = $25,
+        "aboutImage" = $26,
+        "aboutImageAlt" = $27,
+        "typewriterText" = $28,
+        "aboutBio" = $29,
+        "experienceMonths" = $30,
         "updatedAt" = NOW()
       WHERE "id" = 'default'`,
       body.name || "Rakibul Islam",
@@ -123,7 +133,9 @@ export async function PUT(req: Request) {
       body.resumeUrl ?? "",
       body.enabledSkills ?? "",
       body.profileImage ?? "",
+      body.profileImageAlt ?? "Rakibul Islam - Full Stack & MERN Web Developer",
       body.aboutImage ?? "",
+      body.aboutImageAlt ?? "Rakibul Islam - About Profile Photo",
       body.typewriterText || "Web Developer based in Bangladesh",
       body.aboutBio || "I am a Dhaka, Bangladesh-based web developer.",
       Number(body.experienceMonths) || 6

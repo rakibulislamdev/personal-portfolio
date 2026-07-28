@@ -4,12 +4,14 @@ import { getProfileSettings } from "@/lib/data";
 
 export const ProfileImageBox = async () => {
   let aboutImage = "";
+  let aboutImageAlt = "";
   let name = "Rakibul Islam";
 
   try {
     const settings = await getProfileSettings();
     if (settings) {
       aboutImage = settings.aboutImage || "";
+      aboutImageAlt = (settings as unknown as { aboutImageAlt?: string }).aboutImageAlt || `${settings.name || "Rakibul Islam"} - About Profile Photo`;
       name = settings.name || "Rakibul Islam";
     }
   } catch (err) {
@@ -23,7 +25,7 @@ export const ProfileImageBox = async () => {
           <Image
             className="rounded-2xl w-full max-w-[280px] sm:max-w-none h-auto aspect-square object-cover border border-zinc-200/80 dark:border-zinc-700/80 shadow-sm select-none pointer-events-none"
             src={aboutImage}
-            alt={`${name} About Profile Image`}
+            alt={aboutImageAlt || `${name} About Profile Image`}
             width={1200}
             height={1200}
             quality={100}

@@ -23,7 +23,9 @@ export interface ProfileSettingsData {
   googleAnalyticsId?: string;
   metaPixelId?: string;
   profileImage: string;
+  profileImageAlt?: string;
   aboutImage: string;
+  aboutImageAlt?: string;
   resumeUrl?: string;
   enabledSkills?: string;
   typewriterText: string;

@@ -23,6 +23,7 @@ const HeroArea = async () => {
   const phone = settings?.phone || "+8801621-574994";
   const location = settings?.location || "Dhaka, Bangladesh";
   const profileImage = settings?.profileImage || "";
+  const profileImageAlt = (settings as unknown as { profileImageAlt?: string })?.profileImageAlt || `${name} - Full Stack & MERN Web Developer`;
   const typewriterText = settings?.typewriterText || `Web Developer based in ${location}`;
 
   return (
@@ -38,7 +39,7 @@ const HeroArea = async () => {
                 <Image
                   className="rounded-tl-3xl rounded-br-3xl rounded-tr-none rounded-bl-none w-48 sm:w-56 h-auto aspect-square object-cover bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-transparent group-hover:border-[var(--theme-color)] transition-colors duration-500 shadow-sm select-none pointer-events-none"
                   src={profileImage}
-                  alt={name}
+                  alt={profileImageAlt}
                   width={1000}
                   height={1000}
                   quality={100}
