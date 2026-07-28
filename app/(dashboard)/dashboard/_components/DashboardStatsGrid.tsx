@@ -13,6 +13,10 @@ export default function DashboardStatsGrid({
   data,
   isLoading,
 }: DashboardStatsGridProps) {
+  const topCountryText = data?.topCountry
+    ? `${data.topCountry.flag} ${data.topCountry.name} (${data.topCountry.percentage}%)`
+    : "Bangladesh 🇧🇩";
+
   const stats = [
     {
       title: "Total Projects",
@@ -28,8 +32,10 @@ export default function DashboardStatsGrid({
     },
     {
       title: "Live Online Visitors",
-      value: data && data.recentVisitors.length > 0 ? data.recentVisitors.length.toString() : "1",
-      change: "Real-time tracking",
+      value: data && (data.activeLiveVisitors || data.recentVisitors.length > 0)
+        ? (data.activeLiveVisitors || data.recentVisitors.length).toString()
+        : "1",
+      change: `Top: ${topCountryText}`,
       icon: Globe,
     },
     {

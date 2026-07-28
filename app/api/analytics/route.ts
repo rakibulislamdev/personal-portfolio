@@ -1,13 +1,38 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-const seedVisitorLogs = [
-  { ip: "103.145.72.18", flag: "🇧🇩", country: "Bangladesh", city: "Dhaka", page: "/", device: "Chrome / Windows" },
-  { ip: "185.220.101.4", flag: "🇺🇸", country: "United States", city: "New York", page: "/works", device: "Safari / macOS" },
-  { ip: "89.207.132.170", flag: "🇬🇧", country: "United Kingdom", city: "London", page: "/contact", device: "Firefox / Linux" },
-  { ip: "139.99.104.21", flag: "🇩🇪", country: "Germany", city: "Berlin", page: "/about", device: "Chrome / Android" },
-  { ip: "103.145.72.19", flag: "🇧🇩", country: "Bangladesh", city: "Chittagong", page: "/dashboard", device: "Edge / Windows" },
-];
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+function getCountryFlag(countryCode?: string): string {
+  if (!countryCode || countryCode.length !== 2) return "🌐";
+  const codePoints = countryCode
+    .toUpperCase()
+    .split("")
+    .map((char) => 127397 + char.charCodeAt(0));
+  return String.fromCodePoint(...codePoints);
+}
+
+function parseDevice(userAgent?: string): string {
+  if (!userAgent) return "Browser / Desktop";
+  const ua = userAgent.toLowerCase();
+
+  let os = "Desktop";
+  if (ua.includes("iphone")) os = "iPhone";
+  else if (ua.includes("ipad")) os = "iPad";
+  else if (ua.includes("android")) os = "Android Phone";
+  else if (ua.includes("macintosh") || ua.includes("mac os")) os = "Mac";
+  else if (ua.includes("windows")) os = "Windows PC";
+  else if (ua.includes("linux")) os = "Linux PC";
+
+  let browser = "Browser";
+  if (ua.includes("edg/")) browser = "Edge";
+  else if (ua.includes("chrome") && !ua.includes("edg/")) browser = "Chrome";
+  else if (ua.includes("safari") && !ua.includes("chrome")) browser = "Safari";
+  else if (ua.includes("firefox")) browser = "Firefox";
+
+  return `${browser} / ${os}`;
+}
 
 export async function GET(req: Request) {
   try {
@@ -45,7 +70,7 @@ export async function GET(req: Request) {
       }
     });
 
-    let topCountry = { name: "Bangladesh", flag: "🇧🇩", percentage: 45 };
+    let topCountry = { name: "Bangladesh", flag: "🇧🇩", percentage: 100 };
     const totalWithCountry = Object.values(countryCounts).reduce((acc, curr) => acc + curr.count, 0);
 
     if (totalWithCountry > 0) {
@@ -101,7 +126,7 @@ export async function GET(req: Request) {
   }
 }
 
-// Simple in-memory rate limiting for Analytics Logging (max 20 visitor logs per minute per IP)
+// In-memory rate limiting for Analytics Logging (max 20 visitor logs per minute per IP)
 const analyticsRateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const ANALYTICS_LIMIT_MAX = 20;
 const ANALYTICS_WINDOW_MS = 60 * 1000;
@@ -117,14 +142,33 @@ setInterval(() => {
 
 export async function POST(req: Request) {
   try {
-    const clientIp =
+    let clientIp =
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
       req.headers.get("x-real-ip") ||
-      "unknown-ip";
+      req.headers.get("cf-connecting-ip") ||
+      "";
+
+    const userAgent = req.headers.get("user-agent") || "";
+    const detectedDevice = parseDevice(userAgent);
+
+    const body = await req.json().catch(() => ({}));
+    const page = body.page || "/";
+
+    // If local or unknown IP, resolve server's public IP for local testing accuracy
+    if (!clientIp || clientIp === "127.0.0.1" || clientIp === "::1" || clientIp === "unknown-ip") {
+      try {
+        const ipRes = await fetch("https://api.ipify.org?format=json", { cache: "no-store" });
+        if (ipRes.ok) {
+          const ipData = await ipRes.json();
+          if (ipData?.ip) clientIp = ipData.ip;
+        }
+      } catch {
+        clientIp = "127.0.0.1";
+      }
+    }
 
     const now = Date.now();
     const rateData = analyticsRateLimitMap.get(clientIp);
-
     if (rateData && now < rateData.resetTime) {
       if (rateData.count >= ANALYTICS_LIMIT_MAX) {
         return NextResponse.json({ success: true, ignored: true });
@@ -137,22 +181,42 @@ export async function POST(req: Request) {
       });
     }
 
-    const body = await req.json();
-    const { ip, country, city, flag, page, device } = body;
+    let country = "Bangladesh";
+    let city = "Dhaka";
+    let flag = "🇧🇩";
+
+    if (clientIp && clientIp !== "127.0.0.1" && clientIp !== "::1") {
+      try {
+        const geoRes = await fetch(`http://ip-api.com/json/${clientIp}?fields=status,country,countryCode,city`, {
+          cache: "no-store",
+        });
+        if (geoRes.ok) {
+          const geoData = await geoRes.json();
+          if (geoData.status === "success") {
+            country = geoData.country || country;
+            city = geoData.city || city;
+            flag = getCountryFlag(geoData.countryCode);
+          }
+        }
+      } catch (err) {
+        console.error("Geo IP lookup error:", err);
+      }
+    }
 
     const newLog = await prisma.visitorLog.create({
       data: {
-        ip: ip || "127.0.0.1",
-        country: country || "Unknown",
-        city: city || "Unknown",
-        flag: flag || "🌐",
-        page: page || "/",
-        device: device || "Unknown",
+        ip: clientIp || "127.0.0.1",
+        country,
+        city,
+        flag,
+        page,
+        device: detectedDevice,
       },
     });
 
     return NextResponse.json({ success: true, log: newLog });
   } catch (error) {
+    console.error("Failed to log visitor:", error);
     return NextResponse.json(
       { error: "Failed to log visitor" },
       { status: 500 }

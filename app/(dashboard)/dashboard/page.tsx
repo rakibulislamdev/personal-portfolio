@@ -15,7 +15,9 @@ export default function DashboardPage() {
   const fetchDashboardData = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/dashboard/stats");
+      const res = await fetch("/api/dashboard/stats", {
+        next: { revalidate: 30 },
+      });
       if (res.ok) {
         const json = await res.json();
         setData(json);

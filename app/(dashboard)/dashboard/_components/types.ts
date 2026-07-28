@@ -27,9 +27,17 @@ export interface Message {
   createdAt: string;
 }
 
+export interface TopCountry {
+  name: string;
+  flag: string;
+  percentage: number;
+}
+
 export interface DashboardData {
   totalProjects: number;
   totalVisitors: number;
+  activeLiveVisitors?: number;
+  topCountry?: TopCountry;
   recentVisitors: VisitorLog[];
   recentProjects: Project[];
   recentMessages: Message[];
