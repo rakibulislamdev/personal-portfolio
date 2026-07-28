@@ -27,10 +27,10 @@ const ServiceOffering = async () => {
                 className="font-bold text-xs uppercase tracking-widest mb-1.5"
                 style={{ color: "var(--theme-color)" }}
               >
-                BLOG
+                ARTICLES
               </p>
               <h3 className="font-bold text-zinc-900 dark:text-white text-xl">
-                My Blogs
+                My Articles
               </h3>
             </div>
             <div className="absolute bottom-7 right-7">
@@ -55,7 +55,7 @@ const ServiceOffering = async () => {
                 SPECIALIZATION
               </p>
               <h3 className="font-bold text-zinc-900 dark:text-white text-xl">
-                Services Offering
+                My Skills
               </h3>
             </div>
           </div>
