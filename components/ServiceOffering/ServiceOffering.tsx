@@ -20,8 +20,8 @@ const ServiceOffering = async () => {
         >
           <div className="py-6 px-8 sm:px-10 flex flex-col justify-between h-full">
             <div>
-              <div className="text-zinc-700 dark:text-white flex justify-center items-center py-2 min-h-[110px] mb-4">
-                <FaBlog className="text-7xl sm:text-8xl text-zinc-400 dark:text-[#9F9F9F] group-hover:scale-105 transition-transform duration-300" />
+              <div className="text-zinc-700 dark:text-white flex justify-center items-center py-2 min-h-[120px] mb-4">
+                <FaBlog className="text-8xl sm:text-8xl text-zinc-400 dark:text-[#9F9F9F] group-hover:scale-105 transition-transform duration-300" />
               </div>
               <p
                 className="font-bold text-xs uppercase tracking-widest mb-1.5"
