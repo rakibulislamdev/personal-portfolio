@@ -50,7 +50,7 @@ export default function DashboardStatsGrid({
             className="bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] p-6 rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 shadow-md flex items-center justify-between"
           >
             <div>
-              <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+              <p className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">
                 {stat.title}
               </p>
               <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white mt-1 flex items-center gap-2">

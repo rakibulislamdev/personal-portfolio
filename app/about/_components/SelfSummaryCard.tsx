@@ -36,7 +36,7 @@ export const SelfSummaryCard = async () => {
         <h2 className="text-zinc-900 dark:text-white text-3xl sm:text-4xl font-bold">
           {name}
         </h2>
-        <p className="text-zinc-600 dark:text-[#BCBCBC] text-sm sm:text-base font-normal mt-3 leading-7 whitespace-pre-line">
+        <p className="text-[var(--text-muted)] text-sm sm:text-base font-normal mt-3 leading-7 whitespace-pre-line">
           {bio}
         </p>
       </div>

@@ -53,16 +53,16 @@ const HeroArea = async () => {
               )}
             </div>
             <div className="flex flex-col justify-center">
-              <h2
+              <p
                 className="text-xs font-bold uppercase tracking-widest mb-1.5 transition-colors duration-300"
                 style={{ color: "var(--theme-color)" }}
               >
                 {title.toUpperCase()}
-              </h2>
+              </p>
               <h1 className="text-zinc-900 dark:text-white font-bold md:text-4xl text-2xl tracking-tight">
                 {name}.
               </h1>
-              <div className="text-zinc-600 dark:text-[#9F9F9F] text-sm mt-2 font-medium">
+              <div className="text-zinc-300 dark:text-zinc-300 text-sm mt-2 font-medium">
                 <TypewriterWrapper
                   strings={[`I am a ${typewriterText}`]}
                 />
@@ -93,28 +93,28 @@ const HeroArea = async () => {
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <span className="text-zinc-900 dark:text-white ml-4 font-bold">Email :</span>
-                    <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">{email}</span>
+                    <span className="text-zinc-300 dark:text-zinc-300 font-medium">{email}</span>
                   </div>
                   <div style={{ color: "var(--theme-color)" }}>
                     <MarqueeStarIcon className="w-3.5 h-3.5" />
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-zinc-900 dark:text-white font-bold">Phone :</span>
-                    <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">{phone}</span>
+                    <span className="text-zinc-300 dark:text-zinc-300 font-medium">{phone}</span>
                   </div>
                   <div style={{ color: "var(--theme-color)" }}>
                     <MarqueeStarIcon className="w-3.5 h-3.5" />
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-zinc-900 dark:text-white font-bold">Location :</span>
-                    <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">{location}</span>
+                    <span className="text-zinc-300 dark:text-zinc-300 font-medium">{location}</span>
                   </div>
                   <div style={{ color: "var(--theme-color)" }}>
                     <MarqueeStarIcon className="w-3.5 h-3.5" />
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-zinc-900 dark:text-white font-bold">Developer :</span>
-                    <span className="text-zinc-700 dark:text-[#9F9F9F] font-medium">
+                    <span className="text-zinc-300 dark:text-zinc-300 font-medium">
                       {name}
                     </span>
                   </div>
@@ -130,6 +130,7 @@ const HeroArea = async () => {
             {/* Credentials Card */}
             <Link
               href="/about"
+              aria-label="View Credentials & About Rakibul Islam"
               data-aos="fade-up"
               data-aos-delay="50"
               data-aos-duration="1000"
@@ -148,7 +149,7 @@ const HeroArea = async () => {
                   >
                     MORE ABOUT ME
                   </p>
-                  <h3 className="font-bold text-zinc-900 dark:text-white text-xl">Credentials</h3>
+                  <h2 className="font-bold text-zinc-900 dark:text-white text-xl">Credentials</h2>
                 </div>
                 <div className="absolute bottom-7 right-7">
                   <HoverIcon />
@@ -159,6 +160,7 @@ const HeroArea = async () => {
             {/* Projects Showcase Card */}
             <Link
               href="/works"
+              aria-label="View Showcase Projects"
               data-aos="fade-down"
               data-aos-delay="50"
               data-aos-duration="1000"
@@ -181,7 +183,7 @@ const HeroArea = async () => {
                   >
                     SHOWCASE
                   </p>
-                  <h3 className="font-bold text-zinc-900 dark:text-white text-xl">Projects</h3>
+                  <h2 className="font-bold text-zinc-900 dark:text-white text-xl">Projects</h2>
                 </div>
                 <div className="absolute bottom-7 right-7">
                   <HoverIcon />

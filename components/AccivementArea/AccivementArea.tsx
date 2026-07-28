@@ -46,7 +46,7 @@ const AccivementArea = async () => {
                 <div className="text-4xl sm:text-5xl font-black mb-2 tracking-tight flex items-center justify-center">
                   <CountUpWrapper end={experienceMonths} duration={2.4} />
                 </div>
-                <p className="text-zinc-500 dark:text-[#A0A0A0] text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
+                <p className="text-zinc-300 dark:text-zinc-300 text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
                   Months <br /> Experience
                 </p>
               </div>
@@ -58,7 +58,7 @@ const AccivementArea = async () => {
                 <div className="text-4xl sm:text-5xl font-black mb-2 tracking-tight flex items-center justify-center">
                   <CountUpWrapper end={clientsWorldwide} duration={2.4} />
                 </div>
-                <p className="text-zinc-500 dark:text-[#A0A0A0] text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
+                <p className="text-zinc-300 dark:text-zinc-300 text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
                   CLIENTS <br /> WORLDWIDE
                 </p>
               </div>
@@ -70,7 +70,7 @@ const AccivementArea = async () => {
                 <div className="text-4xl sm:text-5xl font-black mb-2 tracking-tight flex items-center justify-center">
                   <CountUpWrapper end={projectCount} duration={2.4} />
                 </div>
-                <p className="text-zinc-500 dark:text-[#A0A0A0] text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
+                <p className="text-zinc-300 dark:text-zinc-300 text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
                   Total <br /> Projects
                 </p>
               </div>
@@ -81,6 +81,7 @@ const AccivementArea = async () => {
         {/* Right Column: Let's Talk CTA Card */}
         <Link
           href="/contact"
+          aria-label="Contact Rakibul Islam - Let's Talk"
           data-aos="zoom-in"
           data-aos-delay="50"
           data-aos-duration="1000"

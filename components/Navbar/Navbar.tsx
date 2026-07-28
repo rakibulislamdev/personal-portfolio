@@ -74,7 +74,11 @@ const Navbar = () => {
                           render={
                             <Link
                               href={link.href}
-                              style={isActive ? { color: "var(--theme-color)" } : undefined}
+                              style={
+                                isActive
+                                  ? { color: themeColor === "default" ? "#FFFFFF" : "var(--theme-color)" }
+                                  : undefined
+                              }
                               className={`block py-2 text-lg transition-colors ${
                                 isActive ? "font-bold" : "text-zinc-400 hover:text-white font-medium"
                               }`}
@@ -144,11 +148,15 @@ const Navbar = () => {
                 <li key={link.href} className="py-1">
                   <Link
                     href={link.href}
-                    style={isActive ? { color: "var(--theme-color)" } : undefined}
+                    style={
+                      isActive
+                        ? { color: themeColor === "default" ? "#FFFFFF" : "var(--theme-color)" }
+                        : undefined
+                    }
                     className={`text-base transition-colors duration-300 ${
                       isActive
                         ? "font-bold"
-                        : "text-[#888888] hover:text-white font-medium"
+                        : "text-zinc-400 hover:text-white font-medium"
                     }`}
                   >
                     {link.name}

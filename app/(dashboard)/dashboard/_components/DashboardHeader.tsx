@@ -20,7 +20,7 @@ export default function DashboardHeader({
           Welcome back, Rakibul 👋
           {isLoading && <Loader2 className="w-5 h-5 animate-spin text-[var(--theme-color)]" />}
         </h1>
-        <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-1">
+        <p className="text-[var(--text-muted)] text-sm mt-1">
           Real-time portfolio analytics, live visitor IP tracking, and message overview.
         </p>
       </div>

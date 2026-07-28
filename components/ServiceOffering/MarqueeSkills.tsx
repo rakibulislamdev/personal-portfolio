@@ -10,7 +10,7 @@ const SkillBadge = ({ skill }: { skill: SkillConfig }) => {
   const { label, Icon, color } = skill;
   return (
     <span className="flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1 sm:px-4 sm:py-2 rounded-full text-[10px] sm:text-xs font-semibold whitespace-nowrap select-none bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-700/50 text-zinc-700 dark:text-zinc-300">
-      <Icon style={{ color, flexShrink: 0 }} className="text-[10px] sm:text-sm" />
+      <Icon style={{ color, flexShrink: 0 }} aria-hidden="true" className="text-[10px] sm:text-sm" />
       {label}
     </span>
   );

@@ -11,25 +11,25 @@ export const ExperienceCard = () => {
       </h3>
 
       <div className="space-y-1">
-        <span className="block text-xs font-semibold text-zinc-500 dark:text-[#BCBCBC]">
+        <span className="block text-xs font-semibold text-[var(--text-muted)]">
           2023 - 2024
         </span>
         <p className="font-bold text-zinc-900 dark:text-white text-lg">
           Fiverr (Marketplace)
         </p>
-        <span className="block text-xs font-medium text-zinc-500 dark:text-[#BCBCBC]">
+        <span className="block text-xs font-medium text-[var(--text-muted)]">
           Junior Web Developer
         </span>
       </div>
 
       <div className="space-y-1 pt-2">
-        <span className="block text-xs font-semibold text-zinc-500 dark:text-[#BCBCBC]">
+        <span className="block text-xs font-semibold text-[var(--text-muted)]">
           2023 - Present
         </span>
         <p className="font-bold text-zinc-900 dark:text-white text-lg">
           Programming Hero
         </p>
-        <span className="block text-xs font-medium text-zinc-500 dark:text-[#BCBCBC]">
+        <span className="block text-xs font-medium text-[var(--text-muted)]">
           Web Development Learner
         </span>
       </div>

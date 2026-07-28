@@ -11,13 +11,13 @@ export const EducationCard = () => {
       </h3>
 
       <div className="space-y-1">
-        <span className="block text-xs font-semibold text-zinc-500 dark:text-[#BCBCBC]">
+        <span className="block text-xs font-semibold text-[var(--text-muted)]">
           2021 - 2025
         </span>
         <p className="font-bold text-zinc-900 dark:text-white text-lg">
           Diploma in Computer Science & Technology
         </p>
-        <span className="block text-xs font-medium text-zinc-500 dark:text-[#BCBCBC]">
+        <span className="block text-xs font-medium text-[var(--text-muted)]">
           Pabna Polytechnic Institute, Pabna
         </span>
       </div>

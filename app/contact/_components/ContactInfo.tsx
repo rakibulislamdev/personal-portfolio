@@ -66,7 +66,7 @@ export const ContactInfo = async () => {
               <IoIosMail className="text-2xl" />
             </div>
             <div>
-              <span className="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-[#999999]">
+              <span className="block text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
                 MAIL US
               </span>
               <a
@@ -84,7 +84,7 @@ export const ContactInfo = async () => {
               <BiSolidPhone className="text-2xl" />
             </div>
             <div>
-              <span className="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-[#999999]">
+              <span className="block text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
                 CONTACT US
               </span>
               <a
@@ -102,7 +102,7 @@ export const ContactInfo = async () => {
               <MdMyLocation className="text-2xl" />
             </div>
             <div>
-              <span className="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-[#999999]">
+              <span className="block text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
                 LOCATION
               </span>
               <p className="text-sm font-semibold text-zinc-900 dark:text-white">
@@ -123,6 +123,7 @@ export const ContactInfo = async () => {
           {facebook && showFacebook && (
             <Link
               href={facebook}
+              aria-label="Facebook Profile"
               target="_blank"
               rel="noopener noreferrer"
               className="w-14 h-14 rounded-full bg-white dark:bg-[#1f1e1e] border border-zinc-200/90 dark:border-zinc-800/80 flex items-center justify-center shadow-sm hover:scale-110 transition-all duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"
@@ -134,6 +135,7 @@ export const ContactInfo = async () => {
           {github && showGithub && (
             <Link
               href={github}
+              aria-label="GitHub Profile"
               target="_blank"
               rel="noopener noreferrer"
               className="w-14 h-14 rounded-full bg-white dark:bg-[#1f1e1e] border border-zinc-200/90 dark:border-zinc-800/80 flex items-center justify-center shadow-sm hover:scale-110 transition-all duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"
@@ -145,6 +147,7 @@ export const ContactInfo = async () => {
           {linkedin && showLinkedin && (
             <Link
               href={linkedin}
+              aria-label="LinkedIn Profile"
               target="_blank"
               rel="noopener noreferrer"
               className="w-14 h-14 rounded-full bg-white dark:bg-[#1f1e1e] border border-zinc-200/90 dark:border-zinc-800/80 flex items-center justify-center shadow-sm hover:scale-110 transition-all duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"
@@ -156,6 +159,7 @@ export const ContactInfo = async () => {
           {twitter && showTwitter && (
             <Link
               href={twitter}
+              aria-label="Twitter Profile"
               target="_blank"
               rel="noopener noreferrer"
               className="w-14 h-14 rounded-full bg-white dark:bg-[#1f1e1e] border border-zinc-200/90 dark:border-zinc-800/80 flex items-center justify-center shadow-sm hover:scale-110 transition-all duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"
@@ -167,6 +171,7 @@ export const ContactInfo = async () => {
           {instagram && showInstagram && (
             <Link
               href={instagram}
+              aria-label="Instagram Profile"
               target="_blank"
               rel="noopener noreferrer"
               className="w-14 h-14 rounded-full bg-white dark:bg-[#1f1e1e] border border-zinc-200/90 dark:border-zinc-800/80 flex items-center justify-center shadow-sm hover:scale-110 transition-all duration-300 text-zinc-800 dark:text-white hover:text-[var(--theme-color)] dark:hover:text-[var(--theme-color)]"

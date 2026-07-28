@@ -155,7 +155,7 @@ export default async function ProjectDetailsPage({ params }: ProjectDetailsPageP
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
           {project.title}
         </h1>
-        <p className="text-base sm:text-lg text-zinc-600 dark:text-[#BCBCBC] max-w-3xl">
+        <p className="text-base sm:text-lg text-[var(--text-muted)] max-w-3xl">
           {project.subtitle}
         </p>
       </div>
@@ -181,7 +181,7 @@ export default async function ProjectDetailsPage({ params }: ProjectDetailsPageP
               <Layers className="w-5 h-5 text-[var(--theme-color)]" />
               Project Overview
             </h2>
-            <p className="text-sm sm:text-base text-zinc-600 dark:text-[#BCBCBC] leading-relaxed">
+            <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
               {project.description}
             </p>
           </div>

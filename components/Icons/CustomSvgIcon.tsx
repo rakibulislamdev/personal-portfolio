@@ -16,6 +16,7 @@ export const CustomSvgIcon = ({
       height="42"
       viewBox="0 0 46 42"
       fill="none"
+      aria-hidden="true"
       className={className}
     >
       <g clipPath="url(#clip0_1_253)">
