@@ -55,10 +55,10 @@ const HeroArea = async () => {
             </div>
             <div className="flex flex-col justify-center">
               <p
-                className="text-xs font-bold uppercase tracking-widest mb-1.5 transition-colors duration-300"
+                className="text-xs font-bold tracking-widest mb-1.5 transition-colors duration-300"
                 style={{ color: "var(--theme-color)" }}
               >
-                {title.toUpperCase()}
+                {title}
               </p>
               <h1 className="text-zinc-900 dark:text-white font-bold md:text-4xl text-2xl tracking-tight">
                 {name}.
@@ -182,7 +182,7 @@ const HeroArea = async () => {
                     className="font-bold text-xs uppercase tracking-widest mb-1.5 transition-colors duration-300"
                     style={{ color: "var(--theme-color)" }}
                   >
-                    SHOWCASE
+                    FEATURED WORKS
                   </p>
                   <h2 className="font-bold text-zinc-900 dark:text-white text-xl">Projects</h2>
                 </div>
