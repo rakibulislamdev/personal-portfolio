@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Mr_De_Haviland, Bricolage_Grotesque } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/Theme/ThemeContext";
 import LayoutWrapper from "@/components/LayoutWrapper/LayoutWrapper";
@@ -10,6 +11,7 @@ const signatureFont = Mr_De_Haviland({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-signature",
+  display: "swap",
 });
 
 const sansFont = Bricolage_Grotesque({
@@ -17,6 +19,12 @@ const sansFont = Bricolage_Grotesque({
   variable: "--font-sans",
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  themeColor: "#0f0f0f",
+  width: "device-width",
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rakibulislamdev.me"),
@@ -149,11 +157,13 @@ export default async function RootLayout({
         {/* Google Tag Manager / Analytics */}
         {googleAnalyticsId && (
           <>
-            <script
-              async
+            <Script
+              strategy="afterInteractive"
               src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}
             />
-            <script
+            <Script
+              id="google-analytics"
+              strategy="afterInteractive"
               dangerouslySetInnerHTML={{
                 __html: `
                   window.dataLayer = window.dataLayer || [];
@@ -168,7 +178,9 @@ export default async function RootLayout({
 
         {/* Dynamic Meta (Facebook) Pixel Integration */}
         {metaPixelId && (
-          <script
+          <Script
+            id="facebook-pixel"
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{
               __html: `
                 !function(f,b,e,v,n,t,s)
