@@ -53,7 +53,7 @@ const HeroArea = async () => {
                 </div>
               )}
             </div>
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-start">
               <p
                 className="text-xs font-bold tracking-widest mb-1.5 transition-colors duration-300"
                 style={{ color: "var(--theme-color)" }}
@@ -63,7 +63,10 @@ const HeroArea = async () => {
               <h1 className="text-zinc-900 dark:text-white font-bold md:text-4xl text-2xl tracking-tight">
                 {name}.
               </h1>
-              <div className="text-zinc-300 dark:text-zinc-300 text-sm mt-2 font-medium">
+              <div
+                className="text-zinc-300 dark:text-zinc-300 text-sm mt-2 font-medium"
+                style={{ minHeight: "2.8em" }}
+              >
                 <TypewriterWrapper
                   strings={[`I am a ${typewriterText}`]}
                 />

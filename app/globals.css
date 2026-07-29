@@ -2,6 +2,15 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@keyframes tw-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.tw-cursor {
+  animation: tw-blink 0.7s step-end infinite;
+  margin-left: 1px;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

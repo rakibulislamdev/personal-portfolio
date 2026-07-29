@@ -30,7 +30,7 @@ export const LetsTalkCard = () => {
             className="inline-block transition-colors duration-300 font-extrabold"
             style={{ color: "var(--theme-color)" }}
           >
-            <TypewriterWrapper strings={["together."]} />
+            <TypewriterWrapper strings={["together."]} typeSpeed={220} deleteSpeed={100} pauseTime={3000} />
           </span>
         </h3>
       </div>

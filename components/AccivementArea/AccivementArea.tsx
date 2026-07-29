@@ -105,7 +105,7 @@ const AccivementArea = async () => {
                 className="inline-block transition-colors duration-300 font-extrabold"
                 style={{ color: "var(--theme-color)" }}
               >
-                <TypewriterWrapper strings={["with me."]} />
+                <TypewriterWrapper strings={["with me."]} typeSpeed={220} deleteSpeed={100} pauseTime={3000} />
               </span>
             </h2>
           </div>
