@@ -13,7 +13,12 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   project,
   imageHeightClass = "h-72",
 }) => {
-  const projectSlug = project.id || project.title.toLowerCase().replace(/\s+/g, "-");
+  const projectSlug = project.title
+    ? project.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "")
+    : project.id;
 
   return (
     <Link

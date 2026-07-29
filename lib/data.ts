@@ -56,12 +56,27 @@ export const getProjects = cache(async () => {
   }
 });
 
-// Cached single project getter by ID
-export const getProjectById = cache(async (id: string) => {
+// Cached single project getter by ID or Slugified Title
+export const getProjectById = cache(async (idOrSlug: string) => {
   try {
-    return await prisma.project.findUnique({ where: { id } });
+    // 1. Try finding by database ID directly (if it is a CUID)
+    if (idOrSlug.startsWith("cl") || idOrSlug.length > 15) {
+      const project = await prisma.project.findUnique({ where: { id: idOrSlug } });
+      if (project) return project;
+    }
+
+    // 2. Fallback: find by matching slugified title
+    const projects = await prisma.project.findMany();
+    const matched = projects.find((p) => {
+      const slug = p.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+      return slug === idOrSlug || p.id === idOrSlug;
+    });
+    return matched || null;
   } catch (error) {
-    console.error(`Error fetching project ${id}:`, error);
+    console.error(`Error fetching project ${idOrSlug}:`, error);
     return null;
   }
 });
