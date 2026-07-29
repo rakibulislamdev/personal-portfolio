@@ -9,6 +9,9 @@ export const metadata: Metadata = {
     "Get in touch with Rakibul Islam for custom web application development, React & Next.js projects, freelance inquiries, and technical collaboration.",
   keywords: [
     "Contact Rakibul Islam",
+    "Hire Rakibul Islam",
+    "Rakibul Islam Email",
+    "Rakibul Islam Phone",
     "Hire Web Developer Bangladesh",
     "Hire React Developer",
     "Hire Next.js Developer",

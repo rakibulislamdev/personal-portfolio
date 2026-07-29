@@ -16,10 +16,10 @@ export const themePalettes: Record<
   { name: string; hex: string; themeColor: string; themeHover: string }
 > = {
   default: {
-    name: "Default (Gray)",
-    hex: "#9F9F9F",
-    themeColor: "#9F9F9F",
-    themeHover: "#BCBCBC",
+    name: "Emerald",
+    hex: "#10b981",
+    themeColor: "#10b981",
+    themeHover: "#34d399",
   },
   blue: {
     name: "Blue",
@@ -28,10 +28,10 @@ export const themePalettes: Record<
     themeHover: "#7b93f8",
   },
   emerald: {
-    name: "Emerald",
-    hex: "#10b981",
-    themeColor: "#10b981",
-    themeHover: "#34d399",
+    name: "Default (Gray)",
+    hex: "#9F9F9F",
+    themeColor: "#9F9F9F",
+    themeHover: "#BCBCBC",
   },
   violet: {
     name: "Violet",

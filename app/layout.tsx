@@ -51,6 +51,14 @@ export const metadata: Metadata = {
     "Full Stack Developer Dhaka",
     // Additional Brand & Core Keywords
     "Rakibul Islam",
+    "Rakibul Islam Web Developer",
+    "Rakibul Islam Portfolio",
+    "Rakibul Islam Bangladesh",
+    "Rakibul Islam Dhaka",
+    "Rakibul Islam Developer",
+    "Rakibul Islam Full Stack",
+    "rakibulislamdev",
+    "rakibulislamdev.me",
     "Full Stack Developer",
     "Frontend Developer",
     "MERN Stack Developer",
@@ -82,6 +90,9 @@ export const metadata: Metadata = {
     description:
       "Skilled Full Stack Web Developer specializing in MERN Stack, React.js, Next.js, TypeScript & Tailwind CSS. Based in Dhaka, Bangladesh. View my projects & hire me.",
     images: ["https://rakibulislamdev.me/assets/Images/rakibulislam.jpg"],
+  },
+  alternates: {
+    canonical: "https://rakibulislamdev.me",
   },
   robots: {
     index: true,
@@ -126,6 +137,11 @@ export default async function RootLayout({
         image: "https://rakibulislamdev.me/assets/Images/rakibulislam.jpg",
         email: "rirakib03@gmail.com",
         telephone: "+8801621-574994",
+        knowsLanguage: ["English", "Bengali", "Hindi"],
+        worksFor: {
+          "@type": "Organization",
+          name: "Freelance",
+        },
         address: {
           "@type": "PostalAddress",
           addressLocality: "Dhaka",

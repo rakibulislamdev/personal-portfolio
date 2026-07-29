@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   keywords: [
     "Rakibul Islam Works",
     "Rakibul Islam Projects",
+    "Rakibul Islam Portfolio",
+    "Rakibul Islam Web Development",
     "Frontend Developer Portfolio Bangladesh",
     "React Next.js Web Projects",
     "Fruit Burst Online Fruit Shop",

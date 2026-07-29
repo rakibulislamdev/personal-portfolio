@@ -9,6 +9,9 @@ export const metadata: Metadata = {
     "Read articles, tutorials, and insights by Rakibul Islam on web development, React, Next.js, TypeScript, and modern frontend technologies.",
   keywords: [
     "Rakibul Islam Blog",
+    "Rakibul Islam Articles",
+    "Rakibul Islam Writing",
+    "Rakibul Islam Web Development",
     "Web Development Articles",
     "React Tutorial",
     "Next.js Blog",

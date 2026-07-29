@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   keywords: [
     "About Rakibul Islam",
     "Rakibul Islam Credentials",
+    "Rakibul Islam Biography",
+    "Rakibul Islam Skills",
+    "Rakibul Islam Education",
     "Web Developer Dhaka Bangladesh",
     "Frontend Engineer Portfolio",
     "Fiverr Junior Web Developer",
