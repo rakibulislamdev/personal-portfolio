@@ -236,20 +236,19 @@
   scrollbar-color: rgba(160, 160, 160, 0.3) transparent;
 }
 
-/* Gradient number text — stat counters */
 .gradient-number {
-  display: inline-block;
-  background: linear-gradient(90deg, #18181b 0%, #52525b 50%, #18181b 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  display: inline-block !important;
+  background: linear-gradient(90deg, #18181b 0%, #52525b 50%, #18181b 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
 }
 
 .dark .gradient-number {
-  background: linear-gradient(90deg, #ffffff 0%, #d4d4d8 50%, #a1a1aa 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  background: linear-gradient(90deg, #ffffff 0%, #d4d4d8 50%, #a1a1aa 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
 }

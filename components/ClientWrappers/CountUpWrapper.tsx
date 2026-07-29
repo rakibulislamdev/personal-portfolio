@@ -80,17 +80,10 @@ const CountUpWrapper: React.FC<CountUpWrapperProps> = ({
         {suffix}
       </span>
 
-      {/* Gradient number — global CSS class, works on all browsers + mobile */}
+      {/* Gradient number — works on all screens with standard CSS support */}
       <span
         aria-hidden="true"
         className={cn("gradient-number font-extrabold")}
-        style={{
-          display: "inline-block",
-          WebkitBackgroundClip: "text",
-          backgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          color: "transparent"
-        }}
       >
         {displayValue}
       </span>
