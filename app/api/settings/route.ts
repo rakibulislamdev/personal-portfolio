@@ -26,6 +26,21 @@ async function ensureDbColumns() {
     await prisma.$executeRawUnsafe(
       `ALTER TABLE "ProfileSettings" ADD COLUMN IF NOT EXISTS "educations" TEXT DEFAULT '[]';`
     );
+    await prisma.$executeRawUnsafe(
+      `ALTER TABLE "ProfileSettings" ADD COLUMN IF NOT EXISTS "githubInBlog" BOOLEAN DEFAULT true;`
+    );
+    await prisma.$executeRawUnsafe(
+      `ALTER TABLE "ProfileSettings" ADD COLUMN IF NOT EXISTS "linkedinInBlog" BOOLEAN DEFAULT true;`
+    );
+    await prisma.$executeRawUnsafe(
+      `ALTER TABLE "ProfileSettings" ADD COLUMN IF NOT EXISTS "facebookInBlog" BOOLEAN DEFAULT false;`
+    );
+    await prisma.$executeRawUnsafe(
+      `ALTER TABLE "ProfileSettings" ADD COLUMN IF NOT EXISTS "twitterInBlog" BOOLEAN DEFAULT false;`
+    );
+    await prisma.$executeRawUnsafe(
+      `ALTER TABLE "ProfileSettings" ADD COLUMN IF NOT EXISTS "instagramInBlog" BOOLEAN DEFAULT false;`
+    );
   } catch (err) {
     // Table or column already exists / migration handled
   }
@@ -109,19 +124,25 @@ export async function PUT(req: Request) {
         "linkedinInProfilesCard" = $17,
         "facebookInProfilesCard" = $18,
         "twitterInProfilesCard" = $19,
-        "googleAnalyticsId" = $20,
-        "metaPixelId" = $21,
-        "resumeUrl" = $22,
-        "enabledSkills" = $23,
-        "profileImage" = $24,
-        "profileImageAlt" = $25,
-        "aboutImage" = $26,
-        "aboutImageAlt" = $27,
-        "typewriterText" = $28,
-        "aboutBio" = $29,
-        "experienceMonths" = $30,
-        "experiences" = $31,
-        "educations" = $32,
+        "instagramInProfilesCard" = $20,
+        "googleAnalyticsId" = $21,
+        "metaPixelId" = $22,
+        "resumeUrl" = $23,
+        "enabledSkills" = $24,
+        "profileImage" = $25,
+        "profileImageAlt" = $26,
+        "aboutImage" = $27,
+        "aboutImageAlt" = $28,
+        "typewriterText" = $29,
+        "aboutBio" = $30,
+        "experienceMonths" = $31,
+        "experiences" = $32,
+        "educations" = $33,
+        "githubInBlog" = $34,
+        "linkedinInBlog" = $35,
+        "facebookInBlog" = $36,
+        "twitterInBlog" = $37,
+        "instagramInBlog" = $38,
         "updatedAt" = NOW()
       WHERE "id" = 'default'`,
       body.name || "Rakibul Islam",
@@ -143,6 +164,7 @@ export async function PUT(req: Request) {
       Boolean(body.linkedinInProfilesCard ?? true),
       Boolean(body.facebookInProfilesCard ?? false),
       Boolean(body.twitterInProfilesCard ?? false),
+      Boolean(body.instagramInProfilesCard ?? false),
       body.googleAnalyticsId ?? "",
       body.metaPixelId ?? "",
       body.resumeUrl ?? "",
@@ -155,7 +177,12 @@ export async function PUT(req: Request) {
       body.aboutBio || "I am a Dhaka, Bangladesh-based web developer.",
       Number(body.experienceMonths) || 6,
       body.experiences ?? "[]",
-      body.educations ?? "[]"
+      body.educations ?? "[]",
+      Boolean(body.githubInBlog ?? true),
+      Boolean(body.linkedinInBlog ?? true),
+      Boolean(body.facebookInBlog ?? false),
+      Boolean(body.twitterInBlog ?? false),
+      Boolean(body.instagramInBlog ?? false)
     );
 
     revalidatePath("/", "layout");

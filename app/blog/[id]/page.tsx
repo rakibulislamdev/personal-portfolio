@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { getBlogById, getBlogs } from "@/lib/data";
+import { getBlogById, getBlogs, getProfileSettings } from "@/lib/data";
 import BlogViewTracker from "./_components/BlogViewTracker";
 import { 
   ArrowLeft, 
@@ -83,6 +83,9 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
     notFound();
   }
 
+  // Fetch settings dynamically for social toggles
+  const settings = await getProfileSettings();
+
   // Fetch other recent blogs for "Read More" section
   let otherBlogs: any[] = [];
   try {
@@ -152,7 +155,11 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-tight">
           {blog.title}
         </h1>
-        <div className="flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400">
+        <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-505 dark:text-zinc-400">
+          <span className="flex items-center gap-1.5 font-medium text-zinc-700 dark:text-zinc-300">
+            By <span className="text-[var(--theme-color)] font-bold">Rakibul Islam</span>
+          </span>
+          <span className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
           <span className="flex items-center gap-1.5">
             <Calendar className="w-3.5 h-3.5 text-[var(--theme-color)]" />
             {formattedDate}
@@ -183,7 +190,7 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
         {/* Left Column: Markdown content styled like Medium article */}
         <div className="lg:col-span-2 space-y-8">
           <article className="bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] p-6 sm:p-10 rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 shadow-md">
-            <div className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-bold prose-headings:text-zinc-900 dark:prose-headings:text-white prose-p:text-sm prose-p:leading-relaxed prose-p:text-zinc-700 dark:prose-p:text-zinc-300 prose-a:text-[var(--theme-color)] prose-a:underline hover:prose-a:opacity-85 transition">
+            <div className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-bold prose-headings:text-zinc-900 dark:prose-headings:text-white prose-p:text-base prose-p:leading-relaxed prose-p:text-zinc-700 dark:prose-p:text-zinc-300 prose-a:text-[var(--theme-color)] prose-a:underline hover:prose-a:opacity-85 transition prose-h3:text-xl prose-h4:text-lg">
               {blog.content ? (
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
@@ -221,13 +228,27 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
                     code({ node, className, children, ...props }) {
                       const match = /language-(\w+)/.exec(className || "");
                       const isInline = !match;
+                      const lang = match ? match[1] : "code";
+                      
                       return !isInline ? (
-                        <pre className="bg-zinc-50 dark:bg-[#151515] border-l-4 border-[var(--theme-color)] p-5 rounded-r-xl overflow-x-auto font-mono text-xs my-5 text-zinc-850 dark:text-zinc-200 leading-relaxed shadow-sm">
-                          <code>{String(children).replace(/\n$/, "")}</code>
-                        </pre>
+                        <div className="relative my-7 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-md">
+                          {/* Code Block Header */}
+                          <div className="flex items-center justify-between px-5 py-2.5 bg-zinc-100 dark:bg-[#151515] border-b border-zinc-200 dark:border-zinc-800 text-[11px] font-mono text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-wider">
+                            <span>{lang}</span>
+                            <span className="flex gap-1.5">
+                              <span className="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
+                              <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
+                              <span className="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
+                            </span>
+                          </div>
+                          {/* Main Code */}
+                          <pre className="bg-[#fcfcfc] dark:bg-[#0c0c0c] p-5 overflow-x-auto font-mono text-sm text-zinc-850 dark:text-zinc-100 leading-relaxed m-0">
+                            <code>{String(children).replace(/\n$/, "")}</code>
+                          </pre>
+                        </div>
                       ) : (
                         <code
-                          className="bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded text-[11px] font-mono text-[var(--theme-color)] dark:text-[var(--theme-hover-color)] font-semibold"
+                          className="bg-zinc-100/80 dark:bg-zinc-800/60 px-2 py-0.5 rounded text-xs font-mono text-[var(--theme-color)] dark:text-[var(--theme-hover-color)] font-semibold border border-zinc-200/50 dark:border-zinc-700/30"
                           {...props}
                         >
                           {children}
@@ -292,6 +313,92 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
               <div className="flex items-center justify-between">
                 <span className="text-zinc-500 dark:text-zinc-400 font-medium">Views</span>
                 <span className="font-bold text-zinc-900 dark:text-white">{blog.views} views</span>
+              </div>
+            </div>
+
+            {/* Author Profile Quick Info & Portfolio/Social Links */}
+            <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800/80 space-y-3">
+              <span className="text-xs font-semibold text-zinc-400 block">About The Author</span>
+              <p className="text-[11px] leading-relaxed text-zinc-500 dark:text-zinc-400">
+                {settings?.aboutBio || "Rakibul Islam is a Full Stack Web Developer based in Bangladesh, specialized in building next-gen web applications."}
+              </p>
+              <div className="flex flex-wrap items-center gap-2 pt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                <a
+                  href="/"
+                  className="text-[var(--theme-color)] hover:underline font-bold transition-all"
+                >
+                  Portfolio
+                </a>
+                
+                {settings?.github && (settings?.githubInBlog ?? true) && (
+                  <>
+                    <span className="text-zinc-300 dark:text-zinc-700">|</span>
+                    <a
+                      href={settings.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                    >
+                      GitHub
+                    </a>
+                  </>
+                )}
+
+                {settings?.linkedin && (settings?.linkedinInBlog ?? true) && (
+                  <>
+                    <span className="text-zinc-300 dark:text-zinc-700">|</span>
+                    <a
+                      href={settings.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                    >
+                      LinkedIn
+                    </a>
+                  </>
+                )}
+
+                {settings?.facebook && settings?.facebookInBlog && (
+                  <>
+                    <span className="text-zinc-300 dark:text-zinc-700">|</span>
+                    <a
+                      href={settings.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                    >
+                      Facebook
+                    </a>
+                  </>
+                )}
+
+                {settings?.twitter && settings?.twitterInBlog && (
+                  <>
+                    <span className="text-zinc-300 dark:text-zinc-700">|</span>
+                    <a
+                      href={settings.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                    >
+                      Twitter
+                    </a>
+                  </>
+                )}
+
+                {settings?.instagram && settings?.instagramInBlog && (
+                  <>
+                    <span className="text-zinc-300 dark:text-zinc-700">|</span>
+                    <a
+                      href={settings.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                    >
+                      Instagram
+                    </a>
+                  </>
+                )}
               </div>
             </div>
           </div>

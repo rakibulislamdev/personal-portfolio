@@ -36,12 +36,6 @@ export default function ChatbotWidget() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // Hide chatbot widget on admin dashboard routes to avoid blocking table pagination
-  if (pathname?.startsWith("/dashboard")) {
-    return null;
-  }
-
   const [input, setInput] = useState("");
 
   const {
@@ -68,6 +62,12 @@ export default function ChatbotWidget() {
       ]);
     },
   });
+
+  // Hide chatbot widget on admin dashboard routes to avoid blocking table pagination
+  // This must be placed AFTER all React hooks definitions (useState, useRef, useChat)
+  if (pathname?.startsWith("/dashboard")) {
+    return null;
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);

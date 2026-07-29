@@ -32,6 +32,11 @@ export interface ProfileSettingsData {
   aboutBio: string;
   experienceMonths: number;
   clientsWorldwide: number;
+  githubInBlog?: boolean;
+  linkedinInBlog?: boolean;
+  facebookInBlog?: boolean;
+  twitterInBlog?: boolean;
+  instagramInBlog?: boolean;
   experiences?: string;
   educations?: string;
 }
