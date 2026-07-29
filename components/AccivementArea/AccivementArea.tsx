@@ -43,10 +43,10 @@ const AccivementArea = async () => {
             {/* Stat 1 */}
             <div className="group/stat flex justify-center items-center bg-zinc-100/80 dark:bg-gradient-to-br dark:from-[#353535] dark:to-[#181818] rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 hover:border-[var(--theme-color)] dark:hover:border-[var(--theme-color)] py-8 px-4 h-full shadow-sm hover:shadow-lg transition-all duration-500">
               <div className="text-center uppercase">
-                <div className="text-4xl sm:text-5xl font-black mb-2 tracking-tight flex items-center justify-center">
+                <div className="text-4xl sm:text-5xl font-black mb-2 tracking-tight flex items-center justify-center whitespace-nowrap">
                   <CountUpWrapper end={experienceMonths} duration={2.4} />
                 </div>
-                <p className="text-zinc-300 dark:text-zinc-300 text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
+                <p className="text-zinc-500 dark:text-zinc-400 text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
                   Months <br /> Experience
                 </p>
               </div>
@@ -55,10 +55,10 @@ const AccivementArea = async () => {
             {/* Stat 2 */}
             <div className="group/stat flex justify-center items-center bg-zinc-100/80 dark:bg-gradient-to-br dark:from-[#353535] dark:to-[#181818] rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 hover:border-[var(--theme-color)] dark:hover:border-[var(--theme-color)] py-8 px-4 h-full shadow-sm hover:shadow-lg transition-all duration-500">
               <div className="text-center uppercase">
-                <div className="text-4xl sm:text-5xl font-black mb-2 tracking-tight flex items-center justify-center">
+                <div className="text-4xl sm:text-5xl font-black mb-2 tracking-tight flex items-center justify-center whitespace-nowrap">
                   <CountUpWrapper end={clientsWorldwide} duration={2.4} />
                 </div>
-                <p className="text-zinc-300 dark:text-zinc-300 text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
+                <p className="text-zinc-500 dark:text-zinc-400 text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
                   CLIENTS <br /> WORLDWIDE
                 </p>
               </div>
@@ -67,10 +67,10 @@ const AccivementArea = async () => {
             {/* Stat 3 */}
             <div className="group/stat flex justify-center items-center bg-zinc-100/80 dark:bg-gradient-to-br dark:from-[#353535] dark:to-[#181818] rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 hover:border-[var(--theme-color)] dark:hover:border-[var(--theme-color)] py-8 px-4 h-full shadow-sm hover:shadow-lg transition-all duration-500">
               <div className="text-center uppercase">
-                <div className="text-4xl sm:text-5xl font-black mb-2 tracking-tight flex items-center justify-center">
+                <div className="text-4xl sm:text-5xl font-black mb-2 tracking-tight flex items-center justify-center whitespace-nowrap">
                   <CountUpWrapper end={projectCount} duration={2.4} />
                 </div>
-                <p className="text-zinc-300 dark:text-zinc-300 text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
+                <p className="text-zinc-500 dark:text-zinc-400 text-[11px] font-bold leading-5 tracking-widest uppercase transition-colors">
                   Total <br /> Projects
                 </p>
               </div>

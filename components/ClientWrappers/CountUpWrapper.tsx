@@ -69,9 +69,8 @@ const CountUpWrapper: React.FC<CountUpWrapperProps> = ({
     <span
       ref={ref}
       aria-label={`${end}${suffix}`}
-      className={`inline-flex items-baseline font-black tracking-tight transition-all duration-700 ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-100 translate-y-0 sm:opacity-0 sm:translate-y-4"
-      }`}
+      className={`inline-flex items-baseline font-black tracking-tight whitespace-nowrap transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-100 translate-y-0 sm:opacity-0 sm:translate-y-4"
+        }`}
     >
       {/* Hidden static text for SEO crawlers and screen readers */}
       <span className="sr-only">
@@ -82,7 +81,7 @@ const CountUpWrapper: React.FC<CountUpWrapperProps> = ({
       {/* Visual animated text for clients */}
       <span
         aria-hidden="true"
-        className="bg-gradient-to-r from-zinc-900 via-zinc-700 to-zinc-900 dark:from-white dark:via-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent font-extrabold drop-shadow-sm"
+        className="bg-gradient-to-r from-zinc-900 via-zinc-700 to-zinc-900 dark:from-white dark:via-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent font-extrabold drop-shadow-sm opacity-100 transform-gpu"
       >
         {displayValue}
       </span>
