@@ -53,7 +53,7 @@ const HeroArea = async () => {
                 </div>
               )}
             </div>
-            <div className="flex flex-col justify-start">
+            <div className="flex flex-col justify-start pr-12 lg:pr-0">
               <p
                 className="text-xs font-bold tracking-widest mb-1.5 transition-colors duration-300"
                 style={{ color: "var(--theme-color)" }}
@@ -65,11 +65,13 @@ const HeroArea = async () => {
               </h1>
               <div
                 className="text-zinc-300 dark:text-zinc-300 text-sm mt-2 font-medium"
-                style={{ minHeight: "2.8em" }}
+                style={{ minHeight: "5em", position: "relative" }}
               >
-                <TypewriterWrapper
-                  strings={[`I am a ${typewriterText}`]}
-                />
+                <span style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
+                  <TypewriterWrapper
+                    strings={[`I am a ${typewriterText}`]}
+                  />
+                </span>
               </div>
               <div className="absolute bottom-7 right-7">
                 <HoverIcon />
