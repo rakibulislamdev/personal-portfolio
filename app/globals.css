@@ -235,3 +235,19 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(160, 160, 160, 0.3) transparent;
 }
+
+/* Gradient number text — stat counters */
+.gradient-number {
+  display: inline-block;
+  background: linear-gradient(to right, #18181b, #52525b, #18181b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dark .gradient-number {
+  background: linear-gradient(to right, #ffffff, #d4d4d8, #a1a1aa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

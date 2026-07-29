@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface CountUpWrapperProps {
   end: number;
@@ -18,6 +19,7 @@ const CountUpWrapper: React.FC<CountUpWrapperProps> = ({
   const ref = useRef<HTMLSpanElement>(null);
   const hasAnimated = useRef(false);
 
+  // Count-up animation with IntersectionObserver
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -32,12 +34,11 @@ const CountUpWrapper: React.FC<CountUpWrapperProps> = ({
             const elapsedTime = currentTime - startTime;
             const progress = Math.min(elapsedTime / durationMs, 1);
 
-            // Custom Cubic-Bezier (Ease-Out Expo) for ultra-smooth premium feel
+            // Ease-Out Expo for ultra-smooth premium feel
             const easeOutExpo =
               progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
             const currentCount = Math.floor(easeOutExpo * end);
 
-            // Pad numbers for a slick digital odometer look when counting
             const formatted =
               end >= 100
                 ? currentCount.toString().padStart(3, "0")
@@ -58,10 +59,7 @@ const CountUpWrapper: React.FC<CountUpWrapperProps> = ({
       { threshold: 0.3 }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
+    if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, [end, duration]);
 
@@ -69,25 +67,33 @@ const CountUpWrapper: React.FC<CountUpWrapperProps> = ({
     <span
       ref={ref}
       aria-label={`${end}${suffix}`}
-      className={`inline-flex items-baseline font-black tracking-tight whitespace-nowrap transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-100 translate-y-0 sm:opacity-0 sm:translate-y-4"
-        }`}
+      className={cn(
+        "inline-flex items-baseline font-black tracking-tight whitespace-nowrap transition-all duration-700",
+        isVisible
+          ? "opacity-100 translate-y-0"
+          : "opacity-100 translate-y-0 sm:opacity-0 sm:translate-y-4"
+      )}
     >
-      {/* Hidden static text for SEO crawlers and screen readers */}
+      {/* Hidden static text for SEO & screen readers */}
       <span className="sr-only">
         {end}
         {suffix}
       </span>
 
-      {/* Visual animated text for clients */}
+      {/* Gradient number — global CSS class, works on all browsers + mobile */}
       <span
         aria-hidden="true"
-        className="bg-gradient-to-r from-zinc-900 via-zinc-700 to-zinc-900 dark:from-white dark:via-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent font-extrabold drop-shadow-sm opacity-100 transform-gpu"
+        className={cn("gradient-number font-extrabold")}
       >
         {displayValue}
       </span>
+
+      {/* Suffix (+ sign) */}
       <span
         aria-hidden="true"
-        className="ml-0.5 text-2xl sm:text-3xl font-extrabold transition-colors duration-300"
+        className={cn(
+          "ml-0.5 text-2xl sm:text-3xl font-extrabold transition-colors duration-300"
+        )}
         style={{ color: "var(--theme-color)" }}
       >
         {suffix}
