@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import HoverIcon from "@/components/HoverIcon/HoverIcon";
-import { Eye, Calendar } from "lucide-react";
+import { Eye, Calendar, Newspaper } from "lucide-react";
 
 export interface BlogItem {
   id: string;
@@ -36,11 +36,6 @@ export const BlogCard: React.FC<BlogCardProps> = ({
     }
   }
 
-  // Final fallback placeholder
-  if (!imageUrl) {
-    imageUrl = "/assets/Images/Starbucks.png";
-  }
-
   const formattedDate = new Date(blog.createdAt).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -53,13 +48,24 @@ export const BlogCard: React.FC<BlogCardProps> = ({
       className="group relative bg-white dark:bg-gradient-to-br dark:from-[#2e2e2e] dark:via-[#1f1e1e] dark:to-[#131313] rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 hover:border-[var(--theme-color)] transition-all duration-500 shadow-md hover:shadow-2xl p-6 flex flex-col justify-between block"
     >
       <div className={`${imageHeightClass} w-full overflow-hidden rounded-2xl border border-zinc-200/60 dark:border-zinc-700/60 shadow-sm relative bg-zinc-950`}>
-        <Image
-          className="w-full h-full ease-in-out duration-[3s] rounded-2xl object-cover hover:scale-[1.03] transition-all"
-          src={imageUrl}
-          alt={blog.title}
-          width={600}
-          height={400}
-        />
+        {imageUrl ? (
+          <Image
+            className="w-full h-full ease-in-out duration-[3s] rounded-2xl object-cover hover:scale-[1.03] transition-all"
+            src={imageUrl}
+            alt={blog.title}
+            width={600}
+            height={400}
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900/90 flex flex-col items-center justify-center gap-3 select-none">
+            <div className="p-4 rounded-2xl bg-zinc-800/40 border border-zinc-700/30 text-[var(--theme-color)] group-hover:scale-110 transition duration-300">
+              <Newspaper className="w-8 h-8" />
+            </div>
+            <span className="text-[10px] uppercase tracking-widest font-bold text-zinc-500">
+              No Image Provided
+            </span>
+          </div>
+        )}
         {/* Date overlay badge */}
         <div className="absolute top-4 left-4 px-3 py-1.5 rounded-xl bg-black/60 backdrop-blur-md text-[10px] font-bold text-zinc-300 flex items-center gap-1.5 border border-white/10">
           <Calendar className="w-3 h-3 text-[var(--theme-color)]" />
