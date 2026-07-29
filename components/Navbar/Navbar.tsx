@@ -93,7 +93,7 @@ const Navbar = () => {
                               href={link.href}
                               style={
                                 isActive
-                                  ? { color: themeColor === "default" ? "#FFFFFF" : "var(--theme-color)" }
+                                  ? { color: themeColor === "emerald" ? "#FFFFFF" : "var(--theme-color)" }
                                   : undefined
                               }
                               className={`block py-2 text-lg transition-colors ${
@@ -167,7 +167,7 @@ const Navbar = () => {
                     href={link.href}
                     style={
                       isActive
-                        ? { color: themeColor === "default" ? "#FFFFFF" : "var(--theme-color)" }
+                        ? { color: themeColor === "emerald" ? "#FFFFFF" : "var(--theme-color)" }
                         : undefined
                     }
                     className={`text-base transition-colors duration-300 ${

@@ -67,6 +67,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Rakibul Islam", url: "https://rakibulislamdev.me" }],
   creator: "Rakibul Islam",
+  icons: {
+    icon: "/favicon.ico",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
