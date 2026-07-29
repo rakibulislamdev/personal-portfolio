@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: BlogDetailsPageProps): Promis
     ? blog.content.replace(/[#*`_[\]()-]/g, "").substring(0, 155).trim() + "..."
     : "Read this article by Rakibul Islam";
 
-  const coverUrl = blog.coverImage || "/assets/Images/Starbucks.png";
+  const coverUrl = blog.coverImage || undefined;
   const slugOrId = blog.slug || blog.id;
 
   return {
@@ -56,12 +56,14 @@ export async function generateMetadata({ params }: BlogDetailsPageProps): Promis
       description: cleanDescription,
       url: `https://rakibulislamdev.me/blog/${slugOrId}`,
       siteName: "Rakibul Islam Portfolio",
-      images: [
-        {
-          url: coverUrl,
-          alt: blog.title,
-        },
-      ],
+      images: coverUrl
+        ? [
+            {
+              url: coverUrl,
+              alt: blog.title,
+            },
+          ]
+        : undefined,
       type: "article",
       publishedTime: new Date(blog.createdAt).toISOString(),
       modifiedTime: new Date(blog.updatedAt).toISOString(),
@@ -70,7 +72,7 @@ export async function generateMetadata({ params }: BlogDetailsPageProps): Promis
       card: "summary_large_image",
       title: `${blog.title} | Blog - Rakibul Islam`,
       description: cleanDescription,
-      images: [coverUrl],
+      images: coverUrl ? [coverUrl] : undefined,
     },
   };
 }
@@ -109,7 +111,7 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": blog.title,
-    "image": blog.coverImage || "https://rakibulislamdev.me/assets/Images/Starbucks.png",
+    "image": blog.coverImage || undefined,
     "datePublished": new Date(blog.createdAt).toISOString(),
     "dateModified": new Date(blog.updatedAt).toISOString(),
     "author": {
