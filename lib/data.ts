@@ -99,3 +99,20 @@ export const getBlogs = cache(
     { tags: ["blogs"] }
   )
 );
+
+// Cached single blog post getter by ID or Slug
+export const getBlogById = cache(async (idOrSlug: string) => {
+  try {
+    return await prisma.blogPost.findFirst({
+      where: {
+        OR: [
+          { id: idOrSlug },
+          { slug: idOrSlug },
+        ],
+      },
+    });
+  } catch (error) {
+    console.error(`Error fetching blog post ${idOrSlug}:`, error);
+    return null;
+  }
+});

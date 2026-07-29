@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useChat, UIMessage } from "@ai-sdk/react";
 import ReactMarkdown from "react-markdown";
+import { usePathname } from "next/navigation";
 import {
   Sparkles,
   X,
@@ -32,8 +33,14 @@ Hire Rakibul for a web development project! Your project contract will help him 
 - 💼 **Hire Rakibul:** [Contact Rakibul](/contact)`;
 
 export default function ChatbotWidget() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Hide chatbot widget on admin dashboard routes to avoid blocking table pagination
+  if (pathname?.startsWith("/dashboard")) {
+    return null;
+  }
 
   const [input, setInput] = useState("");
 

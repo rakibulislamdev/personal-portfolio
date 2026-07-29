@@ -11,6 +11,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import BlogMarkdownEditor from "./BlogMarkdownEditor";
+
 interface BlogModalProps {
   isOpen: boolean;
   editingBlog: BlogPost | null;
@@ -46,7 +48,7 @@ export default function BlogModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-zinc-900 w-full max-w-xl rounded-3xl border border-zinc-200 dark:border-zinc-800 p-6 space-y-5 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+      <div className="bg-white dark:bg-zinc-900 w-full max-w-3xl rounded-3xl border border-zinc-200 dark:border-zinc-800 p-6 space-y-5 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
         <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
           <h2 className="text-base font-bold text-zinc-900 dark:text-white">
             {editingBlog ? "Edit Blog Post" : "Create New Blog Post"}
@@ -106,16 +108,7 @@ export default function BlogModal({
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
-              Article Content / Summary
-            </label>
-            <textarea
-              rows={4}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Write short content preview or markdown..."
-              className="w-full px-4 py-3 bg-zinc-100 dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs font-medium text-zinc-900 dark:text-white focus:outline-none focus:border-[var(--theme-color)] transition resize-none"
-            />
+            <BlogMarkdownEditor value={content} onChange={setContent} />
           </div>
 
           <div className="flex items-center justify-end gap-3 border-t border-zinc-200 dark:border-zinc-800 pt-4">

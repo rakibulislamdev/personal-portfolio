@@ -136,7 +136,7 @@ export async function GET(req: Request) {
 
 // In-memory rate limiting for Analytics Logging (max 20 visitor logs per minute per IP)
 const analyticsRateLimitMap = new Map<string, { count: number; resetTime: number }>();
-const ANALYTICS_LIMIT_MAX = 20;
+const ANALYTICS_LIMIT_MAX = 10;
 const ANALYTICS_WINDOW_MS = 60 * 1000;
 
 setInterval(() => {
@@ -211,22 +211,79 @@ export async function POST(req: Request) {
       }
     }
 
-    const newLog = await prisma.visitorLog.create({
-      data: {
+    // Check if this IP has a log entry in the last 15 minutes to prevent DB bloating
+    const fifteenMinsAgo = new Date(Date.now() - 15 * 60 * 1000);
+    const existingLog = await prisma.visitorLog.findFirst({
+      where: {
         ip: clientIp || "127.0.0.1",
-        country,
-        city,
-        flag,
-        page,
-        device: detectedDevice,
+        createdAt: { gte: fifteenMinsAgo },
       },
     });
 
-    return NextResponse.json({ success: true, log: newLog });
+    let savedLog;
+    if (existingLog) {
+      // Update the existing session log: update to latest page and reset timestamp
+      savedLog = await prisma.visitorLog.update({
+        where: { id: existingLog.id },
+        data: {
+          page: page,
+          createdAt: new Date(), // Reset time to show active live timestamp
+        },
+      });
+    } else {
+      // Create a new session log
+      savedLog = await prisma.visitorLog.create({
+        data: {
+          ip: clientIp || "127.0.0.1",
+          country,
+          city,
+          flag,
+          page,
+          device: detectedDevice,
+        },
+      });
+    }
+
+    return NextResponse.json({ success: true, log: savedLog });
   } catch (error) {
     console.error("Failed to log visitor:", error);
     return NextResponse.json(
       { error: "Failed to log visitor" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (id) {
+      await prisma.visitorLog.delete({
+        where: { id },
+      });
+      return NextResponse.json({ success: true });
+    }
+
+    // Check for bulk delete array in body
+    const body = await req.json().catch(() => ({}));
+    const ids = body.ids;
+
+    if (ids && Array.isArray(ids) && ids.length > 0) {
+      await prisma.visitorLog.deleteMany({
+        where: {
+          id: { in: ids },
+        },
+      });
+      return NextResponse.json({ success: true });
+    }
+
+    return NextResponse.json({ error: "Missing log ID(s)" }, { status: 400 });
+  } catch (error) {
+    console.error("Failed to delete visitor log:", error);
+    return NextResponse.json(
+      { error: "Failed to delete log" },
       { status: 500 }
     );
   }

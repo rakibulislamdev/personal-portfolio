@@ -57,6 +57,26 @@ interface AllProjectsGridProps {
 export const AllProjectsGrid: React.FC<AllProjectsGridProps> = ({
   projectsList = defaultProjects,
 }) => {
+  // If we have less than 4 projects, fallback to a clean standard grid to keep it visually balanced
+  if (projectsList.length < 4) {
+    return (
+      <div className="space-y-8">
+        <WorksHeader />
+        <div className={`grid grid-cols-1 ${
+          projectsList.length === 1 
+            ? "max-w-md mx-auto" 
+            : projectsList.length === 2 
+            ? "md:grid-cols-2 max-w-4xl mx-auto" 
+            : "md:grid-cols-3"
+        } gap-6`}>
+          {projectsList.map((project, idx) => (
+            <ProjectCard key={project.id || idx} project={project} imageHeightClass="h-72" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   const p1 = projectsList[0];
   const p2 = projectsList[1];
   const p3 = projectsList[2];
@@ -65,6 +85,11 @@ export const AllProjectsGrid: React.FC<AllProjectsGridProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Mobile Only Header: Renders at the very top of the page on small screens */}
+      <div className="block lg:hidden w-full">
+        <WorksHeader />
+      </div>
+
       {/* 3-Column Asymmetric Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         {/* Left Column: Slot 1 & Slot 4 (Tall Card) */}
@@ -75,8 +100,10 @@ export const AllProjectsGrid: React.FC<AllProjectsGridProps> = ({
 
         {/* Right 2 Columns Container */}
         <div className="lg:col-span-2 flex flex-col gap-6">
-          {/* Works Section Header Component */}
-          <WorksHeader />
+          {/* Desktop Only Header: Sits inside the grid to preserve asymmetric card heights */}
+          <div className="hidden lg:block w-full">
+            <WorksHeader />
+          </div>
 
           {/* Dynamic Grid for remaining cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

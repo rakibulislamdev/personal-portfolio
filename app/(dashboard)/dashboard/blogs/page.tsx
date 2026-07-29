@@ -12,6 +12,9 @@ export default function DashboardBlogsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Deletion State
+  const [deletingBlogId, setDeletingBlogId] = useState<string | null>(null);
+
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null);
@@ -151,7 +154,7 @@ export default function DashboardBlogsPage() {
         blogs={filteredBlogs}
         isLoading={isLoading}
         onEdit={handleOpenEditModal}
-        onDelete={handleDeleteBlog}
+        onDelete={setDeletingBlogId}
         formatDate={formatDate}
       />
 
@@ -171,6 +174,42 @@ export default function DashboardBlogsPage() {
         onClose={() => setIsModalOpen(false)}
         onSave={handleSaveBlog}
       />
+
+      {/* Delete Confirmation Modal */}
+      {deletingBlogId !== null && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-in fade-in duration-200">
+          <div className="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl max-w-sm w-full space-y-4 shadow-2xl">
+            <div className="text-center">
+              <h3 className="text-sm font-bold text-white">Delete Blog Post</h3>
+              <p className="text-[11px] text-zinc-400 mt-1">
+                Are you sure you want to delete this blog post? This action cannot be undone.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setDeletingBlogId(null)}
+                className="py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-semibold text-xs rounded-xl transition cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  if (deletingBlogId) {
+                    await handleDeleteBlog(deletingBlogId);
+                    setDeletingBlogId(null);
+                  }
+                }}
+                className="py-2 bg-red-650 hover:bg-red-600 text-white font-semibold text-xs rounded-xl transition cursor-pointer"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
