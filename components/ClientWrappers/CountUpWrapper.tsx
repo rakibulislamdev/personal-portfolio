@@ -84,6 +84,13 @@ const CountUpWrapper: React.FC<CountUpWrapperProps> = ({
       <span
         aria-hidden="true"
         className={cn("gradient-number font-extrabold")}
+        style={{
+          display: "inline-block",
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          color: "transparent"
+        }}
       >
         {displayValue}
       </span>
