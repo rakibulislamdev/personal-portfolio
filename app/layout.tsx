@@ -155,6 +155,8 @@ export default async function RootLayout({
           "https://github.com/rakibulislamdev",
           "https://www.linkedin.com/in/rakibulislamdev/",
           "https://www.facebook.com/iamrakib2/",
+          "https://x.com/rakibulislamdev",
+          "https://www.instagram.com/rakibulislamdev/",
         ],
         alumniOf: {
           "@type": "EducationalOrganization",
