@@ -76,8 +76,12 @@ const Navbar = () => {
               <div>
                 <SheetHeader className="mb-8 border-b border-zinc-800 pb-4">
                   <SheetTitle className="text-xl font-semibold flex items-center gap-2 text-white">
-                    <span>Rakibul Islam</span>
-                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: "var(--theme-color)" }} />
+                    <SheetClose render={
+                      <Link href="/" className="flex items-center gap-2 text-white hover:opacity-80 transition-opacity">
+                        <span>Rakibul Islam</span>
+                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: "var(--theme-color)" }} />
+                      </Link>
+                    } />
                   </SheetTitle>
                 </SheetHeader>
 
