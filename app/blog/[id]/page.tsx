@@ -19,6 +19,30 @@ interface BlogDetailsPageProps {
   params: Promise<{ id: string }>;
 }
 
+function cleanMarkdownDescription(content: string | null | undefined): string {
+  if (!content) return "Read this article by Rakibul Islam";
+  const cleaned = content
+    // Remove markdown images: ![alt](url)
+    .replace(/!\[.*?\]\(.*?\)/g, "")
+    // Remove markdown links, keeping only text: [text](url) -> text
+    .replace(/\[(.*?)\]\(.*?\)/g, "$1")
+    // Remove code blocks
+    .replace(/```[\s\S]*?```/g, "")
+    // Remove inline code
+    .replace(/`([^`]+)`/g, "$1")
+    // Remove headers
+    .replace(/^\s{0,3}#{1,6}\s+/gm, "")
+    // Remove bold/italic markers
+    .replace(/[*_]{1,3}([^*_]+)[*_]{1,3}/g, "$1")
+    // Remove other remaining markdown symbols
+    .replace(/[#*`_~[\]()\-]/g, "")
+    // Collapse whitespace
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return cleaned.substring(0, 155).trim() + "...";
+}
+
 export async function generateMetadata({ params }: BlogDetailsPageProps): Promise<Metadata> {
   const { id } = await params;
   const blog = await getBlogById(id);
@@ -29,10 +53,7 @@ export async function generateMetadata({ params }: BlogDetailsPageProps): Promis
     };
   }
 
-  // Clean description of markdown symbols
-  const cleanDescription = blog.content
-    ? blog.content.replace(/[#*`_[\]()-]/g, "").substring(0, 155).trim() + "..."
-    : "Read this article by Rakibul Islam";
+  const cleanDescription = cleanMarkdownDescription(blog.content);
 
   const coverUrl = blog.coverImage || undefined;
   const slugOrId = blog.slug || blog.id;
@@ -103,9 +124,7 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
     year: "numeric",
   });
 
-  const cleanDescription = blog.content
-    ? blog.content.replace(/[#*`_[\]()-]/g, "").substring(0, 155).trim() + "..."
-    : "Read this article by Rakibul Islam";
+  const cleanDescription = cleanMarkdownDescription(blog.content);
 
   const jsonLd = {
     "@context": "https://schema.org",
