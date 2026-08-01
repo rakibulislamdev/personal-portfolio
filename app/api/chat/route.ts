@@ -1,21 +1,19 @@
-import { streamText } from "ai";
-import { google } from "@ai-sdk/google";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getProfileSettings, getProjects, getBlogs } from "@/lib/data";
 
-export const maxDuration = 30;
+export const maxDuration = 60;
+export const dynamic = "force-dynamic";
 
 // Simple in-memory rate limiting (10 requests per minute per IP)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT_MAX = 10; // Maximum requests allowed per window
-const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute window
+const RATE_LIMIT_MAX = 10;
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 
-// Periodic cleanup to prevent memory leaks from old IPs (runs every 5 minutes)
+// Periodic cleanup
 setInterval(() => {
   const now = Date.now();
   for (const [ip, data] of rateLimitMap.entries()) {
-    if (now > data.resetTime) {
-      rateLimitMap.delete(ip);
-    }
+    if (now > data.resetTime) rateLimitMap.delete(ip);
   }
 }, 5 * 60 * 1000);
 
@@ -31,7 +29,7 @@ Hire Rakibul for a web development project! Your project contract will help him 
 
 export async function POST(req: Request) {
   try {
-    // Determine Client IP address
+    // Rate limiting
     const clientIp =
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
       req.headers.get("x-real-ip") ||
@@ -39,8 +37,6 @@ export async function POST(req: Request) {
 
     const now = Date.now();
     const rateData = rateLimitMap.get(clientIp);
-
-    // 🛡️ DDoS Protection Check BEFORE running DB queries or processing request body
     if (rateData && now < rateData.resetTime) {
       if (rateData.count >= RATE_LIMIT_MAX) {
         return new Response(
@@ -50,9 +46,13 @@ export async function POST(req: Request) {
       }
       rateData.count += 1;
     } else {
-      rateLimitMap.set(clientIp, {
-        count: 1,
-        resetTime: now + RATE_LIMIT_WINDOW_MS,
+      rateLimitMap.set(clientIp, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    }
+
+    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return new Response(funnyFallbackMessage, {
+        headers: { "Content-Type": "text/plain; charset=utf-8" },
       });
     }
 
@@ -65,24 +65,16 @@ export async function POST(req: Request) {
       getBlogs(),
     ]);
 
-    // Build structured projects context
     const projectsContext = projects
-      .map((p) => {
-        return `- **${p.title}** (${p.category}, ${p.year || "Recent"})
-  - Description: ${p.description || "N/A"}
-  - Key Features: ${p.keyFeatures || "N/A"}
-  - Technologies: ${p.technologies || "N/A"}
-  - Live Demo: ${p.liveUrl || "N/A"}
-  - GitHub: ${p.githubUrl || "N/A"}`;
-      })
+      .map((p) =>
+        `- **${p.title}** (${p.category}, ${p.year || "Recent"})\n  - Description: ${p.description || "N/A"}\n  - Key Features: ${p.keyFeatures || "N/A"}\n  - Technologies: ${p.technologies || "N/A"}\n  - Live Demo: ${p.liveUrl || "N/A"}\n  - GitHub: ${p.githubUrl || "N/A"}`
+      )
       .join("\n\n");
 
-    // Build structured blogs context
     const blogsContext = blogs
       .map((b) => `- **${b.title}** (${b.category}): /blog/${b.slug}`)
       .join("\n");
 
-    // Construct system prompt
     const systemPrompt = `You are the official AI Assistant for Rakibul Islam's personal portfolio website (rakibulislamdev.me).
 Your goal is to assist recruiters, clients, and visitors by answering questions about Rakibul's portfolio, experience, skills, projects, and contact info in a helpful, friendly, and professional manner.
 
@@ -119,47 +111,57 @@ ${blogsContext || "No public blogs listed yet."}
 5. If the user asks for something not in the portfolio data, politely state that you don't have that specific detail and offer to connect them via Rakibul's email ([${settings?.email || "rirakib03@gmail.com"}](mailto:${settings?.email || "rirakib03@gmail.com"})).
 `;
 
-    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
-
-    if (!apiKey) {
-      console.error("Gemini API Key missing in environment variables!");
-      return new Response(funnyFallbackMessage, {
-        headers: { "Content-Type": "text/plain; charset=utf-8" },
-      });
-    }
-
-    const formattedMessages = Array.isArray(messages)
-      ? messages.map((m: any) => ({
-        role: m.role,
-        content:
-          typeof m.content === "string" && m.content
-            ? m.content
-            : Array.isArray(m.parts)
-              ? m.parts
-                .filter((p: any) => p.type === "text")
-                .map((p: any) => p.text)
-                .join("")
-              : "",
-      }))
+    // Build Gemini chat history (all messages except the last user message)
+    const chatHistory = Array.isArray(messages)
+      ? messages.slice(0, -1).map((m: any) => ({
+          role: m.role === "assistant" ? "model" : "user",
+          parts: [{ text: typeof m.content === "string" ? m.content : "" }],
+        }))
       : [];
 
-    try {
-      const result = streamText({
-        model: google("gemini-2.0-flash"),
-        system: systemPrompt,
-        messages: formattedMessages,
-      });
+    const lastMessage = Array.isArray(messages) ? messages[messages.length - 1] : null;
+    const userText = lastMessage?.content ?? "";
 
-      return result.toTextStreamResponse();
-    } catch (streamErr: any) {
-      console.error("StreamText execution failed:", streamErr?.message || streamErr);
-      return new Response(funnyFallbackMessage, {
-        status: 200,
-        headers: { "Content-Type": "text/plain; charset=utf-8" },
-      });
-    }
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-3.5-flash-lite",
+      systemInstruction: systemPrompt,
+    });
+
+    const chat = model.startChat({ history: chatHistory });
+    const streamResult = await chat.sendMessageStream(userText);
+
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of streamResult.stream) {
+            const text = chunk.text();
+            if (text) {
+              const data = JSON.stringify({ delta: text });
+              controller.enqueue(encoder.encode(`data: ${data}\n\n`));
+            }
+          }
+          controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+        } catch (err) {
+          console.error("Stream error:", err);
+        } finally {
+          controller.close();
+        }
+      },
+    });
+
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/event-stream; charset=utf-8",
+        "Cache-Control": "no-cache, no-transform",
+        "Connection": "keep-alive",
+        "X-Accel-Buffering": "no",
+      },
+    });
   } catch (error: any) {
-    console.error("Chat API error:", error?.message || error);
+    const errMsg = error?.message || String(error);
+    console.error("Chat API error:", errMsg);
     return new Response(funnyFallbackMessage, {
       status: 200,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
