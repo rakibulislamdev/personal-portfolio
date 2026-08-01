@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
+  },
   images: {
     qualities: [75, 90, 95, 100],
     remotePatterns: [
