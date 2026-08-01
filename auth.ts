@@ -10,8 +10,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const adminEmail = process.env.ADMIN_EMAIL || "rirakib03@gmail.com";
-        const adminPassword = process.env.ADMIN_PASSWORD || "admin12345";
+        const adminEmail = process.env.ADMIN_EMAIL;
+        const adminPassword = process.env.ADMIN_PASSWORD;
 
         const inputEmail = credentials?.email as string;
         const inputPassword = credentials?.password as string;
@@ -19,7 +19,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!inputEmail || !inputPassword) return null;
 
         // Check if input credentials match ADMIN ENV credentials
-        if (inputEmail === adminEmail && inputPassword === adminPassword) {
+        if (adminEmail && adminPassword && inputEmail === adminEmail && inputPassword === adminPassword) {
           let user = await prisma.user.findUnique({
             where: { email: adminEmail },
           });

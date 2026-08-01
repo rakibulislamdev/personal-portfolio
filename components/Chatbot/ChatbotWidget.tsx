@@ -63,12 +63,6 @@ export default function ChatbotWidget() {
     },
   });
 
-  // Hide chatbot widget on admin dashboard routes to avoid blocking table pagination
-  // This must be placed AFTER all React hooks definitions (useState, useRef, useChat)
-  if (pathname?.startsWith("/dashboard")) {
-    return null;
-  }
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
@@ -133,6 +127,11 @@ export default function ChatbotWidget() {
   const handleClearChat = () => {
     setMessages([]);
   };
+
+  // Hide chatbot widget on admin dashboard routes to avoid blocking table pagination
+  if (pathname?.startsWith("/dashboard")) {
+    return null;
+  }
 
   return (
     <>

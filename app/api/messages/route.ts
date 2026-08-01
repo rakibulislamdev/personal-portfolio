@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { isDisposableEmail } from "@/lib/email-check";
 
 const defaultSeedMessages = [
   {
@@ -119,6 +120,14 @@ export async function POST(req: Request) {
     if (!name || !email || !subject || !message) {
       return NextResponse.json(
         { error: "Name, email, subject, and message are required" },
+        { status: 400 }
+      );
+    }
+
+    // Verify email is not from a disposable/temporary domain
+    if (await isDisposableEmail(email)) {
+      return NextResponse.json(
+        { error: "Temporary or disposable email addresses are not allowed. Please use a valid email address." },
         { status: 400 }
       );
     }

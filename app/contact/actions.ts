@@ -2,6 +2,7 @@
 
 import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
+import { isDisposableEmail } from "@/lib/email-check";
 
 const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy_key_until_env_set");
 
@@ -20,6 +21,14 @@ export async function sendEmailAction(formData: FormData): Promise<SendEmailResp
     return {
       success: false,
       message: "Please fill in all required fields.",
+    };
+  }
+
+  // Verify email is not from a disposable/temporary domain
+  if (await isDisposableEmail(email)) {
+    return {
+      success: false,
+      message: "Temporary or disposable email addresses are not allowed. Please use a valid email address.",
     };
   }
 
